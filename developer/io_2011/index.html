@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+
+<!--
+  Using ARIA to create accessible interactive web apps
+  Dominic Mazzoni and Rachel Shearer
+
+  Based on the Google I/O 2011 HTML slides template
+  Created by Luke Mahé and Marcin Wichary
+-->
+
+<!-- Copyright (c) 2011 Google Inc.
+       *
+       * Licensed under the Apache License, Version 2.0 (the "License");
+       * you may not use this file except in compliance with the License.
+       * You may obtain a copy of the License at
+       *
+       *     http://www.apache.org/licenses/LICENSE-2.0
+       *
+       * Unless required by applicable law or agreed to in writing, software
+       * distributed under the License is distributed on an "AS IS" BASIS,
+       * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       * See the License for the specific language governing permissions and
+       * limitations under the License.
+       *
+       *
+       *
+       *
+-->
+
+<html>
+  <head>
+    <title>Creating Accessible Interactive Web Apps Using HTML5 | Google I/O</title>
+
+    <meta charset='utf-8' />
+    <script
+      src='http://io-2011-slides.googlecode.com/svn/trunk/slides.js'></script>
+    <script>
+      var slides;
+      var showAllSlidesButton;
+      var ignoreFocusEvents = false;
+      var currentStars = 3;
+
+      function $(element) {
+        return document.getElementById(element);
+      }
+
+      // This presentation shows only a few slides at a time. This works in
+      // most screen readers too, but for those where it doesn't, here's a
+      // way to just show all slides. -->
+      function showAllSlides() {
+        console.log('showAllSlides');
+        document.body.classList.add('showAllSlides');
+        showAllSlidesButton.parentElement.removeChild(showAllSlidesButton);
+      }
+      function updateShowAllSlidesButton() {
+        if (!showAllSlidesButton) {
+          return;
+        }
+
+        var slideNo = parseInt(location.hash.substr(1), 10);
+        var first = Math.max(slideNo - 2, 1);
+        var last = Math.min(slideNo + 2, slides.length);
+        showAllSlidesButton.innerText =
+            'Showing slides ' + first + ' - ' + last + ' of ' +
+            slides.length + '. Click to show all slides.';
+      }
+
+      function onSlideEnter() {
+        console.log('onSlideEnter');
+        updateShowAllSlidesButton();
+        window.setTimeout(function() {
+          document.activeElement.blur();
+          window.setTimeout(function() {
+            var slideIndex = parseInt(location.hash.substr(1), 10) - 1;
+            ignoreFocusEvents = true;
+            slides[slideIndex].focus();
+            console.log('onSlideEnter focus');
+            window.setTimeout(function() {
+              ignoreFocusEvents = false;
+            }, 0);
+          }, 600);
+        }, 600);
+      }
+
+      function onFocus(e) {
+        console.log('focus ' + e.target);
+        document.pageXOffset = 0;
+        if (ignoreFocusEvents) {
+          console.log('ignore focus');
+          return true;
+        }
+        var t = e.target;
+        while (t && t.tagName != 'ARTICLE') {
+          t = t.parentElement;
+        }
+        if (t) {
+          var slideIndex = parseInt(t.getAttribute('slideIndex'), 10);
+          if (curSlide != slideIndex) {
+            console.log('Focus switch from ' +
+                        (curSlide + 1) + ' to ' + (slideIndex + 1));
+            curSlide = slideIndex;
+            updateSlides();
+            document.body.scrollLeft = 0;
+          }
+        }
+        return true;
+      }
+
+      function onScroll(e) {
+        console.log('scroll');
+        document.body.scrollLeft = 0;
+        e.preventDefault();
+        return false;
+      }
+
+      // Called when the page loads.
+      function initAriaPreso() {
+        slides = document.querySelectorAll('section.slides > article');
+        showAllSlidesButton = $('showAllSlidesButton');
+
+        for (var i = 0; i < slides.length; i++) {
+          slides[i].setAttribute('tabindex', '-1');
+          slides[i].setAttribute('slideIndex', i);
+          slides[i].setAttribute('title', 'Slide ' + (i + 1));
+        }
+
+        document.addEventListener('slideenter', onSlideEnter, true);
+        document.addEventListener('focus', onFocus, true);
+        document.addEventListener('scroll', onScroll, true);
+        window.setTimeout(function() {
+          updateShowAllSlidesButton();
+        }, 0);
+      }
+
+      // Star rating gadget
+
+      var starNames = {
+        0: 'No stars',
+        1: '1 star',
+        2: '2 stars',
+        3: '3 stars',
+        4: '4 stars',
+        5: '5 stars'
+      };
+
+      function setstars(stars) {
+        var elems = $('stars').children;
+        currentStars = stars;
+        for (var i = 1; i <= 5; i++) {
+          var elem = elems[i];
+          if (stars >= i) {
+            elem.className = 'star_full';
+          } else {
+            elem.className = 'star_empty';
+          }
+        }
+        var cancel = elems[0];
+        if (stars > 0) {
+          cancel.style.visibility = 'visible';
+        } else {
+          cancel.style.visibility = 'hidden';
+        }
+        var caption = elems[6];
+        caption.innerText = starNames[stars];
+        var stars_elem = $('stars');
+        stars_elem.setAttribute('aria-valuenow', stars);
+        stars_elem.setAttribute('aria-valuetext', starNames[stars]);
+      }
+
+      function starkey(event) {
+        if (event.keyCode == 37) {
+          if (currentStars > 0) {
+            setstars(currentStars - 1);
+          }
+          event.stopPropagation();
+        } else if (event.keyCode == 39) {
+          if (currentStars < 5) {
+            setstars(currentStars + 1);
+          }
+          event.stopPropagation();
+        }
+        return false;
+      }
+
+      function initstar(stars, star) {
+        var elem = stars.children[star];
+        elem.addEventListener('click', function() {
+          setstars(star);
+        }, false);
+      }
+
+      function initstars() {
+        var stars = $('stars');
+        for (var i = 0; i <= 5; i++) {
+          initstar(stars, i);
+        }
+      }
+
+      function refreshLiveCoding(e, basename) {
+        var src = $(basename + '_src');
+        var dst = $(basename + '_embed');
+        var html = src.innerText;
+        var scripts = /<script>([^<]*)<\/script>/i.exec(html);
+        console.log('scripts: ' + scripts);
+        if (scripts) {
+          var scriptCode = scripts[1];
+          html = html.replace(/<script>[^<]*<\/script>/, '');
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.innerText = scriptCode;
+          document.body.appendChild(script);
+        }
+        dst.innerHTML = html;
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        try {
+          initstars();
+        } catch(e) {}
+        return false;
+      }
+
+      // Sync a contenteditable containing html with a div containing the result.
+      function manageLiveCoding(basename) {
+        var src = $(basename + '_src');
+        refreshLiveCoding(null, basename);
+        src.addEventListener('keydown', function(e) {
+          if (e.keyCode == 9)  // tab
+            return true;
+          window.setTimeout(function() {
+            refreshLiveCoding(null, basename);
+          }, 0);
+          e.stopPropagation();
+          return false;
+        }, false);
+        src.addEventListener('blur', function(e) {
+          window.setTimeout(function() {
+            prettyPrint();
+          }, 0);
+        }, false);
+      }
+
+      // Generic onKeyDown handler for anything clickable.
+      function onKeyDown(e) {
+        if (e.keyCode == 32 || e.keyCode == 13) {
+          prettyPrint();
+          var evt = document.createEvent('MouseEvents');
+          evt.initMouseEvent('click', true, true, document.defaultView,
+            1, 0, 0, 0, 0, false, false, false, false, 0, null);
+          try {
+            e.target.dispatchEvent(evt);
+          } catch (e) {}
+          e.stopPropagation();
+          e.preventDefault();
+          return false;
+        }
+        return true;
+      }
+
+      // Override keys used by interactive controls so they don't move
+      // to the next slide.
+      function overrideKeys(e) {
+        if (e.keyCode == 32 ||  // space
+            e.keyCode == 13 ||  // return
+            e.keyCode == 8 ||   // tab
+            e.keyCode == 38 ||  // up-arrow
+            e.keyCode == 40) {  // down-arrow
+          e.stopPropagation();
+        }
+        return true;
+      }
+    </script>
+  </head>
+  
+  <style>
+    #showAllSlidesButton {
+      position: absolute;
+      left: -9999px;
+      overflow: hidden;
+    }
+
+    article:focus {
+      outline: none;
+    }
+
+    .slides > article {
+      -webkit-transition: -webkit-transform .4s ease-out !important;
+    }
+
+    body.showAllSlides {
+      height: auto !important;
+      overflow: scroll !important;
+    }
+
+    body.showAllSlides .slides > article {
+      position: static !important;
+      -webkit-transform: translate3d(0, 0, 0) !important;
+      margin-left: 0px;
+      margin-top: 0px;
+      display: block !important;
+    }
+
+    .magnified {
+      border: 2px solid #696969;
+      padding: 0.1em 0.2em 0.1em 0.2em;
+      font-size: 160%;
+      position: relative;
+      top: 0.15em;
+    }
+
+    iframe {
+      height: 520px !important;
+    }
+
+    h3 + iframe {
+      height: 440px !important;
+    }
+
+    .parenthetical {
+      margin: 0 0.5em 0 0.5em;
+      color: #aaa;
+    }
+
+    .lefthalf_src {
+      margin: 16px 20px 20px 0px;
+      float: left;
+      width: 380px;
+      height: 440px;
+
+      font-family: 'Droid Sans Mono', 'Courier New', monospace;
+
+      font-size: 15px;
+      line-height: 24px;
+      padding: 5px 10px;
+
+      color: black;
+      background: rgb(240, 240, 240);
+      overflow: auto;
+    }
+
+    div.righthalf_embed {
+      margin: 16px 20px 0px 0px;
+      padding: 5px 10px;
+      float: left;
+      width: 300px;
+      height: 404px;
+      border: 1px solid #696969;
+      overflow: hidden;
+    }
+
+    button.refresh {
+      cursor: pointer;
+      margin: 0px;
+      padding: 0px;
+      font-size: 12px;
+      background: none;
+      border: 0px;
+      text-decoration: underline;
+      color: #00f;
+    }
+
+    .star_rating {
+      display: inline-block;
+      padding: 2px;
+      height: 24px;
+    }
+
+    .star_cancel {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: url(images/star_cancel.gif);
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .star_full {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: url(images/star1.gif);
+    }
+
+    .star_empty {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: url(images/star0.gif);
+    }
+
+    .star_caption {
+      margin-left: 1em;
+      display: inline-block;
+      width: 4em;
+      color: #696969;
+      font-size: 20px;
+    }
+  </style>
+
+  <body style='display: none' onload='initAriaPreso()'>
+
+    <section class='slides' onkeydown="return overrideKeys(event)">
+
+      <article class='biglogo'>
+        &nbsp;
+      </article>
+
+      <article>
+        <h1>
+          Creating
+          <br>
+          Accessible Interactive
+          <br>
+          Web Apps Using HTML5
+        </h1>
+        <p>
+          Dominic Mazzoni and Rachel Shearer
+          <br>
+          May 11, 2011
+        </p>
+      </article>
+      
+      <article>
+        <h3>Feedback</h3>
+          Please provide feedback on this session at<br>
+          <a href="http://goo.gl/eWAqj">http://goo.gl/eWAqj</a><br>
+        <p><h3>Hashtags</h3>
+        #io2011,
+        #chrome,
+        #a11y
+        <span class="parenthetical">(accessibility)</span></p>
+      </article>
+
+      <article>
+        <h3>
+          One way to make your web app accessible is:
+        </h3>
+        <ul>
+          <li tabindex='0'>Basic HTML
+          <li tabindex='0'>Simple layout
+          <li>Forms-based interaction
+          <li>No JavaScript
+        </ul>
+        <div class="build">
+          <div>
+            <p><br></p>
+            <h3>
+              This is boring! Let’s build a web app that’s:
+            </h3>
+            <ul>
+              <li>Interactive and Dynamic
+              <li>Feels like a native app
+              <li>...while still being accessible to users with disabilities!
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <style>
+          .braille_item {
+            background-image: url(images/braille.jpg);
+            background-repeat:no-repeat;
+            background-position:right top;
+          }
+          .headphones_item {
+            background-image: url(images/headphones.jpg);
+            background-repeat:no-repeat;
+            background-position:right top;
+          }
+        </style>
+
+        <h3>
+          Target audience:<br>
+          Users with assistive technology
+        </h3>
+        <ul>
+          <li class="braille_item" tabindex='0'>
+            <b>Blind users</b><br>
+            with a <b>screen reader</b> that describes<br>
+            the page using synthesized speech <br>
+            or braille output.
+
+          <li tabindex='0'>
+            <b>Low-vision users</b><br>
+            who use large fonts or a screen
+            <span class="magnified">magnifier.</span>
+
+          <li class="headphones_item">
+            <b>Motor-impaired users</b><br>
+            who can’t use a mouse and may use<br>
+            a special keyboard or voice-control<br>
+            interface.
+        </ul>
+
+      </article>
+
+      <article>
+        <h2>
+          Overview
+        </h2>
+        <ol style="list-style-type:upper-roman; font-size: 120%;">
+          <li>What’s a great accessible experience?
+          <li>Coding accessible HTML5
+          <li>Extensions, Tools & Resources
+        </ol>
+
+      </article>
+
+      <article>
+        <h2>
+          Part I: What’s a great accessible experience?
+        </h2>
+      </article>
+
+      <article>
+
+        <style>
+          .cr48 {
+            width: 100%;
+            height: 520px;
+            background-image: url(images/cr48.jpg);
+            background-repeat:no-repeat;
+            background-position:right bottom;
+          }
+        </style>
+
+        <div class="cr48">
+
+          <h3>
+            Introducing ChromeVox
+          </h3>
+
+          <ul>
+            <li>This presentation is running on a Cr-48 Chrome notebook.
+
+            <li>Chrome OS includes a built-in screen reader, <b>ChromeVox</b>,
+                a pure-JavaScript Chrome extension developed at Google.<br>
+                We'll use this for demos!
+          </ul>
+
+        </div>
+
+      </article>
+
+      <article>
+
+        <style>
+          input {
+            margin-left: 0.5em;
+            font-size: 100%;
+          }
+          select {
+            margin-left: 0.5em;
+            font-size: 100%;
+            vertical-align: middle;
+          }
+        </style>
+
+        <h3>
+          Accessibility for the static web
+        </h3>
+
+        <p>Screen readers and magnifiers allow the user to explore
+           both static text and interactive elements.</p>
+
+        <p>Here's an example web form to demonstrate:</p>
+
+        <form style="border: 1px solid #696969; padding: 1em; margin-top: 1em;">
+
+          <p>
+            <label for="username">Enter your name:</label>
+            <input type="text" id="username" />
+          </p>
+
+          <p>
+            <label for="colorchoice">Choose your favorite color:</label>
+            <select id="colorchoice">
+              <option selected>Red</option>
+              <option>Orange</option>
+              <option>Yellow</option>
+              <option>Green</option>
+              <option>Blue</option>
+              <option>Purple</option>
+              <option>Brown</option>
+              <option>Black</option>
+              <option>Gray</option>
+              <option>White</option>
+            </select>
+          </p>
+          
+          <p>
+            <input type="submit" style="width: 10em;" />
+          </p>
+
+          <p>Having trouble?
+             <a href="http://www.google.com/">Click here for help</a>
+          </p>
+
+        </form>
+
+      </article>
+
+      <article>
+        <h3>
+          HTML5: A bad accessible experience
+        </h3>
+
+        <iframe src='snack_attack_notax.html'></iframe>
+      </article>
+
+      <article>
+
+        <style>
+          .smallerlist li {
+            font-size: 90% !important;
+            line-height: 110% !important;
+          }
+        </style>
+
+        <h3>
+          What went wrong?
+        </h3>
+
+        <ul class="smallerlist">
+          <li>Poor focus management
+          <li>No keyboard commands
+          <li>Unusable custom controls
+          <li>The user doesn't know when things change on the page
+        </ul>
+
+        <div class="build">
+          <div>
+
+            <p><br></p>
+
+            <h3>
+              What should have happened?
+            </h3>
+
+            <ul class="smallerlist">
+              <li>Focus should have been trapped inside the dialog
+              <li>Controls should be usable with the keyboard
+              <li>Controls should be labeled for screen readers
+              <li>The user should be informed when things change
+            </ul>
+
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <h3>
+          HTML5: A good accessible experience
+        </h3>
+        
+        <iframe src='snack_attack_ax.html'></iframe>
+      </article>
+
+      <article>
+        <h2>
+          Part II: Coding accessible HTML5
+        </h2>
+      </article>
+
+      <article>
+        <h3>
+          Accessible HTML5 Overview
+        </h3>
+
+        <ol style="font-size: 120%;">
+          <li>Use clean HTML and use standard tags whenever possible.
+          <li>Manage focus.
+          <li>Add key handlers.
+          <li>Add ARIA for screen readers.
+        </ol>
+
+        <p>(Preferably in this order!)</p>
+
+      </article>
+
+      <article>
+        <h3>
+          Use clean HTML and standard tags.
+        </h3>
+
+        <ul>
+          <li>Use CSS for layout, make sure DOM order is logical.
+          
+          <li>Don't use a generic <b>div</b> or <b>span</b> when there's
+              another HTML tag that's more semantically appropriate!
+<pre style="margin-top: 1em">&lt;span onclick=""&gt;...  &rArr;  &lt;a href=""&gt;...
+&lt;div onclick=""&gt;...   &rArr;  &lt;button onclick=""&gt;...</pre>
+
+          <li>Label images and form controls.
+<pre style="margin-top: 1em">&lt;img src="chart.png" alt="(description)"&gt;
+
+&lt;label for="firstname"&gt;First name:&lt;label&gt;
+&lt;input type="text" id="firstname"/&gt;</pre>
+
+      </article>
+
+      <article>
+
+        <style>
+          .camera_focus_image {
+            width: 840px;
+            height: 560px;
+            background-image: url(images/focus.jpg);
+            background-repeat:no-repeat;
+            background-position:right bottom;
+          }
+        </style>
+
+        <div class="camera_focus_image">
+
+          <div style="width: 800px;">
+
+            <h3>
+              Manage focus.
+            </h3>
+
+            <ul>
+              <li>Make custom interactive elements focusable with
+                  <code>tabindex</code>:
+
+<pre style="width: 500px; margin-top: 1em;">&lt;!-- Natural tab order --&gt;
+&lt;div onclick="" tabindex="0"&gt;Clicky 1&lt;/div&gt;
+
+&lt;!-- Custom tab order --&gt;
+&lt;div onclick="" tabindex="7"&gt;Clicky 2&lt;/div&gt;
+
+&lt;!-- Focusable but not in tab order --&gt;
+&lt;div onclick="" tabindex="-1"&gt;Clicky 3&lt;/div&gt;
+</pre>
+
+              <li>Proactively place focus with <code>element.focus()</code><br>
+                  to create an efficient workflow.
+
+            </ul>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <article>
+        <h3>
+          Add key handlers.
+        </h3>
+
+        <ul style="margin-top: 0.5em;">
+          <li>
+            Custom controls should respond to keys like Enter, Space,
+            Arrows, Escape, etc. as appropriate.<br>
+            <i>Unplug your mouse and try it!</i>
+          </li>
+        </ul>
+
+<pre>&lt;div id="reply_icon"
+     tabindex="0"
+     onclick="reply()"
+     onkeydown="return onReplyKeydown(event)"&gt;Reply&lt;/div&gt;
+
+&lt;script&gt;
+  function onReplyKeydown(event) {
+    if (event.keyCode == 32 || event.keyCode == 13)  // Space / Enter
+      reply();
+  }
+&lt;/script&gt;</pre>
+
+      </article>
+
+      <article>
+        <h3>
+          Add ARIA for screen readers.
+        </h3>
+
+        <ul>
+          <li>ARIA attributes provide semantic information to
+              screen readers that is normally conveyed visually.
+
+          <li>Use the ARIA <code>role</code> attribute to indicate that
+              a generic tag is playing the role of a standard widget like
+              a button:
+
+<pre style="margin: 1em 0px 0.5em 0px;">&lt;div tabindex="0" role="button"&gt;Send&lt;/div&gt;
+</pre>
+
+          <li>Use ARIA states and properties to add dynamic information about the
+              current state of an element:
+
+<pre style="margin: 1em 0px 0.5em 0px;">&lt;div tabindex="0" role="checkbox" aria-checked="true"&gt;
+  Include attachments
+&lt;/div&gt;</pre>
+
+      </article>
+
+      <article>
+        <h3>
+          Identify dynamic content as an ARIA Live Region.
+        </h3>
+
+        <ul>
+          <li>Content that changes without a page refresh should be identified as a live region.
+          <li>Add ARIA live region attributes to dynamic content:
+
+<pre style="margin: 1em 0px 0.5em 0px;">&lt;span class='saving' aria-live='polite'&gt;Saving...&lt;/span&gt;
+</pre>
+
+          <li>There are also certain ARIA roles which are considered "live" by default:
+<pre style="margin: 1em 0px 0.5em 0px;">&lt;div role='alert'&gt;Sorry, that domain name is not available&lt;/div&gt;
+</pre>
+
+          <li>Screen readers will announce changes made to live regions
+
+      </article>
+
+      <article>
+
+        <style>
+          .custombutton {
+            cursor: pointer;
+            border: 1px solid #000;
+            margin: 10px;
+            padding: 10px;
+            display: inline-block;
+            background: -webkit-gradient(
+                linear, left top, left bottom, from(#fff), to(#ccc));
+          }
+        </style>
+
+        <h3>
+          Example 1: Custom button
+        </h3>
+
+        <pre id="custombutton_src" class="lefthalf_src" tabindex="0"
+             contenteditable="true" spellcheck="false" aria-hidden="true">&lt;p&gt;
+  Click on this button:
+&lt;/p&gt;
+&lt;div class="custombutton"
+     onclick="alert('sent!')"&gt;
+  Send
+&lt;/div&gt;</pre>
+
+        <div id="custombutton_embed" class="righthalf_embed"></div>
+        <button class="refresh"
+                onclick="return refreshLiveCoding(event, 'custombutton')"
+                onkeydown="return onKeyDown(event)">
+          Refresh
+        </button>
+
+        <script>
+          manageLiveCoding('custombutton');
+        </script>
+
+      </article>
+
+      <article>
+
+        <style>
+          .togglebutton {
+            cursor: pointer;
+            border: 1px solid #000;
+            margin: 10px;
+            padding: 10px;
+            display: inline-block;
+            background: -webkit-gradient(
+                linear, left top, left bottom, from(#fff), to(#ccc));
+          }
+          .togglebutton.toggled {
+            color: #fff;
+            background: -webkit-gradient(
+                linear, left top, left bottom, from(#333), to(#999));            
+          }
+        </style>
+
+        <h3>
+          Example 2: Toggle button
+        </h3>
+
+        <pre id="togglebutton_src" class="lefthalf_src" tabindex="0"
+             contenteditable="true" spellcheck="false" aria-hidden="true">&lt;script&gt;
+function toggle() {
+  var b = $('tb');
+  if (b.classList.contains('toggled')) {
+    b.classList.remove('toggled');
+  } else {
+    b.classList.add('toggled');
+  }
+}
+&lt;/script&gt;
+
+&lt;div id="tb"
+     class="togglebutton"
+     onclick="toggle()"&gt;
+  Toggle
+&lt;/div&gt;</pre>
+
+        <div id="togglebutton_embed" class="righthalf_embed"></div>
+        <button class="refresh"
+                onclick="return refreshLiveCoding(event, 'togglebutton')"
+                onkeydown="return onKeyDown(event)">
+          Refresh
+        </button>
+
+        <script>
+          manageLiveCoding('togglebutton');
+        </script>
+
+      </article>
+      
+      <article>
+
+        <style>
+          #status {
+            border: 1px solid #696969;
+            margin: 10px;
+            padding: 10px;
+          }
+        </style>
+
+        <script>
+          function calculate() {
+            $('status').innerText = 'Calculating';
+            window.setTimeout(function() {
+              $('status').innerText = 'Finished';
+            }, 3000);
+          }
+        </script>
+
+        <h3>
+          Example 3: Status indicator
+        </h3>
+
+        <pre id="status_src" class="lefthalf_src" tabindex="0"
+             contenteditable="true" spellcheck="false" aria-hidden="true">&lt;p&gt;
+  Click to begin calculation:
+&lt;/p&gt;
+&lt;button onclick="calculate()"&gt;
+  Calculate
+&lt;/button&gt;
+
+&lt;div id="status"&gt;
+  Status goes here.
+&lt;/div&gt;</pre>
+
+        <div id="status_embed" class="righthalf_embed"></div>
+        <button class="refresh"
+                onclick="return refreshLiveCoding(event, 'status')"
+                onkeydown="return onKeyDown(event)">
+          Refresh
+        </button>
+
+        <script>
+          manageLiveCoding('status');
+        </script>
+
+      </article>
+
+      <article>
+
+        <h3>
+          Example 4: Star Rating Gadget
+        </h3>
+
+        <pre id="starrating_src" class="lefthalf_src" tabindex="0"
+             contenteditable="true" spellcheck="false" aria-hidden="true">&lt;p&gt;
+  Rate from 1 to 5 stars:
+&lt;/p&gt;
+&lt;div id="stars" class="star_rating"&gt;
+  &lt;span class="star_cancel"&gt;&lt/span&gt;
+  &lt;span class="star_full"&gt;&lt/span&gt;
+  &lt;span class="star_full"&gt;&lt/span&gt;
+  &lt;span class="star_full"&gt;&lt/span&gt;
+  &lt;span class="star_empty"&gt;&lt/span&gt;
+  &lt;span class="star_empty"&gt;&lt/span&gt;
+  &lt;span class="star_caption"&gt;
+    3 stars
+  &lt;/span&gt;
+&lt;/div&gt;</pre>
+
+        <div id="starrating_embed" class="righthalf_embed"></div>
+        <button class="refresh"
+                onclick="return refreshLiveCoding(event, 'starrating')"
+                onkeydown="return onKeyDown(event)">
+          Refresh
+        </button>
+
+        <script>
+          manageLiveCoding('starrating');
+        </script>
+
+      </article>
+
+      <article>
+
+        <h3>
+          Example 5: Pop-up dialog
+        </h3>
+
+        <style>
+          .dialog {
+            display: none;
+            border: 1px solid #000;
+            border-radius: 10px;
+            margin: 15px;
+            padding: 15px;
+            background: #fff;
+            box-shadow: 6px 6px 8px #696969;
+          }
+          .dialog p {
+            font-size: 18px;
+          }
+          .copypasta {
+            vertical-align: middle;
+            margin-left: 20px;
+            height: 16px;
+          }
+        </style>
+
+        <pre id="dialog_src" class="lefthalf_src" tabindex="0"
+             contenteditable="true" spellcheck="false" aria-hidden="true">
+&lt;script&gt;
+function confirm() {
+  $('ink_dialog').style.display = 'block';
+}
+&lt;/script&gt;
+
+&lt;button onclick="confirm()"&gt;
+  Buy More Printer Ink
+&lt;/button&gt;
+
+&lt;div id="ink_dialog" class="dialog"&gt;
+  &lt;p&gt;Are you sure you can afford it?&lt;/p&gt;
+  &lt;button id="ok"&gt;OK&lt;/button&gt;
+  &lt;button id="cancel"&gt;Cancel&lt;/button&gt;
+&lt;/div&gt;</pre>
+
+        <div id="dialog_embed" class="righthalf_embed"></div>
+        <button class="refresh"
+                onclick="return refreshLiveCoding(event, 'dialog')"
+                onkeydown="return onKeyDown(event)">
+          Refresh
+        </button>
+
+<textarea class="copypasta">var lastFocus = $('ok');
+  var listener = function(e) {
+    window.setTimeout(function() {
+      if (e.target != $('ok') &&
+          e.target != $('cancel')) {
+        lastFocus.focus();
+      } else {
+        lastFocus = e.target;
+      }
+    }, 0);
+  };
+  document.addEventListener(
+      'focus', listener, true);
+  $('ok').addEventListener(
+      'click', function(e) {
+        $('ink_dialog').style.display = 'none';
+        document.removeEventListener(
+            'focus', listener, true);
+      }, false);
+  $('cancel').addEventListener(
+      'click', function(e) {
+        $('ink_dialog').style.display = 'none';
+        document.removeEventListener(
+            'focus', listener, true);
+      }, false);
+</textarea>
+
+        <script>
+          manageLiveCoding('dialog');
+        </script>
+
+      </article>
+
+      <article>
+        <h3>
+          Compatibility Note
+        </h3>
+
+        <p>
+          These examples were all designed to work with the latest
+          versions of many browsers and assistive technology!
+        </p>
+
+        <ul>
+          <li><b>Browsers:</b><br>
+              Chrome 12+, Firefox 3.6+, IE 8+, Safari 5+
+          <li><b>Screen readers and magnifiers:</b>
+              JAWS, ZoomText, NVDA, VoiceOver, ...
+        </ul>
+
+        <p>
+          <i>(Just like with HTML / CSS, there are platform differences and
+             some testing is required.)</i>
+        </p>
+
+      </article>
+
+      <article>
+        <h3>
+          Accessible HTML5 Recap
+        </h3>
+
+        <ol style="font-size: 120%;">
+          <li>Use clean HTML, standard tags.
+          <li>Manage focus.
+          <li>Add key handlers.
+          <li><p>Add ARIA for screen readers.</p>
+              <p>
+              <i>ARIA is easy if you already did the last three steps!</i>
+              </p>
+        </ol>
+
+      </article>
+
+      <article>
+        <h3>
+          One last note: Screen readers and key handling
+        </h3>
+
+        <ul>
+          <li>Some screen readers are <b>modal</b> - when the user is in
+              <i>browse mode</i>, all keystrokes get sent to the screen reader
+              instead of the page.
+
+          <li>Only focused controls will reliably receive key events.
+              Do not rely on global key handlers!
+
+          <li>An alternative for advanced developers is ARIA
+              <code>role="application"</code> - when the user is inside this
+              block, keystrokes all go to the page. Use with caution!
+
+        </ul>
+
+      </article>
+
+      <article>
+        <h2>
+          Part III: Extensions, Tools & Resources
+        </h2>
+      </article>
+
+      <article>
+        <h3>
+          Why is developing accessible web apps hard?
+        </h3>
+        (Even for a developer who is aware of the need...)
+
+        <ul>
+          <li>There can be wide implementation differences between browsers,
+              platforms, and screen readers.
+          <li>Older browsers and screen readers can't handle dynamic web apps.
+          <li>No browser or screen reader has fully implemented ARIA yet.
+              There's no clear documentation on what is widely supported
+              in all tools.
+        </ul>
+
+      </article>
+
+      <article>
+        <h3>
+          The power of browser extensions
+        </h3>
+
+        <ul>
+          <li>Web-platform browser extensions are quick to install,
+              secure, and powerful.
+
+          <li>They're a perfect platform for:
+
+            <ul style="margin: 0.5em 0px 0px 1.5em;">
+              <li>Accessibility solutions for end users
+
+              <li>Accessibility testing tools for developers
+            </ul>
+        </ul>
+
+      </article>
+
+      <article>
+        <h3>
+          Google's extensions
+        </h3>
+
+        <ul>
+          <li>ChromeVox
+              <br>
+              <i>A screen reader for blind users.</i>
+
+          <li>ChromeVis
+              <br>
+              <i>A magnifier for low-vision users.</i>
+
+          <li>ChromeShades
+              <br>
+              <i>An accessibility testing tool for developers.</i>
+        </ul>
+
+      </article>
+
+      <article>
+        <h3>
+          ChromeVox
+        </h3>
+
+        <ul>
+          <li>Built-into Chrome OS, available as an extension for Chrome on
+              other platforms.
+
+          <li>Pure JavaScript! Uses new experimental extension APIs in
+              Chrome for text-to-speech, and to listen to user interface events
+              in menus and toolbars.
+
+          <li>Provides full access to dynamic web pages with ARIA, plus
+              includes support for custom site scripts for improved access.
+
+        </ul>
+
+      </article>
+
+      <article>
+
+        <style>
+          .chromevis_image {
+            width: 800px;
+            height: 520px;
+            background-image: url(images/chromevis_shot.png);
+            background-repeat:no-repeat;
+            background-position:right bottom;
+          }
+        </style>
+
+        <div class="chromevis_image">
+
+          <div style="width: 800px;">
+
+            <h3>
+              ChromeVis
+            </h3>
+
+            <ul>
+
+              <li>Magnifier for low-vision users.
+
+              <li>Displays selected text in a high-contrast magnified lens for
+                  easy reading.
+
+              <li>Provides basic keyboard<br>
+                  commands to move the<br>
+                  selection around the page.
+
+              <li>Preserves the original<br>page layout.
+
+            </ul>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <article>
+        <h3>
+          ChromeShades
+        </h3>
+
+        <ul>
+          <li>Accessibility testing tool for developers.
+
+          <li>When ChromeShades is running, everything is reformatted
+              as text-only and organized more like how a blind
+              user would perceive the page with a screen reader.
+
+          <li>Everything is still totally functional - you can still
+              click on links, buttons, and other controls.
+
+          <li>Many accessibility problems become immediately apparent.
+        </ul>
+
+      </article>
+
+      <article>
+        <h3>
+          Extension source
+        </h3>
+
+        <ul>
+          <li>All of these extensions are open-source, available at:
+
+          <a href="http://google-axs-chrome.googlecode.com/">
+            google-axs-chrome.googlecode.com
+          </a>
+
+        </ul>
+
+      </article>
+
+      <article>
+        <h3>
+          Final thoughts
+        </h3>
+
+        <ul>
+          <li>Accessible doesn't have to mean static, slow, simple.
+              With just a bit more work, you can deliver a dynamic
+              accessible experience!
+
+          <li>The first step doesn't require any special tools or
+              expertise: <i>just unplug your mouse</i>.
+
+          <li>HTML5 standards, especially ARIA, get you the rest of the
+              way there.
+
+        </ul>
+
+      </article>
+
+      <article>
+        
+        <h3>Feedback</h3>
+          Please provide feedback on this session at<br>
+          <a href="http://goo.gl/eWAqj">http://goo.gl/eWAqj</a><br>
+        <p><h3>Hashtags</h3>
+        #io2011,
+        #chrome,
+        #a11y
+        <span class="parenthetical">(accessibility)</span></p>
+        <p><h3>Presentation Code</h3>
+          <a href="http://google-axs-chrome.googlecode.com">
+            google-axs-chrome.googlecode.com
+          </a>
+        </p>
+      </article>
+      
+      <!-- This presentation shows only a few slides at a time. This works in
+           most screen readers too, but for those where it doesn't, here's a
+           way to just show all slides. -->
+      <button id='showAllSlidesButton' onclick='showAllSlides()'></button>
+
+    </section>
+
+  </body>
+</html>

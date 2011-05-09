@@ -1,0 +1,214 @@
+<!-- Copyright (c) 2011 Google Inc.
+       *
+       * Licensed under the Apache License, Version 2.0 (the "License");
+       * you may not use this file except in compliance with the License.
+       * You may obtain a copy of the License at
+       *
+       *     http://www.apache.org/licenses/LICENSE-2.0
+       *
+       * Unless required by applicable law or agreed to in writing, software
+       * distributed under the License is distributed on an "AS IS" BASIS,
+       * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       * See the License for the specific language governing permissions and
+       * limitations under the License.
+       *
+       * Author: Dominic Mazzoni and Rachel Shearer
+       *
+       *
+       *
+-->
+<!doctype html>
+<html>
+<head>
+  <title>Snack Attack</title>
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Cherry+Cream+Soda" />
+  <link rel="stylesheet" type="text/css" href="snack_attack_styles.css" />
+  <script src="events.js"></script>
+  <script>
+    var nameMap = {
+      'pizza': 'Pizza Delivery',
+      'soda': 'Caffeinated Soda',
+      'chips': 'Corn Chips',
+      'coffee': 'Coffee',
+      'ramen': 'Ramen',
+      'chinese': 'Chinese Delivery',
+      'bacon': 'Bacon',
+      'hummus': 'Hummus and Pita Chips'
+    };
+    var starNames = {
+      0: 'No rating',
+      1: '1 star: Ew, Gross!',
+      2: '2 stars: Meh.',
+      3: '3 stars: Ok, sure.',
+      4: '4 stars: Awesome!',
+      5: '5 stars: NOM NOM NOM!'
+    };
+
+    function opendialog() {
+      document.getElementById('shade').style.height =
+          (document.body.offsetHeight + 30) + 'px';
+      document.getElementById('shade').style.display = 'block';
+      document.getElementById('dialog').style.display = 'block';
+    }
+    function vote() {
+      document.getElementById('update').textContent = "Saving...";
+      setTimeout("closedialog()", 1500);
+    }
+
+    function closedialog() {
+      document.getElementById('dialog').style.display = 'none';
+      document.getElementById('shade').style.display = 'none';
+      document.getElementById('update').textContent = "";
+    }
+
+    function rate(food) {
+      var foodTitle = nameMap[food];
+      document.getElementById('dialog_title').innerText = foodTitle;
+      document.getElementById('dialog_icon').style['background-image'] =
+          'url("images/' + food + '_large.jpg")';
+      setstars(0);
+      opendialog();
+    }
+
+    var current_stars = 0;
+
+    function setstars(stars) {
+      current_stars = stars;
+      for (var i = 1; i <= 5; i++) {
+        var elem = document.getElementById('star' + i);
+        if (stars >= i) {
+          elem.className = 'star_full';
+        } else {
+          elem.className = 'star_empty';
+        }
+      }
+      var cancel = document.getElementById('star0');
+      if (stars > 0) {
+        cancel.style.visibility = 'visible';
+      } else {
+        cancel.style.visibility = 'hidden';
+      }
+      var caption = document.getElementById('star_caption');
+      caption.innerText = starNames[stars];
+    }
+
+    function initstar(star) {
+      var name = 'star' + star;
+      var elem = document.getElementById(name);
+      callAddEventListener(elem, 'click', function() {
+        setstars(star);
+      });
+    }
+
+    function initstars() {
+      for (var i = 0; i <= 5; i++) {
+        initstar(i);
+      }
+    }
+
+    function load() {
+      initstars();
+    }
+  </script>
+</head>
+<body onload="load()">
+
+<div class="topbar">
+</div>
+
+<div class="main">
+
+<div>
+  <a href="#" class="topbar_icon">Sign Up</a>
+  <a href="#" class="topbar_icon">About</a>
+  <a href="#" class="topbar_icon">Contact Us</a>
+</div>
+
+<h1>Snack Attack</h1>
+
+<div class="content">
+
+<p>Which snacks are best for hacking all night long?</p>
+
+<div id="shade" style="display:none"></div>
+<div class="dialog_container">
+<div class="dialog" id="dialog" style="display:none">
+  <div class="snack_image_dialog" id="dialog_icon"></div>
+  <h2 id="dialog_title">Dialog Title</h2>
+  <p>Please rate this snack!</p>
+  <div>
+    <div id="stars" class="star_rating">
+      <span id="star0" class="star_cancel"></span>
+      <span id="star1" class="star_full"></span>
+      <span id="star2" class="star_full"></span>
+      <span id="star3" class="star_full"></span>
+      <span id="star4" class="star_empty"></span>
+      <span id="star5" class="star_empty"></span>
+      <span id="star_caption" class="star_caption">No rating</span>
+    </div>
+    <div id="update"></div>
+  </div>
+  <div>
+    <button id="closebutton" onclick="vote()">Vote</button>
+    <button id="closebutton" onclick="closedialog()">Cancel</button>
+  </div>
+</div>
+</div>
+
+<ul class="snack_results">
+  <li class="snack_result">
+    <div class="snack_image" style="background-image:url('images/pizza_small.jpg')"></div>
+    <div class="snack_link">
+       <a href="javascript:rate('pizza')">Pizza Delivery</a><br>
+       <span class="snack_count">7,965 ratings</span>
+    </div>
+  <li class="snack_result">
+    <div class="snack_image" style="background-image:url('images/soda_small.jpg')"></div>
+    <div class="snack_link">
+      <a href="javascript:rate('soda')">Caffeinated Soda</a><br>
+      <span class="snack_count">6,454 ratings</span>
+    </div>
+  <li class="snack_result">
+    <div class="snack_image" style="background-image:url('images/chips_small.jpg')"></div>
+    <div class="snack_link">
+      <a href="javascript:rate('chips')">Corn Chips</a><br>
+      <span class="snack_count">3,830 ratings</span>
+    </div>
+  <li class="snack_result">
+    <div class="snack_image" style="background-image:url('images/coffee_small.jpg')"></div>
+    <div class="snack_link">
+      <a href="javascript:rate('coffee')">Coffee</a><br>
+      <span class="snack_count">3,671 ratings</span>
+    </div>
+  <li class="snack_result">
+    <div class="snack_image" style="background-image:url('images/ramen_small.jpg')"></div>
+    <div class="snack_link">
+      <a href="javascript:rate('ramen')">Ramen</a><br>
+      <span class="snack_count">3,576 ratings</span>
+    </div>
+  <li class="snack_result">
+    <div class="snack_image" style="background-image:url('images/chinese_small.jpg')"></div>
+    <div class="snack_link">
+      <a href="javascript:rate('chinese')">Chinese Delivery</a><br>
+      <span class="snack_count">2,199 ratings</span>
+    </div>
+  <li class="snack_result">
+    <div class="snack_image" style="background-image:url('images/bacon_small.jpg')"></div>
+    <div class="snack_link">
+      <a href="javascript:rate('bacon')">Bacon</a><br>
+      <span class="snack_count">1,894 ratings</span>
+    </div>
+  <li class="snack_result">
+    <div class="snack_image" style="background-image:url('images/hummus_small.jpg')"></div>
+    <div class="snack_link">
+      <a href="javascript:rate('hummus')">Hummus and Pita Chips</a><br>
+      <span class="snack_count">752 ratings</span>
+    </div>
+</ul>
+
+</div>
+
+</div>
+
+</body>
+</html>
