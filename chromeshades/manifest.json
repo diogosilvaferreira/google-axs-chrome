@@ -1,0 +1,42 @@
+{
+  "name": "ChromeShades",
+  "version": "1.0",
+  "description": "ChromeShades - find accessibility problems and experience the web without sight.",
+  "background_page": "chromeshades/background/background.html",
+  "permissions": [
+    "http://*/",
+    "https://*/"
+  ],
+  "content_scripts": [
+    {
+      "matches": [ "<all_urls>" ],
+      "all_frames": true,
+      "run_at": "document_start",
+      "css": [
+        "chromeshades/chromeshades.css"
+      ],
+      "js": [
+        "closure/closure_preinit.js",
+        "closure/base.js",
+        "closure/closure_stubs.js",
+        "build/build_defs.js",
+        "build/build_config_chrome.js",
+        "common/chromevox_json.js",
+        "common/extension_bridge.js",
+        "common/aria_util.js",
+        "common/xpath_util.js",
+        "common/dom_util.js",
+        "common/interframe.js",
+        "common/selection_util.js",
+        "chromeshades/injected/base_modifier.js",
+        "chromeshades/injected/shades_modifier.js",
+        "chromeshades/injected/init.js"
+      ]
+    }
+  ],
+  "icons": {
+    "16": "chromeshades/chromeshades_16.png",
+    "48": "chromeshades/chromeshades_48.png",
+    "128": "chromeshades/chromeshades_128.png"
+  }
+}
