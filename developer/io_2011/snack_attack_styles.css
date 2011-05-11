@@ -47,8 +47,8 @@ body {
 }
 
 *:focus { 
-    outline: auto 15px green; 
-    outline-offset: 10px; 
+    outline: auto 10px purple; 
+    outline-offset: 5px; 
 } 
 
 h1 {
