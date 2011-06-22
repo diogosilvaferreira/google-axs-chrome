@@ -1,0 +1,86 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: arial, helvetica !important;
+  background: #eef;
+}
+
+.outer {
+  padding: 0.2em 1.5em 1em 1.5em;
+  border-left: solid 1px #66a;
+  border-right: solid 1px #66a;
+  width: 48em;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+}
+
+h2 {
+  clear: both;
+}
+
+.example {
+  border: 0;
+  border-radius: 1em;
+  background: #eee;
+  margin: 0;
+  padding: 0.5em;
+  font-size: 10pt !important;
+}
+
+.prettyprint {
+  position: relative;
+  margin: 1em;
+  padding: 1em !important;
+  background: #fff;
+}
+
+.example-label {
+  position: absolute;
+  right: 0.5em;
+  top: -1em;
+  color: #66f;
+  font-family: arial, helvetica !important;
+  font-size: 14pt !important;
+  font-weight: bold !important;
+}
+
+.original, .chromeshades_wrap {
+  position: relative;
+  vertical-align: top;
+  width: 24em;
+  display: inline-block;
+  border: 1px solid #000;
+  margin: 1em;
+  padding: 1em;
+  background: #fff;
+}
+
+.original {
+  margin-right: 0.5em;
+}
+
+.chromeshades_wrap {
+  margin-left: 0.5em;
+}
+
+.shades-logo-96 {
+  position: absolute;
+  right: 2px;
+  top: -24px;
+  width: 96px;
+  height: 96px;
+  background-image: url('chromeshades_96.png');
+}
+
+.shades-logo-256 {
+  float: right;
+  width: 256px;
+  height: 256px;
+  margin-left: 2em;
+  background-image: url('chromeshades_256.png');
+}
+
+.toc_wrap {
+  border: 1px solid #999;
+}

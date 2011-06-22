@@ -1,0 +1,240 @@
+/* Base style for all elements. */
+
+.chromeshades * {
+  -webkit-box-shadow: none !important;
+  -webkit-transform: none !important;
+  -webkit-transition: none !important;
+  background-clip: none !important;
+  background: none !important;
+  border-color: #000 !important;
+  border-width: 0px !important;
+  color: #000 !important;
+  font-family: arial, helvetica !important;
+  font-size: 10pt !important;
+  height: auto !important;
+  letter-spacing: normal !important;
+  margin: 0px !important;
+  padding: 0px !important;
+  position: static !important;
+  text-decoration: none !important;
+  transform: none !important;
+  transition: none !important;
+  white-space: normal !important;
+  width: auto !important;
+  word-wrap: break-word !important;
+  z-index: 0 !important;
+}
+
+/* Style overrides for form controls. */
+
+.chromeshades input,
+.chromeshades select,
+.chromeshades textarea,
+.chromeshades *[contenteditable="true"],
+.chromeshades *[role="button"],
+.chromeshades *[role="checkbox"],
+.chromeshades *[role="combobox"],
+.chromeshades *[role="listbox"],
+.chromeshades *[role="radio"],
+.chromeshades *[role="slider"],
+.chromeshades *[role="textbox"] {
+  color: #090 !important;
+  border: 1px solid #0b0 !important;
+  margin: 0.2em 1px 0.2em 1px !important;
+  padding: 0.2em !important;
+  background: #fff !important;
+  cursor: pointer !important;
+}
+
+.chromeshades *[role="dialog"],
+.chromeshades *[role="alertdialog"] {
+  border: 1px double #0b0 !important;
+  margin: 0.5em !important;
+  padding: 0.5em !important;
+}
+
+.chromeshades button,
+.chromeshades *[role="button"],
+.chromeshades input[type="button"],
+.chromeshades input[type="submit"],
+.chromeshades input[type="reset"] {
+  border: 1px solid #0b0 !important;
+  margin: 1px !important;
+  -webkit-border-radius: 6px !important;
+  padding: 0.5em !important;
+  background: #f6fff6 !important;
+}
+
+.chromeshades input::-webkit-input-placeholder,
+.chromeshades isindex::-webkit-input-placeholder,
+.chromeshades textarea::-webkit-input-placeholder {
+  color: #6b6 !important;
+}
+
+.chromeshades *:disabled,
+.chromeshades *[role="button"][aria-disabled="true"],
+.chromeshades *[role="checkbox"][aria-disabled="true"],
+.chromeshades *[role="combobox"][aria-disabled="true"],
+.chromeshades *[role="listbox"][aria-disabled="true"],
+.chromeshades *[role="radio"][aria-disabled="true"],
+.chromeshades *[role="textbox"][aria-disabled="true"] {
+  border: 1px solid #ccc !important;
+  background: #f6f6f6 !important;
+  color: #6b6 !important;
+}
+
+.chromeshades input[type="checkbox"],
+.chromeshades input[type="radio"] {
+  width: 1em !important;
+  height: 1em !important;
+}
+
+.chromeshades *[role="checkbox"],
+.chromeshades *[role="radio"] {
+  width: 0.5em !important;
+  height: 0.5em !important;
+}
+
+.chromeshades input[type="checkbox"],
+.chromeshades *[role="checkbox"] {
+  -webkit-appearance: none !important;
+  text-align: center !important;
+  vertical-align: text-top !important;
+  margin: 0px 0.2em 0px 0.2em !important;
+
+  display: inline-block;
+}
+
+.chromeshades input[type="radio"],
+.chromeshades *[role="radio"] {
+  -webkit-appearance: none !important;
+  -webkit-border-radius: 1em !important;
+  text-align: center !important;
+  vertical-align: text-top !important;
+  margin: 0px 0.2em 0px 0.2em !important;
+
+  display: inline-block;
+}
+
+.chromeshades input[type="checkbox"]:checked,
+.chromeshades input[type="radio"]:checked,
+.chromeshades *[role="checkbox"][aria-checked="true"],
+.chromeshades *[role="radio"][aria-checked="true"] {
+  background: #6b6 !important;
+}
+
+/* Style overrides for specific elements. */
+
+.chromeshades a:before {
+  padding-right: 100%; content: attr(forceNewline) !important;
+}
+
+.chromeshades a,
+.chromeshades a *,
+.chromeshades *[role="link"],
+.chromeshades *[role="link"] * {
+  color: #11c !important;
+  cursor: pointer !important;
+  text-decoration: underline !important;
+}
+
+.chromeshades a:visited,
+.chromeshades a:visited * {
+  color: #880088 !important;
+}
+
+.chromeshades center {
+  text-align: left !important;
+}
+
+.chromeshades embed {
+  width: 1px !important;
+  height: 1px !important;
+}
+
+.chromeshades fieldset {
+  border: 0px !important;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.chromeshades h1,
+.chromeshades h2,
+.chromeshades h3,
+.chromeshades h4,
+.chromeshades h5,
+.chromeshades h6,
+.chromeshades *[role="heading"] {
+  color: #900 !important;
+  margin: 0.5em 0px 0.5em 0px !important;
+  padding: 0px !important;
+  font-weight: bold !important;
+}
+
+.chromeshades iframe {
+  border: 1px solid #dd7 !important;
+  border-left: 0px !important;
+  border-right: 0px !important;
+  margin: 0px -1em 0px -1em !important;
+}
+
+.chromeshades img,
+.chromeshades input[type="image"] {
+  min-width: 10em !important;
+  height: 1.5em !important;
+}
+
+.chromeshades img[alt=""],
+.chromeshades input[type="image"][alt=""] {
+  display:none !important;
+}
+
+.chromeshades li,
+.chromeshades *[role="listitem"] {
+  margin-left: 0.5em !important;
+}
+
+.chromeshades pre,
+.chromeshades xmp {
+  font-family: courier new, monospace !important;
+  white-space: pre !important;
+}
+
+.chromeshades nobr {
+  white-space: normal !important;
+}
+
+.chromeshades table {
+  border-collapse: collapse !important;
+  margin: 0.5em 1px 0.5em 1px !important;
+}
+
+.chromeshades td,
+.chromeshades th {
+}
+
+.chromeshades tr {
+  border: 0px !important;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.chromeshades ul,
+.chromeshades ol,
+.chromeshades *[role="list"] {
+  margin-left: 1em !important;
+}
+
+/* Style overrides for focused state. */
+
+.chromeshades *:focus { 
+  outline: auto 3px #ef0 !important;
+  outline-offset: 3px !important;
+  background: #ffc !important;
+}
+
+/* Style overrides for aria-hidden */
+
+.chromeshades *[aria-hidden="true"] {
+  display: none !important;
+}

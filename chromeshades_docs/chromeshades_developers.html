@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+<head>
+
+<title>ChromeShades Developer Documentation</title>
+
+<link type="text/css" rel="stylesheet" href="chromeshades_help.css"></link>
+<link type="text/css" rel="stylesheet" href="prettify/prettify.css"></link>
+
+<script type="text/javascript" src="prettify/prettify.js"></script>
+
+<script>
+function onLoad() {
+  prettyPrint();
+}
+</script>
+
+</head>
+<body onload="onLoad()">
+
+<div class="outer">
+
+<div class="shades-logo-256"></div>
+
+<h1>
+ChromeShades Developer Documentation
+</h1>
+
+<p>ChromeShades is a tool to help you make your site more
+accessible to blind users. For information on how to use ChromeShades,
+<a href="chromeshades_help.html">see the help page</a>. This document
+is about the internal details of how ChromeShades works.</p>
+
+<p>The fundamental idea behind ChromeShades is to replace the page style
+with a custom stylesheet that visually depicts potential accessibility
+issues. So why isn't it as simple as just a single CSS file?
+</p>
+
+<ul>
+<li>First, the ChromeShades stylesheet loads before the page's stylesheets -
+so we have to specifically disable the page's stylesheets.
+<li>We don't want to completely disable the page's stylesheets because we
+want a few styles to be preserved, such as display and visibility. So we
+need to rewrite each style rule from the page to include only those. This
+is further complicated by same-origin restrictions that make it trickier to
+modify the page's stylesheets.
+<li>Document elements with inline styles normally override other stylesheets;
+we need to scan the document and remove any inline styles except those
+affecting display or visibility. We also need to reprocess every time the
+document is modified.
+<li>With the reformatting, iframes are no longer properly resized. The
+page needs to be modified so that iframes are seamlessly integrated into
+the content.
+</ul>
+
+<p>In addition, here are the things ChromeShades does that can't be
+done just with a single stylesheet:
+</p>
+
+<ul>
+<li>Images and plug-ins are prevented from being loaded so that they
+can be replaced with their alternate or fallback content.
+<li>Everything in the document is indented based on the heading level.
+<li>The text of a button or link is replaced with its title or aria-label
+attribute, if any.
+<li>Legacy HTML style attributes like bgcolor and cellpadding have to be
+removed on each element, they can't be overridden entirely using CSS.
+<li>Layout-only tables in a quirks-mode document can't be linearized without
+messing with the DOM a little.
+</ul>
+
+<h3>Modifying page stylesheets</h3>
+
+<p>
+When ChromeShades starts processing a page, it iterates over all of the
+stylesheets and tries to "fix" all of the rules in each one - essentially
+removing any styles other than display and visibility. For inline
+&lt;style&gt; elements or stylesheets loaded from CSS files with the same
+origin, it can do so by iterating over the rules in the stylesheet, something
+like this:
+</p>
+
+<xmp class="prettyprint lang-js">
+  var sheet = document.styleSheets[i];
+  for (var j = 0; j < sheet.cssRules.length; j++) {
+    var rule = sheet.cssRules[j];
+    var displayValue = rule.style.getPropertyValue('display');
+    var displayPriority = rule.style.getPropertyPriority('display');
+
+    ...
+
+    rule.style.cssText = 'display: ' + displayValue + ' !' + displayPriority;
+  }
+</xmp>
+
+<p>However, when a stylesheet is encountered that's not from the same origin,
+it can't be modified - its cssRules property will be empty. As a workaround,
+ChromeShades sends a message to its background page with the stylesheet url,
+the background page fetches the stylesheet again, and sends the contents to
+the page, where the original stylesheet is disabled
+(<tt>styleSheet.disabled = true</tt>) and the fresh copy is inserted as an
+inline &lt;style&gt; tag, which can be modified using the function above.</p>
+
+<h3>Design decisions</h3>
+
+<p>
+One of the primary goals of ChromeShades is not to "break" pages. You should
+be able to continue to interact with a site while ChromeShades is on.
+It may be more difficult to use, of course, because the layout is linearized
+and images have been replaced with their alt tags, etc. - but essentially
+entering text, clicking on buttons and links, and any other methods of
+interacting with the page should continue to function as before.
+</p>
+
+<p>
+In order to reconcile this goal with the fact that ChromeShades still needs
+to make some serious changes to the layout, it's necessary to make some
+design assumptions based on common JavaScript coding patterns. For example,
+any page that bases its behavior on the computed style of an element will
+almost certainly break or change behavior, because the whole point of
+ChromeShades is to change the computed style. However, we assume most sites
+do not rely on this.
+</p>
+
+<p>Assumptions:</p>
+
+<ul>
+<li><strong>It is not safe</strong>
+    to change the className of an element. Many pages
+    depent on checking an element's class to determine its state.
+
+<li><strong>It is not safe</strong>
+    to insert or delete DOM nodes in the middle of the document body.
+    Many pages depend on one
+    element being the first child or first sibling of another, so inserting
+    and deleting elements in the middle of the page could break things.
+
+<li><strong>It is safe</strong> to modify the inline style of an element.
+    Most pages don't check the inline style to determine state.
+
+<li><strong>It is safe</strong> to add new attributes to an existing eleemnt,
+    especially if they are namespaced (all prefixed with chromeshades_) so
+    there's no chance they'll interfere with custom attributes used by the
+    page, or future HTML standard attributes.
+</ul>
+
+<p>
+These decisions have strongly influenced the implementation. If the underlying
+assumptions were found to be violated on any significant sites, or in a
+popular javascript library, that would be good reason to reconsider the
+decision and rewrite portions of ChromeShades.
+</p>
+
+<p>
+One idea that was prototyped but does not appear in the
+current version is to create new DOM nodes and absolute-position them
+over elements they're meant to replace or complement - this is a great
+way to add information to the page without affecting the DOM order in a way
+that could break many apps. This idea might be worth revisiting if any of the
+above assumptions ends up being bad.
+</p>
+
+<p>
+For more information, check out the
+<a href="http://code.google.com/p/google-axs-chrome/source/browse/#svn%2Ftrunk%2Fchromeshades">source code</a>.
+</p>
+
+</div>
+
+</body>
+</html>

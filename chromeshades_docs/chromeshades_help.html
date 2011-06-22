@@ -1,0 +1,725 @@
+<!doctype html>
+<html>
+<head>
+
+<title>ChromeShades Help</title>
+
+<link type="text/css" rel="stylesheet" href="chromeshades_embed.css" />
+<link type="text/css" rel="stylesheet" href="prettify/prettify.css" />
+<link type="text/css" rel="stylesheet" href="chromeshades_help.css" />
+
+<script type="text/javascript" src="chromeshades_embed.js"></script>
+<script type="text/javascript" src="prettify/prettify.js"></script>
+
+<script><!--
+function addLabel(parentElem, className, innerText) {
+  var codeLabel = document.createElement('div');
+  codeLabel.className = className;
+  codeLabel.innerText = innerText;
+  parentElem.insertBefore(codeLabel, parentElem.firstChild);
+}
+
+function removeWhitespace(node) {
+  if (node.constructor == Text) {
+    var text = node.data;
+    text = text.replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '');
+    if (text === '') {
+      window.setTimeout(function() {
+        node.parentElement.removeChild(node);
+      }, 0);
+    }
+  }
+  for (var child = node.firstChild; child; child = child.nextSibling) {
+    removeWhitespace(child);
+  }
+}
+
+function addBeforeLoadHandler() {
+  document.addEventListener('beforeload', function(e) {
+    var node = e.target;
+    while (node && node.className != 'chromeshades') {
+      node = node.parentElement;
+    }
+    if (node == null) {
+      return false;
+    }
+
+    if (e.target.constructor == HTMLImageElement ||
+        e.target.constructor == HTMLEmbedElement ||
+        e.target.constructor == HTMLObjectElement) {
+      e.preventDefault();
+    }
+
+    if (e.target.constructor == HTMLInputElement &&
+        e.target.type == 'image') {
+      e.preventDefault();
+    }
+
+    var tokens = e.url.split('.');
+    if (tokens && tokens.length > 1) {
+      var ext = tokens[tokens.length - 1].toLowerCase();
+      if (ext == 'gif' || ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+        e.preventDefault();
+      }
+    }
+
+    return false;
+  }, true);
+}
+
+function formatExamples() {
+  var examples = document.getElementsByClassName('example');
+  for (var i = 0; i < examples.length; i++) {
+    var example = examples[i];
+    var code = example.querySelector('.prettyprint');
+    var original = example.querySelector('.original');
+    var chromeshadesWrap = example.querySelector('.chromeshades_wrap');
+    var chromeshades = chromeshadesWrap.querySelector('.chromeshades');
+    var sourceCode = code.innerText;
+    original.innerHTML = sourceCode;
+    removeWhitespace(original);
+    sourceCode = sourceCode.replace('colors.html', 'colors_chromeshades.html');
+    chromeshades.innerHTML = sourceCode;
+    removeWhitespace(chromeshades);
+    addLabel(code, 'example-label', 'HTML Code');
+    addLabel(original, 'example-label', 'Original');
+    addLabel(chromeshadesWrap, 'example-label', 'ChromeShades');
+    addLabel(chromeshadesWrap, 'shades-logo-96', '');
+    cvox.ChromeShades.processSubtree(chromeshades);
+    var iframes = chromeshades.querySelectorAll('iframe');
+    for (var j = 0; j < iframes.length; j++) {
+      iframes[j].setAttribute('seamless', 'seamless');
+      iframes[j].style.cssText = '';
+    }
+  }
+}
+
+function openaria() {
+  window.open('http://www.w3.org/TR/wai-aria/', '_blank');
+}
+
+function addEventListeners() {
+  var checks = document.getElementsByClassName('mycheck');
+  for (var i = 0; i < checks.length; i++) {
+    var check = checks[i];
+    check.addEventListener('click', function() {
+      var checks = document.getElementsByClassName('mycheck');
+      if (check.getAttribute('aria-checked') == 'true') {
+        for (var j = 0; j < checks.length; j++) {
+          checks[j].setAttribute('aria-checked', 'false');
+        }
+      } else {
+        for (var j = 0; j < checks.length; j++) {
+          checks[j].setAttribute('aria-checked', 'true');
+        }
+      }
+    }, false);
+  };
+
+  var radios = document.getElementsByClassName('myradio');
+  for (var i = 0; i < radios.length; i++) {
+    var radio = radios[i];
+    radio.addEventListener('click', function() {
+      var radios = document.getElementsByClassName('myradio');
+      if (radio.getAttribute('aria-checked') == 'true') {
+        for (var j = 0; j < radios.length; j++) {
+          radios[j].setAttribute('aria-checked', 'false');
+        }
+      } else {
+        for (var j = 0; j < radios.length; j++) {
+          radios[j].setAttribute('aria-checked', 'true');
+        }
+      }
+    }, false);
+  };
+}
+
+function buildTOC() {
+  var chapters = document.querySelectorAll('*[toc]');
+  var toc = document.getElementById('toc');
+  for (var i = 0; i < chapters.length; i++) {
+    var chapter = chapters[i];
+    var anchor = document.createElement('a');
+    var name = chapter.getAttribute('toc');
+    anchor.setAttribute('name', name);
+    chapter.parentElement.insertBefore(anchor, chapter);
+    var entry = document.createElement('li');
+    entry.innerHTML =
+        '<a href="#' + name + '">' +
+        chapter.innerText +
+        '</a>';
+    toc.appendChild(entry);
+  }
+}
+
+function onLoad() {
+  buildTOC();
+  prettyPrint();
+  formatExamples();
+  addEventListeners();
+}
+
+addBeforeLoadHandler();
+--></script>
+
+</head>
+<body onload="onLoad()">
+
+<div class="outer">
+
+<div class="shades-logo-256"></div>
+
+<h1>
+  ChromeShades Help
+</h1>
+
+<p>ChromeShades is a tool to help you make your site more
+accessible to blind users.</p>
+
+<p>Simply install the Chrome extension and everything in your browser
+is reformatted in a way that simulates how a blind user would perceive
+the page with a screen reader. Interactive web apps remain functional,
+so you can test actual workflows for accessibility problems.
+</p>
+
+<p>ChromeShades is not a substitute for testing with screen readers, but
+it can be a faster and easier way to identify many issues up-front
+before you ever open a screen reader or send it to a tester.
+</p>
+
+<p>The best way to understand what ChromeShades does is to see just how
+ChromeShades transforms your HTML, with the examples below.
+</p>
+
+<div class='toc_wrap'>
+  <h2 style='margin-left: 1em;'>Table of Contents</h2>
+  <ul id='toc'>
+  </ul>
+</div>
+
+<div class='toc_wrap' style='margin-top: 1em;'>
+  <h2 style='margin-left: 1em;'>Links</h2>
+  <ul>
+    <li><a href="https://chrome.google.com/webstore/detail/hlklboladblmgfpkenhlgbhoojdlfoao">ChromeShades on the Chrome Web Store</a>
+    <li><a href="chromeshades_developers.html">Developer Documentation</a>
+    <li><a href="http://code.google.com/p/google-axs-chrome/">Google Code project page</a>
+    <li><a href="http://code.google.com/p/google-axs-chrome/source/browse/#svn%2Ftrunk%2Fchromeshades">Source Code</a>
+  </ul>
+</div>
+
+<h2 toc='using'>
+Using ChromeShades
+</h2>
+
+<p>
+The current version of ChromeShades doesn't have any controls. When it's
+running, any new page you reload will be transformed. To turn it off,
+visit the Chrome extensions page (press the Wrench menu -> Tools ->
+Extensions, or visit <tt>chrome://extensions/</tt>) and click on the
+Disable link next to ChromeShades - then reload any pages that had
+ChromeShades applied.
+</p>
+
+<p>
+A future version may make it much easier to toggle on and off for an
+individual page.
+</p>
+
+<h2 toc='styling'>
+Example 1: Most styling is removed.
+</h2>
+
+<p>
+Blind users can't perceive any of the fonts, styles, colors, and positional
+layout in your page. ChromeShades removes all of this for you, so you can
+determine if the unstyled content is still logically organized and easy to
+understand. In this example, the ChromeShades representation makes it clear
+that the text at the top won't be perceived as a big, bright heading, and
+the "my favorite" annotation won't appear in the right place next to Chrome.
+</p>
+
+<div class="example">
+<xmp class="prettyprint lang-html"><div style="font-size: 150%; color: #090;">
+  Supported Web Browsers:
+</div>
+<ul style="height: 6em;">
+  <li>Chrome
+  <li>Firefox
+  <li>Internet Explorer
+  <li>Safari
+  <li>Opera
+</ul>
+<div style="position: relative; left: 8em; top: -7em; color: #f00;">
+  <-- My favorite!
+</div>
+</xmp>
+<div class="original"></div>
+<div class="chromeshades_wrap"><div class="chromeshades"></div></div>
+</div>
+
+<h2 toc='semantic'>
+Example 2: Semantic markup is preserved.
+</h2>
+
+<p>While specific font, size, and color changes are not preserved, screen
+readers do announce headings and lists, and may announce semantic tags like
+&lt;strong&gt; and &lt;em&gt;.
+Use these whenever possible, and then just style them with
+CSS to get the look you desire.
+</p>
+
+<p>
+In the example below, ChromeShades marks the heading in red to
+indicate it's a semantic element that screen readers will set apart,
+and it shows "My favorite" in bold.
+</p>
+
+<div class="example">
+<xmp class="prettyprint lang-html"><h3 style="color: #090;">
+  Supported Web Browsers:
+</h3>
+<ul>
+  <li>Chrome
+    <strong style="color: #f00;">
+      <-- My favorite!
+    </strong>
+  <li>Firefox
+  <li>Internet Explorer
+  <li>Safari
+  <li>Opera
+</ul>
+</xmp>
+<div class="original"></div>
+<div class="chromeshades_wrap"><div class="chromeshades"></div></div>
+</div>
+
+<h2 toc='heading'>
+Example 3: Heading structure.
+</h2>
+
+<p>
+One way that screen reader users navigate a complex document is by its
+headings. Documents with lots of hierarchically-organized headings 
+are much easier to navigate than documents without such structure.
+</p>
+<p>
+To make your heading structure more apparent, ChromeShades indents everything
+in your document by the heading level to make the impact of the heading
+hierarchy on your document more apparent.
+</p>
+
+<style>
+.headings h1, .headings h2, .headings h3 {
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  margin: 0;
+  padding: 0;
+  clear: none;
+}
+.headings section {
+  border: 1px solid #66f;
+  margin: 2px;
+  padding: 2px;
+}
+.headings h1 {
+  font-size: 120%;
+}
+.headings h2 {
+  background: #ccf;
+  font-size: 110%;
+  font-weight: normal;
+}
+.headings h3 {
+  margin: 0.5em 0 0 0;
+  font-size: 100%;
+}
+</style>
+
+<div class="example headings">
+<xmp class="prettyprint lang-html"><h1>Search results for "Chromium"</h1>
+<section>
+  <h2>Results</h2>
+  <h3><a href="#">The Chromium Projects</a></h3>
+  <div>The Chromium projects include Chromium and Chromium OS, the...</div>
+  <h3><a href="#">Dietary Supplement Fact Sheet: Chromium</a></h3>
+  <div>Chromium is a mineral that humans require in trace amounts, ...</div>
+  <h3><a href="#">[ c h r o m i u m B.S.U. ]</a></h3>
+  <div>A fast paced, arcade-style, top-scrolling space shooter for ...</div>
+</section>
+<section>
+  <h2>Ads</h2>
+  <h3><a href="#">Chromium Supplements</a></h3>
+  <div>Get Answers You're Looking For.</div>
+</section>
+</xmp>
+<div class="original"></div>
+<div class="chromeshades_wrap"><div class="chromeshades"></div></div>
+</div>
+
+<h2 toc='interactive'>
+Example 4: Interactive controls.
+</h2>
+
+<p>
+ChromeShades helps you make sure that anything that is supposed to be
+interactive (focusable, clickable) has a proper ARIA role set. In ChromeShades,
+both a <tt>&lt;button&gt;</tt> and a <tt>&lt;div role="button"&gt;</tt>
+will be formatted the same way, indistinguishably, but a clickable
+<tt>&lt;div&gt;</tt> without a role will end up looking like plaintext,
+so you can tell at a glance that they're not marked up properly.
+</p>
+
+<p>
+Controls are always displayed on their own line - this matches the behavior
+of screen readers, where an interactive control (and usually a link, also)
+is always a distinct line or a distinct node when the user is browsing the
+elements on a page.
+</p>
+
+<p>
+In addition, all interactive controls are formatted in green, so you can
+quickly tell them apart from any static content.
+</p>
+
+<style>
+.mylink {
+  margin-left: 1em;
+  color: #00e;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.mybutton {
+  display: inline-block;
+  margin: 2px;
+  border: 1px solid #000;
+  padding: 4px;
+  cursor: pointer;
+}
+.mycheck {
+  display: inline-block;
+  margin: 2px;
+  width: 1em;
+  height: 1em;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+.mycheck[aria-checked='true'] {
+  background-color: #999;
+}
+.myradio {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 1px solid #000;
+  border-radius: 0.5em;
+  cursor: pointer;
+}
+.myradio[aria-checked='true'] {
+  background-color: #999;
+}
+</style>
+
+<div class="example aria">
+<xmp class="prettyprint lang-html"><p>
+  <a href="http://www.w3.org/TR/wai-aria/" target="_blank">Real link</a>
+  <span class="mylink" role="link" onclick="openaria()">ARIA link</span>
+  <span class="mylink" onclick="openaria()">Clickable text</span>
+</p>
+<p>
+  <button onclick="alert('Hi')">Real button</button>
+  <span class="mybutton" role="button" onclick="alert('Hi')">ARIA button</span>
+  <span class="mybutton" onclick="alert('Hi')">Clickable block</span>
+</p>
+<p>
+  <input id="check1" type="checkbox"/>
+  <label for="check1">Real checkbox</label>
+  <span id="check2" class="mycheck" role="checkbox"></span>
+  <label for="check2">ARIA checkbox</label>
+</p>
+<p>
+  <input type="radio"/> Real radio
+  <span class="myradio" role="radio"></span> ARIA radio
+</p>
+</xmp>
+<div class="original"></div>
+<div class="chromeshades_wrap"><div class="chromeshades"></div></div>
+</div>
+
+
+
+<h2 toc='visibility'>
+Example 5: Visibility.
+</h2>
+
+<p>
+Screen readers do respect <tt>display: none</tt> and most screen readers
+respect <tt>visibility: hidden</tt>, so you should assume anything on
+your page that's hidden using one of these methods will also be hidden to
+screen reader users.
+</p>
+<p>
+On the other hand, something that's hidden by absolute-positioning it offscreen
+and/or giving it no width or height will still be visible to a screen reader.
+You can use this to create text that won't appear visually but can be read
+by a screen reader user.
+</p>
+<p>
+Finally, to hide something from screen readers, use the attribute
+aria-hidden="true".
+</p>
+
+<script>
+  var toggled = false;
+  function toggle() {
+    toggled = !toggled;
+    var regions = document.getElementsByClassName('toggle');
+    for (var i = 0; i < regions.length; i++) {
+      regions[i].className = toggled? 'toggle on': 'toggle off';
+    }
+  }
+</script>
+<style>
+  .visibility h1 {
+    font-size: 120%;
+  }
+  .toggle.off {
+    display: none;
+  }
+</style>
+
+<div class="example visibility">
+<xmp class="prettyprint lang-html"><style>
+  .toggle.off {
+    display: none;
+  }
+</style>
+<script>
+  var toggled = false;
+  function toggle() {
+    toggled = !toggled;
+    var regions = document.getElementsByClassName('toggle');
+    for (var i = 0; i < regions.length; i++) {
+      regions[i].className = toggled? 'toggle on': 'toggle off';
+    }
+  }
+</script>
+<h1>Top 10 movies</h1>
+<div>Casablanca</div>
+<div>Raiders of the Lost Ark</div>
+<div class="toggle off">
+  <div>The Godfather</div>
+  <div>The Good, the Bad and the Ugly</div>
+  <div>Pulp Fiction</div>
+  <div>Schindler's List</div>
+  <div>12 Angry Men</div>
+  <div>The Godfather: Part II</div>
+  <div>One Flew Over the Cuckoo's Nest</div>
+  <div>The Dark Knight</div>
+</div>
+<button class="togglebutton" onclick="toggle()">Show / hide</button>
+<div aria-hidden="true">
+  This text will be shown visually but hidden to screen reader users.
+</div>
+<div style="position: absolute; left: -9999px; height: 0px;">
+  This text will only be shown to screen readers.
+</div>
+</xmp>
+<div class="original"></div>
+<div class="chromeshades_wrap"><div class="chromeshades"></div></div>
+</div>
+
+<h2 toc='alt'>
+Example 6: Alt tags and other labels.
+</h2>
+
+<p>
+Most images should have an <tt>alt</tt> tag as a description, and
+ChromeShades will display the contents of the alt tag instead of the
+image so that you can easily identify unlabeled images and make sure
+your image labels make sense.
+</p>
+
+<p>
+Sometimes an image is for presentational purposes only, and no label is
+needed. In that case, mark up the image with <tt>alt=""</tt> and
+ChromeShades will hide the image entirely so it doesn't look like an
+unlabeled image. Most screen readers will skip an image explicitly
+labeled with <tt>alt=""</tt>, but for an image with no <tt>alt</tt> tag,
+they may say something like "Image".
+</p>
+
+<p>
+Other form controls can be labeled with a <tt>&lt;label&gt;</tt> tag, or
+if you want the label to be only for screen reader users, with the
+<tt>aria-label</tt> attribute. In addition, when a control has
+a <tt>title</tt> attribute, it's used as the tooltip in some browsers,
+but it's used as the replacement description for some screen readers, so make
+sure it's a good description of the control.
+</p>
+
+<div class="example labels">
+<xmp class="prettyprint lang-html"><p>
+  No alt tag: <img src="chromeshades_48.png">
+</p>
+<p>
+  Alt tag: <img src="chromeshades_48.png" alt="ChromeShades Logo">
+</p>
+<p>
+  Empty alt tag: <img src="chromeshades_48.png" alt="">
+</p>
+<p>
+  <button>Button Text</button>
+  <button title="Title Text (also tooltip)">Button Text</button>
+  <button aria-label="Aria-label Text">Button Text</button>
+</p>
+<p>
+  <input id="input1"><label for="input1">Label for Input 1</label>
+  <input aria-label="Aria-label of input2" id="input2">
+</p>
+</xmp>
+<div class="original"></div>
+<div class="chromeshades_wrap"><div class="chromeshades"></div></div>
+</div>
+
+
+<h2 toc='iframes'>
+Example 7: IFrames.
+</h2>
+
+<p>
+Many web apps make heavy use of iframes. There's nothing inaccessible about
+iframes, but to a screen reader user, all of the frames on a page are
+integrated into a single virtual document. So, it's important
+that your site is equally easy to navigate across iframe boundaries.
+</p>
+
+<div class="example iframes">
+<xmp class="prettyprint lang-html"><p>
+  Before iframe
+</p>
+<iframe style='height: 6em;' src='colors.html'></iframe>
+<p>
+  After iframe
+</p>
+</xmp>
+<div class="original"></div>
+<div class="chromeshades_wrap"><div class="chromeshades"></div></div>
+</div>
+
+
+<h2 toc='tables'>
+Example 8: Tables.
+</h2>
+
+<p>
+Tables used for layout, instead of to present actual tabular data, will be
+displayed linearly in ChromeShades. This is to reinforce the idea that
+the spatial position in the page should never be used to convey information.
+</p>
+
+<div class="example tables">
+<xmp class="prettyprint lang-html"><div>
+  Log in to the system here:
+  <table>
+    <tr>
+      <td>Username</td>
+      <td>Password</td>
+    </tr>
+    <tr>
+      <td><input name="username" size=12></td>
+      <td><input name="password" type="password" size=12></td>
+      <td><input type="submit" value="Log in"></td>
+    </tr>
+  </table>
+</div>
+</xmp>
+<div class="original"></div>
+<div class="chromeshades_wrap"><div class="chromeshades"></div></div>
+</div>
+
+<h2 toc='other'>
+Comparison to other tools.
+</h2>
+
+<p>
+ChromeShades was inspired by
+<a href="http://www.standards-schmandards.com/projects/fangs/">Fangs</a>,
+a clever, innovative and useful Firefox extension that creates a
+textual representation of a web page similar to how the page would be
+read by a modern screen reader.
+</p>
+
+<p>
+The major difference between the two is that Fangs parses the current page
+and generates a separate representation of the screen reader text, while
+ChromeShades transforms the current page in-place. As a result, you can
+dynamically interact with a page while ChromeShades is on, but with Fangs
+you need to interact with the original page and then try to figure out how
+the screen reader version changes. So ChromeShades is designed to be more
+useful for modern web apps.
+</p>
+
+<p>
+Fangs has been around for many years and it's a more mature product. It
+goes to great lengths to imitate many of the specific behaviors of
+<a href="http://www.freedomscientific.com/products/fs/jaws-product-page.asp"
+>JAWS</a>, the most widely used screen reader. For static content, and even
+for simple dynamic content, Fangs is a fantastic testing tool.
+</p>
+
+<h2 toc='limitations'>
+Limitations.
+</h2>
+
+<p>ChromeShades is <em>not</em> a replacement for testing your web site with a
+real screen reader! It's a tool to help you quickly fix the majority of the
+easy problems so that when you do actual testing you can focus on workflow
+efficiency and overcoming any minor screen reader quirks, not basic
+accessibility problems.</p>
+
+<p>Keep in mind that not all screen readers are the same, and they don't
+behave the same with different web browsers. Complete testing should include
+a variety of browsers and screen readers. There are third-party testing
+labs that will provide this service.</p>
+
+<p>There are also many other aspects of accessibility that
+ChromeShades does not try to address: for example, websites should be
+accessible to users with color-blindness and low vision, but
+ChromeShades does not attempt to help address their needs.
+Luckily there are other tools and resources available to help with
+many of these.
+</p>
+
+<h2 toc='nostyle'>
+Can I just turn turn off page style / disable CSS and get the same effect?
+</h2>
+
+<p>For simple pages, yes - but that probably won't work for most dynamic
+pages because anything hidden using display or visibility won't
+function anymore - note that modern screen readers only access what's
+actually visible on the page, just like any other user. Turning off
+CSS also won't help you test whether or not titles, labels, and ARIA
+attributes have been applied correctly.</p>
+
+<h2 toc='feedback'>
+Credit / License / Bugs / Feedback.
+</h2>
+
+<p>ChromeShades was developed by Dominic Mazzoni and other members of
+Google's accessibility team. It's part of the
+<a href="http://code.google.com/p/google-axs-chrome/">google-axs-chrome</a>
+project on googlecode.</p>
+
+<p>ChromeShades is open-source, released under the terms of the
+<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>.
+</p>
+
+<p>To report bugs or send feedback, join the 
+<a href="http://groups.google.com/group/axs-chrome-discuss"
+>axs-chrome-discuss</a> group. Thanks for your interest!
+</p>
+
+</div>
+
+</body>
+</html>
