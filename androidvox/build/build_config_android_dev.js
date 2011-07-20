@@ -21,9 +21,9 @@
  * @author svetoslavganov@google.com (Svetoslav Ganov)
  */
 
-goog.provide('cvox.BuildConfig');
+cvoxgoog.provide('cvox.BuildConfig');
 
-goog.require('cvox.BuildDefs');
+cvoxgoog.require('cvox.BuildDefs');
 
 /**
  * We want to build for Android (DEVELOPMENT ONLY).
