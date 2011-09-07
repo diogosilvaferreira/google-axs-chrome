@@ -28,9 +28,27 @@
     commands and features provided by ChromeVox." />
     <title>Working With Text - Interactive ChromeVox Tutorial</title>
     <link rel="stylesheet" type="text/css" href="basic.css" />
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push([ '_setAccount', 'UA-24310236-8' ]);
+        _gaq.push([ '_trackPageview' ]);
+        
+        (function() {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+                    : 'http://www')
+                    + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
 </head>
 <body>
+    <p class="header">Step 5 out of 10</p>
     <h2>Moving around text. </h2>
+    <a href="voice_control.html">Back to previous step</a>
     <p>
         Continuing with our exploration of levels of detail, we represent text units such as
         paragraphs, sentences, words, and characters each as an additional level of detail.
@@ -63,7 +81,7 @@
         into a link if moving by word.
     </p>
     <p>
-        Here's a challenge for you: try spelling the imaginary word fleurppel inside the text box
+        Here's a challenge for you: try spelling the imaginary word "fleurppel" inside the text box
         that follows this paragraph, the same way that it is spelled here. After you spell it, press
         the "Check Spelling" button following the text box to see if you were correct. If you were,
         the link to advance to the next section of the tutorial will display after the button! If
@@ -82,7 +100,7 @@
                 var advanceNode = document.createElement('a');
                 advanceNode.href = 'item_navigation.html';
                 advanceNode.innerHTML =
-                    'Congratulations! Continue to the next section, Object Navigation.';
+                    'Congratulations! Press enter to continue to next step.';
                 var resultElt = document.getElementById('result');
                 resultElt.innerHTML = '';
                 resultElt.appendChild(advanceNode);
