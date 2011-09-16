@@ -440,8 +440,9 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
       <li>Accessibility = making your web apps usable by everyone.</li>
       <li>This includes users of assistive technology.</li>
       <ul>
-        <li>Assistive technology is software or hardware that makes it easier for someone with a
-        disability to use the Internet.</li>
+        <li>Assistive technology is software or hardware that<br>
+        makes it easier for someone with a disability to use <br>
+        the Internet.</li>
       </ul>
     </ul>
   </article>
@@ -479,8 +480,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
           <li class="headphones_item">
             <b>Motor-impaired users</b><br>
             who can’t use a mouse and may use<br>
-            a special keyboard or voice-control<br>
-            interface.
+            a special keyboard or voice-control interface.
         </ul>
 
       </article>
@@ -492,7 +492,8 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
           </h3>
 
           <ul>
-            <li>My team at Google has built a screen reader called <b>ChromeVox</b>.
+            <li>My team at Google has built a screen reader<br>
+            called <b>ChromeVox</b>.
             <li>ChromeVox is a screen reader designed for the web.</li>
             <ul>
               <li>You control it using keyboard shortcuts.
@@ -582,7 +583,8 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
     <ul>
       <li>Visually impaired users see only the DOM.
       <li>Keyboard-only users navigate the page in DOM order.
-      <li>So the DOM is the user's mental image of the document structure:
+      <li>So the DOM is the user's mental image of the <br>
+      document structure:
       <ul>
         <li>No left or right, only up and down the DOM.
       </ul>
@@ -592,10 +594,13 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
   <article>
     <h3>DOM Best Practices</h3>
     <ul>
-      <li>Create logical sections of the document to help identify interface elements that are related. HTML5
-      semantic elements like <code>&lt;nav&gt;</code>, <code>&lt;header&gt;</code>, and
+      <li>Create logical sections of the document to help identify interface elements that are related.
+      <ul>
+      <li>HTML5 semantic elements like <code>&lt;nav&gt;</code>, <code>&lt;header&gt;</code>, and
       <code>&lt;h1&gt;</code> are useful here.
-      <li>Make sure parts of controls are grouped together in the DOM.
+      </ul>
+      <li>Make sure parts of controls are grouped together<br>
+      in the DOM.
       <ul>
         <li>For example, the drop-down menu button and the drop-down menu itself.
       </ul>
@@ -652,7 +657,8 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 &lt;div onclick=""&gt;...   &rArr;  &lt;button onclick=""&gt;...</pre>
     <li>Why?
     <ul>
-    <li>Screen readers can't identify generic divs or spans as controls.
+    <li>Screen readers can't identify generic divs or spans<br>
+    as controls.
     <li>Generic divs or spans aren't focusable, so they can't be activated with the keyboard.
     </ul>
     </ul>
@@ -860,7 +866,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
     </ul>
   </article>
 
-      <article>
+      <article id="dialog_live">
 
         <h3>
           Pop-up dialog - Live Coding Example
@@ -901,9 +907,11 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 &lt;script&gt;
 function confirm() {
   $('ink_dialog').style.display = 'block';
+  $('dialog_live').style.backgroundColor = 'gray';
 }
 function closeDialog() {
   $('ink_dialog').style.display = 'none';
+  $('dialog_live').style.backgroundColor = 'white';
 }
 &lt;/script&gt;
 
@@ -950,7 +958,7 @@ function closeDialog() {
 
       </article>
 
-      <article>
+      <article id="dialog_correct">
 
         <h3>
           Pop-up dialog - Correct Example
@@ -991,7 +999,8 @@ function closeDialog() {
 &lt;script&gt;
 function confirm_correct() {
   $('ink_dialog_correct').style.display = 'block';
-  $('ok_correct').focus();
+  $('ok_correct').focus();  
+  $('dialog_correct').style.backgroundColor = 'gray';
   
   var lastFocus = $('ok_correct');
   var listener = function(e) {
@@ -1007,12 +1016,14 @@ function confirm_correct() {
   document.addEventListener('focus', listener, true);
   $('ok_correct').addEventListener('click', function(e) {
       $('ink_dialog_correct').style.display = 'none';
+      $('dialog_correct').style.backgroundColor = 'white';
       document.removeEventListener('focus', listener, true);
       $('confirm_correct').focus();
     }, false);
     
   $('cancel_correct').addEventListener('click', function(e) {
       $('ink_dialog_correct').style.display = 'none';
+      $('dialog_correct').style.backgroundColor = 'white';
       document.removeEventListener('focus', listener, true);
       $('confirm_correct').focus();
     }, false);
@@ -1039,16 +1050,19 @@ function confirm_correct() {
 <article>
     <h3>Keyboard Shortcuts</h3>
     <ul>
-      <li><strong>Navigation Shortcuts</strong> jump between major interactive areas.
+      <li><strong>Navigation Shortcuts</strong> jump between major<br>
+      interactive areas.
       <ul>
         <li>Prevent excessive tabbing
         <li>Segment UI into logical units
       </ul>
-      <li><strong>Action Shortcuts</strong > enable complex actions with a few keystrokes.
+      <li><strong>Action Shortcuts</strong > enable complex actions with a<br>
+      few keystrokes.
       <ul>
       <li>Simplifies workflows
        </ul>
-      <li><strong>All shortcuts</strong> need to be well-documented to ensure discoverability.
+      <li><strong>All shortcuts</strong> need to be well-documented to<br>
+      ensure discoverability.
     </ul>
   </article>
 
@@ -1067,7 +1081,8 @@ function confirm_correct() {
         <li>Focus management
         <li>Keyboard support
       </ul>
-      <li>We also need to add ARIA roles and states for screen readers.
+      <li>We also need to add ARIA roles and states for<br>
+      screen readers.
     </ul>
   </article>
   
@@ -1107,7 +1122,8 @@ function confirm_correct() {
   <article>
     <h3>Manage focus.</h3>
     <ul>
-      <li>Make custom interactive elements focusable with <code>tabindex</code>:
+      <li>Make custom interactive elements focusable<br>
+      with <code>tabindex</code>:
 
 <pre style="margin-top: 1em;">&lt;!-- Natural tab order --&gt;
 &lt;div onclick="" tabindex="0"&gt;Clicky 1&lt;/div&gt;
@@ -1195,9 +1211,10 @@ focusable controls from sighted and keyboard-only users --&gt;
     <ul>
       <li>The Add to Circles Dropdown is most like a modal dialog, so we should implement dialog behavior:
       <ul>
-        <li>When the dialog opens, set focus on the first focusable element.
+        <li>When the dialog opens, set focus on the first<br>
+        focusable element.
       <pre style="margin-top: 1em;">
-dialog.$firstFocusableElt.focus();
+dialog.$('firstFocusableElt').focus();
 </pre>
       <li>Trap focus inside the dialog.
       <li>Add ESC as a keyboard shortcut to close the dialog.
@@ -1243,7 +1260,7 @@ dialog.$firstFocusableElt.focus();
       <li>The ARIA property <code>aria-live</code> identifies dynamic content on a page.
       <ul>
       <li><code>aria-live</code> is added to elements that will be updated and describes the type of
-      updates the element will receive.
+      updates the element receives.
         <li>For more information on ARIA live regions, see the
         <a href="http://www.w3.org/WAI/PF/aria-practices/#liveprops">W3C Guide to Live Region Properties.</a>
         </ul>
@@ -1322,12 +1339,12 @@ dialog.$firstFocusableElt.focus();
       <article>
       <style>
       </style>
-		<h4>Some No-cost Screen readers:</h4>
+		<h4>Some no-cost screen readers:</h4>
 		  <ul>
 		  <li><a href="http://www.apple.com/accessibility/voiceover/">VoiceOver</a>
 		  <li><a href="http://www.nvda-project.org/">NVDA</a>
 		  </ul>
-		<h4>Some Libraries with Accessibility Support:</h4>
+		<h4>Some libraries with accessibility support:</h4>
 		  <ul>
 		  <li><a href="http://dojotoolkit.org/">Dojo Toolkit</a>
 		  <li><a href="http://code.google.com/webtoolkit/">GWT</a>
@@ -1359,7 +1376,11 @@ dialog.$firstFocusableElt.focus();
         <h3>Presentation Code</h3>
           <a href="http://google-axs-chrome.googlecode.com">
             google-axs-chrome.googlecode.com
-          </a>
+          </a></p>
+        <p><h3>ChromeVox Discussion List</h3>
+        <a href="http://groups.google.com/group/axs-chrome-discuss?pli=1">
+        axs-chrome-discuss@google.com
+        </a></<p>
         <p><h3>Google's Accessibility Site</h3>
         <a href="http://google.com/accessibility">
         google.com/accessibility
