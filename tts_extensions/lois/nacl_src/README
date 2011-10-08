@@ -1,0 +1,14 @@
+This directory contains the source to the Native Client portion of
+the Lois TTS extension for Chrome. To build it, you need the Native
+Client SDK from:
+
+  http://code.google.com/chrome/nativeclient/
+
+Then edit the Makefile to point to your SDK directory, and build by
+running:
+
+  make
+
+When that succeeds, you'll get two .nexe files. Copy these into the
+extension_src directory (in the parent of this directory) and load
+the resulting extension in Chrome.

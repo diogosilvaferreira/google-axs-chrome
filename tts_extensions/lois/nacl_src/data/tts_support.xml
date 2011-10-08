@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<tts-support>
+  <voices>
+    <voice>
+      <country>USA</country>
+      <language>eng</language>
+      <name>en-US</name>
+      <rate>16000</rate>
+      <ta-lingware>en-US_ta.bin</ta-lingware>
+      <sg-lingware>en-US_lh0_sg.bin</sg-lingware>
+      <utpp-lingware>en-US_utpp.bin</utpp-lingware>
+      <quality>2</quality>
+    </voice>
+
+    <voice>
+      <country>GBR</country>
+      <language>eng</language>
+      <name>en-GB</name>
+      <rate>16000</rate>
+      <ta-lingware>en-GB_ta.bin</ta-lingware>
+      <sg-lingware>en-GB_kh0_sg.bin</sg-lingware>
+      <utpp-lingware>en-GB_utpp.bin</utpp-lingware>
+      <quality>2</quality>
+    </voice>
+
+    <voice>
+      <country>DEU</country>
+      <language>deu</language>
+      <name>de-DE</name>
+      <rate>16000</rate>
+      <ta-lingware>de-DE_ta.bin</ta-lingware>
+      <sg-lingware>de-DE_gl0_sg.bin</sg-lingware>
+      <utpp-lingware>de-DE_utpp.bin</utpp-lingware>
+      <quality>2</quality>
+    </voice>
+
+    <voice>
+      <country>ESP</country>
+      <language>spa</language>
+      <name>es-ES</name>
+      <rate>16000</rate>
+      <ta-lingware>es-ES_ta.bin</ta-lingware>
+      <sg-lingware>es-ES_zl0_sg.bin</sg-lingware>
+      <utpp-lingware>es-ES_utpp.bin</utpp-lingware>
+      <quality>2</quality>
+    </voice>
+
+    <voice>
+      <country>FRA</country>
+      <language>fra</language>
+      <name>fr-FR</name>
+      <rate>16000</rate>
+      <ta-lingware>fr-FR_ta.bin</ta-lingware>
+      <sg-lingware>fr-FR_nk0_sg.bin</sg-lingware>
+      <utpp-lingware>fr-FR_utpp.bin</utpp-lingware>
+      <quality>2</quality>
+    </voice>
+
+    <voice>
+      <country>ITA</country>
+      <language>ita</language>
+      <name>it-IT</name>
+      <rate>16000</rate>
+      <ta-lingware>it-IT_ta.bin</ta-lingware>
+      <sg-lingware>it-IT_cm0_sg.bin</sg-lingware>
+      <utpp-lingware>it-IT_utpp.bin</utpp-lingware>
+      <quality>2</quality>
+    </voice>
+  </voices>
+  <properties>
+    <property>
+      <name>language</name>
+      <value></value>
+    </property>
+    <property>
+      <name>rate</name>
+      <value>100</value>
+    </property>
+    <property>
+      <name>pitch</name>
+      <value>100</value>
+    </property>
+    <property>
+      <name>volume</name>
+      <value>100</value>
+    </property>
+  </properties>
+</tts-support>

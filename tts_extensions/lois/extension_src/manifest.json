@@ -1,0 +1,23 @@
+{
+  "name": "Lois TTS US English",
+  "version": "1.2",
+  "description": "Lois is a female US English text-to-speech (TTS) voice extension that runs in your browser using Native Client technology.",
+  "background_page": "tts_extension.html",
+  "permissions": [ "ttsEngine" ],
+  "tts_engine": {
+    "voices": [
+      {
+        "voice_name": "Lois TTS US English",
+        "lang": "en-US",
+        "gender": "female",
+        "event_types": [ "start", "end", "error" ]
+      }
+    ]
+  },
+  "icons": {
+    "16": "lois-16.png",
+    "48": "lois-48.png",
+    "128": "lois-128.png",
+    "256": "lois-256.png"
+  }
+}

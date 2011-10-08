@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TTS Service Demo</title>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache" />
+<META HTTP-EQUIV="Expires" CONTENT="-1" />
+<style>
+#pluginobj {
+  visibility: hidden;
+}
+#srctext {
+  width: 480px;
+  font-size: 133%;
+}
+#main {
+  font-family: arial,helvetica;
+  font-size: 10pt;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
+  border-left: solid 1px #ccc;
+  border-right: solid 1px #ccc;
+}
+.large_button {
+  font-size: 166%;
+}
+.box {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #999;
+}
+.tabbable {
+  padding: 10px;
+  border: 1px solid #00C;
+}
+#help {
+  text-align: left;
+}
+</style>
+</head>
+
+<body onLoad='load()' onUnload='unload()'>
+
+<div id="main">
+<p>
+Test Lois text-to-speech<br>
+embedded in the browser using Native Client.
+</p>
+<p>
+
+<textarea id="srctext" rows="10" cols="40">This is a test of speech synthesis in Chrome.</textarea>
+</p>
+<p>
+<button class="large_button" onclick="speak_user_text()">Speak</button>
+<button class="large_button" onclick="stop()">Stop</button>
+</p>
+
+<p>
+
+<div class="box" id="tts_status_box">
+  TTS status: <b><span id="tts_status"></span></b>
+</div>
+
+<p>
+
+Tab to these boxes:
+
+<p>
+
+<span tabindex="0" class="tabbable" onfocus='stop();speak("Alpha");'>Alpha</span>
+<span tabindex="0" class="tabbable" onfocus='stop();speak("Bravo");'>Bravo</span>
+<span tabindex="0" class="tabbable" onfocus='stop();speak("Charlie");'>Charlie</span>
+<span tabindex="0" class="tabbable" onfocus='stop();speak("Delta");'>Delta</span>
+<span tabindex="0" class="tabbable" onfocus='stop();speak("Echo");'>Echo</span>
+<span tabindex="0" class="tabbable" onfocus='stop();speak("Foxtrot");'>Foxtrot</span>
+
+<p><br></p>
+<div class="box" id="help">
+<center><b>Help</b></center>
+<p>
+This only works in <b>Google Chrome</b>.
+You must first visit <tt>chrome://flags/</tt> and enable
+<b>Native Client</b>, then restart Chrome.
+</p>
+
+<p>The plug-in must come from a web server; file:// urls are not allowed.</p>
+
+</div>
+
+</div>
+
+<div id="listener">
+  <script type="text/javascript">
+    function _obj_load() {
+      if(obj_load) {
+        obj_load();
+      } else {
+        setTimeout(_obj_load, 100);
+      }
+    }
+    document.getElementById("listener").addEventListener('load', _obj_load, true);
+  </script>
+  <embed name="nacl_module"
+         id="pluginobj"
+         src="tts_service.nmf"
+         type="application/x-nacl" />
+
+</div>
+
+<script type="text/javascript" src="tts_service_demo.js"></script>
+
+</body>
+</html>
+

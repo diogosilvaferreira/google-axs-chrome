@@ -1,0 +1,20 @@
+<html>
+  <head>
+  </head>
+  <body onUnload='unload()'>
+
+    <script src="tts_extension.js"></script>
+
+    <div id="listener">
+      <embed name="nacl_module"
+             id="pluginobj"
+             src="tts_service.nmf"
+             type="application/x-nacl" />
+    </div>
+
+    <script>
+      document.getElementById("listener").addEventListener('load', load, true);
+    </script>
+
+  </body>
+</html>
