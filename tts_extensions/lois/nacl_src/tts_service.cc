@@ -247,20 +247,13 @@ void TtsService::Run() {
       completion_callback = current_utterance_->options->completion;
     }
 
-    // Reset the buffer in case it was previously marked as finished.
-    if (ring_buffer_->IsFinished()) {
-      ring_buffer_->Reset();
-    }
-
     engine_->SynthesizeText(
         utterance_text.c_str(),
         audio_buffer_,
         audio_buffer_size_,
         &samples_output);
 
-    if (completion_callback) {
-      completion_callback->Run();
-    }
+    ring_buffer_->AddCallback(completion_callback);
     LOG(INFO) << "Done: " << utterance_text;
 
     {
@@ -360,7 +353,6 @@ tts_callback_status TtsService::Receive(int rate,
 
 tts_callback_status TtsService::Done() {
   current_utterance_ = NULL;
-  ring_buffer_->MarkFinished();
   return TTS_CALLBACK_HALT;
 }
 

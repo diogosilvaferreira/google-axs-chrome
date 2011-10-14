@@ -67,6 +67,10 @@ template<typename T> class RingBuffer {
   // IsFinished() will return true immediately.
   void MarkFinished();
 
+  // Adds a callback after the current position in the ring buffer.
+  // When that position is read, the callback will be executed.
+  void AddCallback(Runnable* calback);
+
   //
   // Methods for the reader thread
   //
@@ -85,8 +89,18 @@ template<typename T> class RingBuffer {
   bool IsFinished();
 
  private:
+  struct ScheduledCallback {
+    // The callback to execute.
+    Runnable* callback;
+    // The number of items to be read before it's executed.
+    int offset;
+    // Pointer to the next callback in the linked list.
+    ScheduledCallback* next;
+  };
+
   Mutex* mutex_;
   T* buffer_;
+  ScheduledCallback* callback_head_;
   bool finished_;
   const int capacity_;
   const int frame_capacity_;
@@ -107,7 +121,8 @@ template<typename T> class RingBuffer {
 
 template<typename T> RingBuffer<T>::RingBuffer(
     Threading* threading, int frame_capacity, int channel_count)
-    : capacity_(frame_capacity * channel_count),
+    : callback_head_(NULL),
+      capacity_(frame_capacity * channel_count),
       frame_capacity_(frame_capacity),
       channel_count_(channel_count) {
   mutex_ = threading->CreateMutex();
@@ -175,6 +190,16 @@ template<typename T> void RingBuffer<T>::MarkFinished() {
   finished_ = true;
 }
 
+template<typename T> void RingBuffer<T>::AddCallback(Runnable* callback) {
+  ScheduledCallback* node = new ScheduledCallback;
+  node->callback = callback;
+  node->offset = ReadAvail();
+  node->next = callback_head_;
+
+  ScopedLock sl(mutex_);
+  callback_head_ = node;
+ }
+
 template<typename T> int RingBuffer<T>::ReadAvail() {
   int avail;
   {
@@ -213,6 +238,26 @@ template<typename T> bool RingBuffer<T>::Read(T* data, int len) {
 
   if (read_pos_ == write_pos_) {
     read_pos_ = -1;
+  }
+
+  ScheduledCallback* node = callback_head_;
+  ScheduledCallback* prev = NULL;
+  while (node) {
+    node->offset -= len;
+    if (node->offset <= 0) {
+      node->callback->Run();
+      if (prev)
+        prev->next = NULL;
+      else if (callback_head_ == node)
+        callback_head_ = NULL;
+      ScheduledCallback* to_delete = node;
+      node = node->next;
+      prev = NULL;
+      delete to_delete;
+    } else {
+      prev = node;
+      node = node->next;
+    }
   }
 
   return true;
