@@ -28,22 +28,6 @@
   commands and features provided by ChromeVox." />
   <title>Keyboard Shortcut Reference Page</title>
   <link rel="stylesheet" type="text/css" href="basic.css" />
-  <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push([ '_setAccount', 'UA-24310236-8' ]);
-        _gaq.push([ '_trackPageview' ]);
-        
-        (function() {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl'
-                    : 'http://www')
-                    + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-  </script>
 </head>
 <body>
     <h2>ChromeVox Keyboard Shortcuts Reference Page for Chrome OS</h2>
@@ -52,14 +36,12 @@
 
     <ul>
         <li>Ctrl + Alt + Z = Start ChromeVox (must be pressed on the initial login screen)</li>
-    </ul
+    </ul>
 
     <h3>Speech Commands</h3>
     <ul>
         <li>Control = Stop speaking the current text</li>
         <li>Search = Stop speaking the current text</li>
-        <li>Shift + Search + Equals = Increase rate of speech</li>
-        <li>Shift + Search + Minus = Decrease rate of speech</li>
         <li>Shift + Search + Apostrophe = Increase pitch of speech</li>
         <li>Shift + Search + Semicolon = Decrease pitch of speech</li>
         <li>Shift + Search + Right Bracket = Increase speech volume</li>
@@ -75,19 +57,28 @@
     <ul>
         <li>Shift + Search + Down = Navigate forward</li>
         <li>Shift + Search + Up = Navigate backward</li>
-        <li>Shift + Search + Right = More detail</li>
-        <li>Shift + Search + Left = Less detail</li>
+        
+        <li>Shift + Search + Right = Navigate forward at a more detailed level</li>
+        <li>Shift + Search + Left = Navigate backward at a more detailed level</li>
+        
+        <li>Shift + Search + Equals = More detail</li>
+        <li>Shift + Search + Minus = Less detail</li>
+        
         <li>Enter = Activate current item</li>
-        <li>Shift + Search + Space = Force click on current item</li>
+        <li>Space = Force click on current item</li>
     </ul>
 
     <h3>Table Mode</h3>
+    <p>Table Mode is activated automatically when you enter a data table while in group-level
+    navigation. The following are the commands that become available only in table mode. <p>
     <ul>
-        <li>Shift + Search + T + E = Toggle table mode</li>
-        <li>Shift + Search + T + Down = Go to next table row</li>
-        <li>Shift + Search + T + Up = Go to previous table row</li>
-        <li>Shift + Search + T + Right = Go to next table column</li>
-        <li>Shift + Search + T + Left = Go to previous table column</li>
+        <li>Shift + Search + T + E = Force exit table mode</li>
+        
+        <li>Shift + Search + Down = Go to next table row</li>
+        <li>Shift + Search + Up = Go to previous table row</li>
+        <li>Shift + Search + Right = Go to next table column</li>
+        <li>Shift + Search + Left = Go to previous table column</li>
+        
         <li>Shift + Search + T + H = Announce the headers of the current cell</li>
         <li>Shift + Search + T + L = Announce the current table location</li>
         <li>Shift + Search + T + R = Announce the row header of the current cell</li>

@@ -28,69 +28,60 @@
     commands and features provided by ChromeVox." />
     <title>Table Navigation- Interactive ChromeVox Tutorial</title>
     <link rel="stylesheet" type="text/css" href="basic.css" />
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push([ '_setAccount', 'UA-24310236-8' ]);
-        _gaq.push([ '_trackPageview' ]);
-        
-        (function() {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl'
-                    : 'http://www')
-                    + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
 </head>
 <body>
-    <p class="header">Step 8 out of 10</p>
     <h2>Moving around tables.</h2>
-    <a href="getting_help.html">Back to previous step</a>
     <p>
         Now that you know the basics of navigating around a page with ChromeVox, we want to
         start introducing some features of ChromeVox that make it easier to perform more complex
         navigation. We'll start with table navigation.
     </p>
     <p>
-        ChromeVox's table navigation mode gives you the ability to explore structured data quickly
-        at a high level. You can think of it as new navigation method that allows you to move to
-        each cell in a table individually. Furthermore, table mode cooperates with navigation at
-        other granularities. While table navigation is active you can still zoom in to different
-        granularities to view the contents of your current cell in different ways. So if you use
-        table mode to move to a cell that contains text with multiple links, you can use the object
-        level to quickly move around the links that are within that cell. You can then use table
-        mode to move to a different cell and explore that one.
+        ChromeVox's table navigation feature enables you to explore structured data quickly. You
+        can think of it as a special navigation method that allows you to move between each cell in
+        a table.
     </p>
     <p>
-        ChromeVox will announce when you have entered a table by speaking "Table". Then, to activate
-        table navigation mode press the ChromeVox keys, tap the letter T, and then the letter E.
-        The ChromeVox keys and the letter T are always the keys you will press to start a table
-        command. You can activate table navigation mode anywhere inside a table.
-    </p>
-    <p>
-        To move between cells, use the following commands:
+        Table navigation mode starts automatically when you have crossed into a data table. You will
+        hear a special earcon and ChromeVox will announce the number of rows and columns in the
+        the table. To move between cells, use the following commands:
         <ul>
-            <li>ChromeVox + T + Up for the cell above the current cell</li>
-            <li>ChromeVox + T + Down for the cell below the current cell</li>
-            <li>ChromeVox + T + Left for the cell to the left of the current cell</li>
-            <li>ChromeVox + T + Right for the cell to the right of the current cell</li>
+            <li>ChromeVox + Up for the cell above the current cell</li>
+            <li>ChromeVox + Down for the cell below the current cell</li>
+            <li>ChromeVox + Left for the cell to the left of the current cell</li>
+            <li>ChromeVox + Right for the cell to the right of the current cell</li>
         </ul>
+        Please note that the ChromeVox Up, Down, Left, and Right commands act differently in table
+        mode. They move you between cells, not forward and backward in the page. To leave a table
+        while in table mode, press ChromeVox Down until you get to the last row of the table and
+        you hear an earcon. When you hear the earcon, press ChromeVox Down again in order to leave
+        the table and return to navigating forward and backward in the page. You can also force
+        ChromeVox to leave the table by pressing ChromeVox + T + E anywhere in the table. This
+        command toggles table mode on and off.
     </p>
     <p>
-        To leave table navigation mode to explore the rest of the page, press ChromeVox + T +
-        E again. That command will jump you out of the table to the content immediately
-        following the table on the page.
+        Table navigation mode is a feature of group navigation. If you change to a different level
+        of detail - such as object level or sentence level - by pressing ChromeVox Equals while you
+        are in the table, you will leave table navigation mode and the arrow keys will function like
+        they normally do. To enter table mode again, use ChromeVox Minus to move back up to group
+        level navigation.
+    </p>
+    <p>
+        ChromeVox tries to determine whether a table on a page is a data table or a layout table.
+        This step is necessary because some pages still use tables for visual layout even though
+        it's bad design practice and bad for accessibility. If a table contains data, ChromeVox
+        will start table mode. If ChromeVox determines the table is just being used for layout,
+        table mode won't start and you'll navigate the content just like you usually do. But if you
+        want to try starting table navigation mode anyway (ChromeVox might have made a mistake),
+        you can press ChromeVox + T + E. ChromeVox will tell you if it can't find a table anywhere.
     </p>
     <p>
         Try navigating through the simple table following this paragraph using the commands listed
         earlier to move between cells. Remember, you can press ChromeVox + T + E at any time
         within the table to enter or leave table navigation mode.
     </p>
-    <table summary='Animals and their legs' border='1'> 
-        <caption>Number of legs of different animals</caption> 
+    <table summary='Animals and their legs' border='1'>
+        <caption>Number of legs of different animals</caption>
         <tr>
           <th>Animals</th>
           <th>Number of legs</th>
@@ -116,6 +107,7 @@
           <td>0 legs</td>
         </tr>
     </table>
-    <a href="table_navigation2.html">Press enter to continue to next step.</a>
+    <a href="table_navigation2.html">Continue by pressing enter to go to Table Navigation Part
+    Two.</a>
 </body>
 </html>
