@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>An Accessible Drop-Down Menu: Version 4 - introduce menu navigation</title>
+    <style>
+      .button, .menu {
+        font-size: 12px;
+        font-family: arial, sans-serif;
+      }
+      .button {
+        position: absolute;
+        left: 100px;
+        top: 90px;
+        color: #999;
+        border: none;
+        border-radius: 0;
+        background-color: black;
+        line-height: 27px;
+        padding: 1px 5px;
+      }
+      .menu {
+        position: absolute;
+        left: 102px;
+        top: 15px;
+        border: 1px solid #555;
+        border-radius: 2px;
+        background-color: black;
+        width: 90px;
+        line-height: 15px;
+      }
+      .menu ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      li {
+        color: #CCC;
+        margin: 0;
+        padding: 5px;
+        border: 0;
+      }
+	  li:hover {
+	    background: #691213;
+	  }
+      *[selected] {
+        background: #691213;
+      }
+	  *:focus {
+        outline: solid 2px red;
+      }
+    </style>
+  </head>
+  <body>
+  <div title="Speed" class="button" id="button" tabindex="0">
+    <span>Normal</span>
+  </div>
+  <div class="menu" id="menu" style="display: none;" tabindex="-1">
+    <ul>
+      <li id="id-Double" data-value="Double">Double Speed</li>
+      <li id="id-Normal" data-value="Normal" selected="true">Normal Speed</li>
+      <li id="id-Half" data-value="Half">Half Speed</li>
+    </ul>
+  </div>
+    <script>
+  var button = document.getElementById("button");
+  var menu = document.getElementById("menu");
+  var items = menu.getElementsByTagName("li");
+  function showMenu(evt) {
+    evt.stopPropagation();
+    menu.style.display = 'block';
+    menu.focus();
+  }
+  function hideMenu(evt) {
+    evt.stopPropagation();
+    menu.style.display = 'none';
+    items[getSelected()].removeAttribute('selected');
+    button.focus();
+  }
+  function changeButtonText(newText) {
+    button.childNodes[1].innerHTML = newText;
+  }
+  function selectItem(evt) {
+    changeButtonText(evt.target.getAttribute('data-value'));
+  }
+  function getSelected() {
+    for (var i=0; i < items.length; i++) {
+      if (items[i].getAttribute('selected')) {
+        return i;
+      }
+    }
+    return 0;
+  }
+  function setSelected(elem) {
+    var curSelected = getSelected();
+    items[curSelected].removeAttribute('selected');
+    elem.setAttribute('selected', true);
+  }
+  function getPrevItem(index) {
+    var prev = index - 1;
+    if (prev < 0) {
+      prev = items.length - 1;
+    }
+    return prev;
+  }
+  function getNextItem(index) {
+    var next = index + 1;
+    if (next == items.length) {
+      next = 0;
+    }
+    return next;
+  }
+  function handleButtonKeys(evt) {
+    evt.stopPropagation();
+    var key = evt.keyCode;
+    switch(key) {
+      case (13): /* ENTER */
+	  case (32): /* SPACE */
+	    var buttonText = button.childNodes[1].innerHTML;
+	    var actItem = document.getElementById("id-"+ buttonText);
+		setSelected(actItem);
+        showMenu(evt);
+      default:
+    }
+  }
+  function handleMenuKeys(evt) {
+    evt.stopPropagation();
+    var key = evt.keyCode;
+    switch(key) {
+      case (38): /* UP */
+        setSelected(items[getPrevItem(getSelected())]);
+        break;
+      case (40): /* DOWN */
+        setSelected(items[getNextItem(getSelected())]);
+        break;
+      case (13): /* ENTER */
+      case (32): /* SPACE */
+        changeButtonText(items[getSelected()].getAttribute('data-value'));
+  	    hideMenu(evt);
+  	    break;
+	  case (27): /* ESC */
+	    hideMenu(evt);
+	    break;
+      default:
+    }
+  }
+
+  document.addEventListener('click', hideMenu, false);
+  button.addEventListener('click', showMenu, false);
+  button.addEventListener('keydown', handleButtonKeys, false);
+  for (var i = 0;  i < items.length; i++) {
+    items[i].addEventListener('click', selectItem, false);
+  }
+  menu.addEventListener('keydown', handleMenuKeys, false);
+    </script>
+  </body>
+</html>

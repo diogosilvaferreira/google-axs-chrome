@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>An Accessible Drop-Down Menu: Version 2 - introduce focus</title>
+    <style>
+      .button, .menu {
+        font-size: 12px;
+        font-family: arial, sans-serif;
+      }
+      .button {
+        position: absolute;
+        left: 100px;
+        top: 90px;
+        color: #999;
+        border: none;
+        border-radius: 0;
+        background-color: black;
+        line-height: 27px;
+        padding: 1px 5px;
+      }
+      .menu {
+        position: absolute;
+        left: 102px;
+        top: 15px;
+        border: 1px solid #555;
+        border-radius: 2px;
+        background-color: black;
+        width: 90px;
+        line-height: 15px;
+      }
+      .menu ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      li {
+        color: #CCC;
+        margin: 0;
+        padding: 5px;
+        border: 0;
+      }
+	  li:hover {
+	    background: #691213;
+	  }
+	  *:focus {
+        outline: solid 2px red;
+      }
+    </style>
+  </head>
+  <body>
+  <div title="Speed" class="button" id="button" tabindex="0">
+    <span>Normal</span>
+  </div>
+  <div class="menu" id="menu" style="display: none;" tabindex="-1">
+    <ul>
+      <li id="id-Double" data-value="Double">Double Speed</li>
+      <li id="id-Normal" data-value="Normal">Normal Speed</li>
+      <li id="id-Half" data-value="Half">Half Speed</li>
+    </ul>
+  </div>
+    <script>
+  var button = document.getElementById("button");
+  var menu = document.getElementById("menu");
+  var items = menu.getElementsByTagName("li");
+  function showMenu(evt) {
+    evt.stopPropagation();
+    menu.style.display = 'block';
+    menu.focus();
+  }
+  function hideMenu(evt) {
+    evt.stopPropagation();
+    menu.style.display = 'none';
+    button.focus();
+  }
+  function changeButtonText(newText) {
+    button.childNodes[1].innerHTML = newText;
+  }
+  function selectItem(evt) {
+    changeButtonText(evt.target.getAttribute('data-value'));
+  }
+  document.addEventListener('click', hideMenu, false);
+  button.addEventListener('click', showMenu, false);
+  for (var i = 0;  i < items.length; i++) {
+    items[i].addEventListener('click', selectItem, false);
+  }
+    </script>
+  </body>
+</html>
