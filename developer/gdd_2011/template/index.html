@@ -27,6 +27,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
       var slides;
       var showAllSlidesButton;
       var ignoreFocusEvents = false;
+      var focusedEl;
       var currentStars = 3;
 
       function $(element) {
@@ -62,7 +63,10 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
           window.setTimeout(function() {
             var slideIndex = parseInt(location.hash.substr(1), 10) - 1;
             ignoreFocusEvents = true;
-            slides[slideIndex].focus();
+
+            // Set focus on the first element in the slide
+            setFocusInsideSlide(slides[slideIndex]);
+
             console.log('onSlideEnter focus');
             window.setTimeout(function() {
               ignoreFocusEvents = false;
@@ -71,8 +75,43 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
         }, 600);
       }
 
+      function setFocusInsideSlide(slide) {
+        var firstSlideEl = slide.querySelector('.firstFocusableElt');
+        if (!firstSlideEl) {
+          firstSlideEl = slide;
+        }
+        // Don't set focus twice if this element is already focused
+        if (focusedEl != firstSlideEl) {
+          try {
+            firstSlideEl.focus();
+          } catch (e) {
+            // Swallow this. If this element did not receive focus, IE will
+            // try to throw an error.
+          }
+        }
+        focusedEl = null;
+      }
+
+      /* Gets the first child node that is an element */
+      function getFirstElementChild(node) {
+        // firstElementChild not supported in all browsers:
+        // http://www.quirksmode.org/dom/w3c_traversal.html
+        if (node.firstElementChild != undefined &&
+            node.firstElementChild.tagName != 'STYLE') {
+          return node.firstElementChild;
+        } else {
+          var child = node.firstChild;
+          while (child && (child.nodeType != Node.ELEMENT_NODE ||
+              (child.tagName == 'STYLE'))) {
+            child = child.nextSibling;
+          }
+          return child;
+        }
+      }
+
       function onFocus(e) {
         console.log('focus ' + e.target);
+        focusedEl = e.target;
         document.pageXOffset = 0;
         if (ignoreFocusEvents) {
           console.log('ignore focus');
@@ -108,9 +147,19 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
         showAllSlidesButton = $('showAllSlidesButton');
 
         for (var i = 0; i < slides.length; i++) {
-          slides[i].setAttribute('tabindex', '-1');
           slides[i].setAttribute('slideIndex', i);
           slides[i].setAttribute('title', 'Slide ' + (i + 1));
+
+          // Make the first element inside of every slide focusable.
+          var firstSlideEl = getFirstElementChild(slides[i]);
+          if (!firstSlideEl) {
+            firstSlideEl = slides[i];
+          }
+          if (firstSlideEl.tabIndex < 0) {
+            firstSlideEl.setAttribute('tabindex', '-1');
+          }
+          firstSlideEl.classList.add('firstFocusableElt');
+          firstSlideEl.style.outline = 'none';
         }
 
         document.addEventListener('slideenter', onSlideEnter, true);
@@ -119,6 +168,8 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
         window.setTimeout(function() {
           updateShowAllSlidesButton();
         }, 0);
+
+        onSlideEnter();
       }
 
       // Star rating gadget
@@ -272,10 +323,10 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
     article:focus {
       outline: none;
     }
-    
-    *:focus { 
-    outline: auto 10px purple; 
-    outline-offset: 5px; 
+
+    *:focus {
+    outline: auto 10px purple;
+    outline-offset: 5px;
     }
 
     .slides > article {
@@ -411,7 +462,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
       font-size: 20px;
     }
   </style>
-<body style="display: none">
+<body style="display: none" onload='initAriaPreso()'>
 
 <section class='slides layout-regular'>
 
@@ -446,7 +497,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
       </ul>
     </ul>
   </article>
-  
+
   <article>
         <style>
           .braille_item {
@@ -484,7 +535,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
         </ul>
 
       </article>
-      
+
       <article>
 
           <h3>
@@ -503,7 +554,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
           </p>
 
       </article>
-      
+
        <article>
 
         <style>
@@ -549,7 +600,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
               <option>White</option>
             </select>
           </p>
-          
+
           <p>
             <input type="submit" style="width: 10em;" />
           </p>
@@ -573,7 +624,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
         </ol>
 
       </article>
-      
+
   <article>
     <h2>Building Blocks</h2>
   </article>
@@ -674,7 +725,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
       </ul>
     </ul>
   </article>
-  
+
 
   <article>
         <style>
@@ -687,7 +738,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
             border-radius: 0px;
             background: -webkit-gradient(
                 linear, left top, left bottom, from(#fff), to(#ccc));
-        	font-weight: normal;
+            font-weight: normal;
             font-size: 30px;
             color: #545454 !important;
             font-family: 'Open Sans', Arial, sans-serif !important;
@@ -717,7 +768,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
           manageLiveCoding('custombutton');
         </script>
       </article>
-  
+
   <article>
         <style>
           .custombutton {
@@ -763,19 +814,19 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
   <article>
     <h3>Labeling - Label Your Controls and Images!</h3>
     <ul>
-      <li><code>&lt;label&gt;</code> is perfect for form elements. 
+      <li><code>&lt;label&gt;</code> is perfect for form elements.
 <pre>&lt;label for="firstname"&gt;First name:&lt;/label&gt;
 &lt;input type="text" id="firstname"/&gt;</pre>
       <li>All images should have the <code>alt</code> attribute:
       <ul>
-        <li>Important images should have descriptive <code>alt</code> text.      
+        <li>Important images should have descriptive <code>alt</code> text.
           <pre>&lt;img src="chart.png" alt="[description]"&gt;</pre>
         <li>Decorative images should have blank <coede>alt</code> text.
 <pre>&lt;img src="bullet35648.gif" alt=""&gt;</pre>
     </ul>
     </ul>
   </article>
-  
+
   <article>
         <style>
         #user {
@@ -820,7 +871,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
           manageLiveCoding('labeling');
         </script>
       </article>
-  
+
   <article>
     <style>
         #user_correct {
@@ -899,8 +950,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
                 onkeydown="return onKeyDown(event)">
           Refresh
         </button>
-        
-        
+
 
         <pre id="dialog_src" class="bottomhalf_src smaller" tabindex="0"
              contenteditable="true" spellcheck="false" aria-hidden="true" style="height: 360px">
@@ -991,17 +1041,16 @@ function closeDialog() {
                 onkeydown="return onKeyDown(event)">
           Refresh
         </button>
-        
-        
+
 
         <pre id="dialog_correct_src" class="bottomhalf_src smaller" tabindex="0"
              contenteditable="true" spellcheck="false" aria-hidden="true" style="height: 360px">
 &lt;script&gt;
 function confirm_correct() {
   $('ink_dialog_correct').style.display = 'block';
-  $('ok_correct').focus();  
+  $('ok_correct').focus();
   $('dialog_correct').style.backgroundColor = 'gray';
-  
+
   var lastFocus = $('ok_correct');
   var listener = function(e) {
     window.setTimeout(function() {
@@ -1020,7 +1069,7 @@ function confirm_correct() {
       document.removeEventListener('focus', listener, true);
       $('confirm_correct').focus();
     }, false);
-    
+
   $('cancel_correct').addEventListener('click', function(e) {
       $('ink_dialog_correct').style.display = 'none';
       $('dialog_correct').style.backgroundColor = 'white';
@@ -1046,7 +1095,7 @@ function confirm_correct() {
         </script>
 
       </article>
-      
+
 <article>
     <h3>Keyboard Shortcuts</h3>
     <ul>
@@ -1071,7 +1120,7 @@ function confirm_correct() {
     Next Steps
   </h2>
 </article>
-  
+
   <article>
     <h3>Working with Custom Interactive Controls</h3>
     <ul>
@@ -1085,7 +1134,7 @@ function confirm_correct() {
       screen readers.
     </ul>
   </article>
-  
+
   <article>
   <style>
     .addtocircles_imgs {
@@ -1138,7 +1187,7 @@ focusable controls from sighted and keyboard-only users --&gt;
     <li>Proactively place focus with <code>element.focus()</code><br> to create an efficient workflow.
   </ul>
   </article>
- 
+
   <article>
     <h3>Show the keyboard some love</h3>
     <ul>
@@ -1162,7 +1211,7 @@ focusable controls from sighted and keyboard-only users --&gt;
   }
 &lt;/script&gt;</pre>
 </article>
-  
+
   <article>
   <style>
     .addtocircles_img1 {
@@ -1191,7 +1240,7 @@ focusable controls from sighted and keyboard-only users --&gt;
       </ul>
     </ul>
   </article>
-  
+
   <article>
   <style>
     .addtocircles_img2 {
@@ -1232,7 +1281,7 @@ dialog.$('firstFocusableElt').focus();
       still need to add focus management and keyboard navigation yourself.
     </ul>
   </article>
-  
+
   <article>
     <h3>ARIA Roles</h3>
     <ul>
@@ -1248,7 +1297,7 @@ dialog.$('firstFocusableElt').focus();
 </pre>
     </ul>
   </article>
-  
+
   <article>
     <h3>ARIA States and Properties</h3>
     <ul>
@@ -1266,7 +1315,7 @@ dialog.$('firstFocusableElt').focus();
         </ul>
         </ul>
   </article>
-  
+
   <article>
     <h3>ARIA and the Add to Circles Widget</h3>
     <div class="addtocircles_imgs">
@@ -1287,7 +1336,7 @@ dialog.$('firstFocusableElt').focus();
 &lt;div class="check" role="checkbox" aria-checked="false"&gt;</pre>
     </ul>
   </article>
-  
+
   <article>
     <h2>Recap</h2>
   </article>
@@ -1351,8 +1400,7 @@ dialog.$('firstFocusableElt').focus();
 		  <li><a href="http://jqueryui.com/">jQuery UI</a>
           </ul>
       </article>
-      
-      
+
 
       <article>
         <h3>
@@ -1390,19 +1438,25 @@ dialog.$('firstFocusableElt').focus();
 
   <article class="biglogo"></article>
 
+
+  <!-- This presentation shows only a few slides at a time. This works in
+       most screen readers too, but for those where it doesn't, here's a
+       way to just show all slides. -->
+  <button id='showAllSlidesButton' onclick='showAllSlides()'></button>
+
 </section>
 
-<script> 
+<script>
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-XXXXXX-X']);
   _gaq.push(['_trackPageview']);
- 
+
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-</script> 
+</script>
 <!--[if IE]>
 <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
 <script>CFInstall.check({mode: 'overlay'});</script>
