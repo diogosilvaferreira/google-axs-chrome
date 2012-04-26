@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head>
+   <title>ChromeVox
+A Screen Reader Built Using Web Technology</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,uni-html4,3,sections+,next --> 
+<meta name="src" content="paper.tex"> 
+<meta name="date" content="2012-04-26 11:35:00"> 
+<link rel="stylesheet" type="text/css" href="paper.css"> 
+</head><body 
+>
+   <div class="maketitle">
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+
+<h2 class="titleHead">ChromeVox<br />
+A Screen Reader Built Using Web Technology</h2>
+<div class="author" ><span 
+class="cmr-12">T.</span><span 
+class="cmr-12">&#x00A0;V.</span><span 
+class="cmr-12">&#x00A0;Raman, Charles L. Chen, Dominic Mazzoni,</span>
+<br />       <span 
+class="cmr-12">Rachel Shearer, Chaitanya Gharpure,</span>
+<br />           <span 
+class="cmr-12">James DeBoer, David Tseng</span>
+<br />                    <span 
+class="cmr-12">Google Inc</span>
+<br />           <span 
+class="cmr-12">1600 Amphitheatre Parkway</span>
+<br />            <span 
+class="cmr-12">Mountain View, CA 94043</span></div><br />
+<div class="date" ><span 
+class="cmr-12">April 26, 2012</span></div>
+   </div><div 
+class="abstract" 
+>
+<div class="center" 
+>
+<!--l. 21--><p class="noindent" >
+<!--l. 21--><p class="noindent" ><span 
+class="cmbx-9">Abstract</span></div>
+     <!--l. 22--><p class="indent" >    <span 
+class="cmr-9">The evolution of the web programming model defined by the HTML</span>
+     <span 
+class="cmr-9">DOM, CSS and JavaScript has moved us from a web of documents to a web</span>
+     <span 
+class="cmr-9">of applications. We leverage this evolution to build ChromeVox &#8212; a screen</span>
+     <span 
+class="cmr-9">reader for Chrome</span><span 
+class="cmr-9">&#x00A0;OS that is built as a web application. By creating</span>
+     <span 
+class="cmr-9">this  accessibility  solution  using  the  same  technical  underpinnings  as</span>
+     <span 
+class="cmr-9">modern web applications, we are able to support the latest in accessibility</span>
+     <span 
+class="cmr-9">standards including HTML5 and W3C ARIA to enable complete access to</span>
+     <span 
+class="cmr-9">rich web applications. By being an adaptive technology that is built for the</span>
+     <span 
+class="cmr-9">web, ChromeVox is able to move beyond the status-quo when it comes to</span>
+     <span 
+class="cmr-9">enabling access to full-featured web applications such as document editors</span>
+     <span 
+class="cmr-9">and spreadsheets. Thanks to the rapid progress in the web programming</span>
+     <span 
+class="cmr-9">model, ChromeVox is helping us bring the same pace of rapid innovation</span>
+     <span 
+class="cmr-9">to the field of web access that mainstream users have come to expect. By</span>
+     <span 
+class="cmr-9">building ChromeVox on top of the WebKit-based Chrome, we are able to</span>
+     <span 
+class="cmr-9">bring ChromeVox to a multiplicity of platforms, including Android.</span>
+</div>
+                                                                  
+
+                                                                  
+   <div class="tableofcontents">
+   <span class="sectionToc" >1 <a 
+href="paperse1.html#x2-10001" id="QQ2-2-1">Introduction</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >1.1 <a 
+href="papersu1.html#x3-20001.1" id="QQ2-3-2">Architecture: Screen Readers</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >1.2 <a 
+href="papersu2.html#x4-30001.2" id="QQ2-4-4">Architecture: ChromeVox</a></span>
+<br />   <span class="sectionToc" >2 <a 
+href="paperse2.html#x5-40002" id="QQ2-5-6">Overview: Chrome Extensions</a></span>
+<br />   <span class="sectionToc" >3 <a 
+href="paperse3.html#x6-50003" id="QQ2-6-7">APIs used by ChromeVox</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >3.1 <a 
+href="papersu3.html#x7-60003.1" id="QQ2-7-8">HTML5 Audio</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >3.2 <a 
+href="papersu4.html#x8-70003.2" id="QQ2-8-9">Mutation Observers</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >3.3 <a 
+href="papersu5.html#x9-80003.3" id="QQ2-9-10">Text-to-speech extension API</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >3.4 <a 
+href="papersu6.html#x10-90003.4" id="QQ2-10-11">Tabs extension API</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >3.5 <a 
+href="papersu7.html#x11-100003.5" id="QQ2-11-12">Accessibility extension API</a></span>
+<br />   <span class="sectionToc" >4 <a 
+href="paperse4.html#x12-110004" id="QQ2-12-13">ChromeVox</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >4.1 <a 
+href="papersu8.html#x13-120004.1" id="QQ2-13-14">ChromeVox Navigation</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >4.2 <a 
+href="papersu9.html#x14-130004.2" id="QQ2-14-15">Earcons</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >4.3 <a 
+href="papersu10.html#x15-140004.3" id="QQ2-15-16">Visuals</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >4.4 <a 
+href="papersu11.html#x16-150004.4" id="QQ2-16-17">User Interface Customization</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >4.5 <a 
+href="papersu12.html#x17-160004.5" id="QQ2-17-18">ChromeVox User Experience</a></span>
+<br />   <span class="sectionToc" >5 <a 
+href="paperse5.html#x18-170005" id="QQ2-18-19">Accessing Rich Internet Applications</a></span>
+<br />   &#x00A0;<span class="likesubsectionToc" ><a 
+href="paperli1.html#x19-180005" id="QQ2-19-20">ARIA Support In Traditional Screen Readers</a></span>
+<br />   &#x00A0;<span class="likesubsectionToc" ><a 
+href="paperli2.html#x20-190005" id="QQ2-20-22">ARIA In ChromeVox</a></span>
+<br />   <span class="sectionToc" >6 <a 
+href="paperse6.html#x21-200006" id="QQ2-21-24">Exposing Accessibility APIs</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >6.1 <a 
+href="papersu13.html#x22-210006.1" id="QQ2-22-25">Leveraging ChromeVox API</a></span>
+<br />   <span class="sectionToc" >7 <a 
+href="paperse7.html#x23-220007" id="QQ2-23-26">Challenges</a></span>
+<br />   <span class="sectionToc" >8 <a 
+href="paperse8.html#x24-230008" id="QQ2-24-27">Conclusion</a></span>
+<br />   <span class="likesectionToc" ><a 
+href="paperli3.html#x25-240008" id="QQ2-25-28">References</a></span>
+   </div>
+
+
+
+
+
+
+
+
+<!--l. 861--><p class="noindent" ><span class="next">[<a 
+href="paperse1.html" id="tailpaper" >next</a>]</span> 
+</body></html> 
+
+                                                                  
+
+

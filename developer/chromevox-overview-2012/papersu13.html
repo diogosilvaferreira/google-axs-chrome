@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>Leveraging ChromeVox API</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,uni-html4,3,sections+,next --> 
+<meta name="src" content="paper.tex"> 
+<meta name="date" content="2012-04-26 11:35:00"> 
+<link rel="stylesheet" type="text/css" href="paper.css"> 
+</head><body 
+>
+   <!--l. 778--><div class="crosslinks"><p class="noindent">[<a 
+href="paperse7.html" >next</a>] [<a 
+href="paperse6.html" >prev</a>] [<a 
+href="paperse6.html#tailpaperse6.html" >prev-tail</a>] [<a 
+href="#tailpapersu13.html">tail</a>] [<a 
+href="paperse6.html#papersu13.html" >up</a>] </p></div>
+   <h4 class="subsectionHead"><span class="titlemark">6.1   </span> <a 
+href="paper.html#QQ2-22-25" id="x22-210006.1">Leveraging ChromeVox API</a></h4>
+<!--l. 780--><p class="noindent" >The previous section outlined how Google Docs uses the ChromeVox API to
+customize the spoken feedback provided by ChromeVox. In addition to the web
+application author calling the ChromeVox API, ChromeVox can directly include
+application-specific scripts that customize spoken feedback on a per-application
+basis. This type of application-level customization was first demonstrated in
+AxsJAX (see&#x00A0;<span class="cite">[<a 
+href="paperli3.html#Xchen2008att">4</a>]</span>) and we have applied the lessons learnt from that project
+within ChromeVox. As an example, ChromeVox leverages this functionality to
+provide better spoken feedback within Gmail and Google Search &#8212; we detail
+this briefly in the paragraphs below. In the case of Gmail, we use a Gmail
+JavaScript API to get programmatic access to the current message; in the case
+of Google Search, we leverage structure present in the page-level HTML
+markup.
+<!--l. 797--><p class="indent" >
+                                                                  
+
+                                                                  
+     <dl class="description"><dt class="description">
+<span 
+class="cmbx-10">Gmail</span> </dt><dd 
+class="description">ChromeVox uses the Gmail JS API to get access to the DOM node
+     containing the currently displayed message and to get application level
+     status information about that message. After <span 
+class="cmti-10">synchronizing </span>the current
+     selection to this node, ChromeVox automatically <span 
+class="cmti-10">speaks </span>the email message.
+     Having this application level logic is especially important as it is what
+     enables ChromeVox to intelligently describe a message as being <span 
+class="cmti-10">unread</span>,
+     <span 
+class="cmti-10">starred </span>rather than merely speaking the lower level visual representation
+     of <span 
+class="cmti-10">bold, checked</span>.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Search</span> </dt><dd 
+class="description">The ChromeVox script for Google Search causes ChromeVox to speak
+     the complete snippet for the current result when navigating the result list.
+     In addition, pressing <span 
+class="cmtt-10">enter </span>while hearing the snippet automatically opens
+     the result, thereby obviating the need to explicitly navigate among the
+     various links in the snippet.</dd></dl>
+   <!--l. 816--><div class="crosslinks"><p class="noindent">[<a 
+href="paperse7.html" >next</a>] [<a 
+href="paperse6.html" >prev</a>] [<a 
+href="paperse6.html#tailpaperse6.html" >prev-tail</a>] [<a 
+href="papersu13.html" >front</a>] [<a 
+href="paperse6.html#papersu13.html" >up</a>] </p></div>
+<!--l. 816--><p class="indent" >   <a 
+ id="tailpapersu13.html"></a>  
+</body></html> 

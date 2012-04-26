@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>ARIA Support In Traditional Screen Readers</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,uni-html4,3,sections+,next --> 
+<meta name="src" content="paper.tex"> 
+<meta name="date" content="2012-04-26 11:35:00"> 
+<link rel="stylesheet" type="text/css" href="paper.css"> 
+</head><body 
+>
+   <!--l. 578--><div class="crosslinks"><p class="noindent">[<a 
+href="paperli2.html" >next</a>] [<a 
+href="paperse5.html" >prev</a>] [<a 
+href="paperse5.html#tailpaperse5.html" >prev-tail</a>] [<a 
+href="#tailpaperli1.html">tail</a>] [<a 
+href="paperse5.html#paperli1.html" >up</a>] </p></div>
+   <h4 class="likesubsectionHead"><a 
+href="paper.html#QQ2-19-20" id="x19-180005">ARIA Support In Traditional Screen Readers</a></h4>
+<!--l. 580--><p class="noindent" >ARIA support in a traditional screen reader requires the following actors to
+collaborate:
+<!--l. 583--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="cmbx-10">Web App</span> </dt><dd 
+class="description">Making a web app accessible with ARIA requires the collaboration
+     of the web application &#8212; in this case, that translates to web authors
+     adhering to good authoring practice.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Browser</span> </dt><dd 
+class="description">The   browser   needs   to   consume   ARIA   markup   and   expose
+     platform-specific   accessibility   objects   to   native   screen   readers   &#8212;
+     HTML  elements  augmented  with  ARIA  roles  get  mapped  to  their
+     platform-equivalent widgets. Events on these generic HTML objects need
+     to get translated into platform-specific events on the accessible objects. For
+     features that have no corresponding platform equivalent, browsers need to
+     expose custom details.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Platform</span> </dt><dd 
+class="description">The platform needs to propagate these objects and events to the
+     adaptive technology (AT).
+     </dd><dt class="description">
+<span 
+class="cmbx-10">AT</span> </dt><dd 
+class="description">Adaptive technology needs to generate the appropriate feedback for these
+     objects and events. In many cases, widgets built using ARIA may not
+     resemble  native  platform  widgets  in  detailed  form  and  function,  even
+     though they user the same roles. As a result, describing them may require
+     a lot of custom handling.</dd></dl>
+<!--l. 606--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
+                                                                  
+
+                                                                  
+<a 
+ id="x19-180013"></a>
+                                                                  
+
+                                                                  
+<div class="center" 
+>
+<!--l. 607--><p class="noindent" >
+<!--l. 608--><p class="noindent" ><img 
+src="paper5x.png" alt="Web  Application
+
+
+
+
+
+
+
+  Web Browser
+
+
+
+
+
+
+    Platform
+
+
+
+
+ Screen Reader  " >
+HTML DOMAccessibility APIAccessibility API</div>
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;3: </span><span  
+class="content">W3C&#x00A0;ARIA in a traditional screen reader.</span></div><!--tex4ht:label?: x19-180013 -->
+                                                                  
+
+                                                                  
+<!--l. 620--><p class="indent" >   </div><hr class="endfigure">
+                                                                  
+
+                                                                  
+   <!--l. 622--><div class="crosslinks"><p class="noindent">[<a 
+href="paperli2.html" >next</a>] [<a 
+href="paperse5.html" >prev</a>] [<a 
+href="paperse5.html#tailpaperse5.html" >prev-tail</a>] [<a 
+href="paperli1.html" >front</a>] [<a 
+href="paperse5.html#paperli1.html" >up</a>] </p></div>
+<!--l. 622--><p class="indent" >   <a 
+ id="tailpaperli1.html"></a>  
+</body></html> 

@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>Exposing Accessibility APIs</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,uni-html4,3,sections+,next --> 
+<meta name="src" content="paper.tex"> 
+<meta name="date" content="2012-04-26 11:35:00"> 
+<link rel="stylesheet" type="text/css" href="paper.css"> 
+</head><body 
+>
+   <!--l. 703--><div class="crosslinks"><p class="noindent">[<a 
+href="papersu13.html" >next</a>] [<a 
+href="paperli2.html" >prev</a>] [<a 
+href="paperli2.html#tailpaperli2.html" >prev-tail</a>] [<a 
+href="#tailpaperse6.html">tail</a>] [<a 
+href="paper.html#paperse6.html" >up</a>] </p></div>
+   <h3 class="sectionHead"><span class="titlemark">6   </span> <a 
+href="paper.html#QQ2-21-24" id="x21-200006">Exposing Accessibility APIs</a></h3>
+<!--l. 705--><p class="noindent" >As covered in sec.&#x00A0;<a 
+href="papersu2.html#x4-30001.2">1.2<!--tex4ht:ref: sec:srd-chromeos --></a>, ChromeVox is just another web application on Chrome&#x00A0;OS &#8212;
+see fig.&#x00A0;<a 
+href="papersu2.html#x4-30012">2<!--tex4ht:ref: fig:screen-reader-chromeos --></a>. It injects accessibility affordances for blind and low-vision users into all
+running web applications as part of its default behavior. In addition, ChromeVox
+exposes a light-weight API that allows web applications to customize the overall
+accessibility experience for a given application. This API allows us to experiment
+with new strategies for adding accessibility to web applications that stretch the limits
+of today&#8217;s web platform. In this section, we&#8217;ll illustrate this with a concrete
+example.
+<!--l. 717--><p class="indent" >   The word processor in Google&#x00A0;Docs is designed to provide a desktop-like
+experience for WYSIWYGS text editing. A key design requirement was to enable
+collaboration across the web in all supported browser/OS combinations, and to
+enable reliable round-tripping of the document independent of browser differences in
+HTML serialization.
+<!--l. 724--><p class="indent" >   Google Docs achieves this by storing an in-memory model of the document
+content in JavaScript that is updated continuously in response to user input. As this
+model updates, the results are rendered to the visual display by appropriately
+updating the DOM, including drawing the visual caret and appropriately styling the
+presentation to match the user&#8217;s intent. Notice that in this implementation, the
+content being edited is not directly serialized in the HTML DOM; instead, the
+implementation uses an underlying Model, View, Controller (MVC) abstraction
+where the document model as encapsulated in the internal JavaScript data
+structures are continuously reflected in the view layer represented by the
+HTML DOM. The controller, which handles user input is implemented as
+an off-screen text input field that the user never sees; all aspects of user
+interaction are managed by the web application itself, rather than relying on the
+browser.
+<!--l. 740--><p class="indent" >   The MVC design pattern adopted by Google Docs enables users on different
+browser/OS combinations to collaborate effectively without differences in HTML
+serialization among browsers affecting the ability to effectively round-trip content.
+Thus, this word-processor as designed has a number of advantages over more
+traditional approaches of using HTML&#8217;s <span 
+class="cmsl-10">content-editable </span>feature. However, it
+presents an interesting challenge to traditional approaches to access-enabling web
+applications that rely solely on the document markup containing the needed
+accessibility affordances. To illustrate, access technologies like screen readers watch
+for the insertion caret when producing spoken feedback within a word processor.
+However, in the described implementation, the insertion caret is drawn to the screen
+by the web application along with the stylized visual presentation of the content
+being authored; the controller that receives user input is itself never rendered to the
+                                                                  
+
+                                                                  
+screen.
+<!--l. 758--><p class="indent" >   To help provide better accessibility in web applications that extend the browser
+platform, ChromeVox exposes a light-weight API that enables Web developers affect
+the following aspects of the overall accessibility experience:
+<!--l. 763--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="cmbx-10">Speak</span> </dt><dd 
+class="description">Specify feedback to be spoken using ChromeVox&#8217; speech abstraction
+     layer.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Earcons</span> </dt><dd 
+class="description">Provide auditory icons that can be played to augment the overall
+     experience.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Synchronize</span> </dt><dd 
+class="description">Map the <span 
+class="cmti-10">current </span>position of the ChromeVox <span 
+class="cmtt-10">NavigationManager</span>
+     to the navigation position maintained by the application.</dd></dl>
+<!--l. 771--><p class="indent" >   The Google&#x00A0;Docs product uses this API to implement an accessible word
+processor in conjunction with ChromeVox. The same techniques are used by Google
+Spreadsheets; this provides an end-user accessibility experience that closely matches
+and will eventually surpass accessibility that users have come to expect in desktop
+applications.
+<!--l. 778--><p class="noindent" >
+   <div class="subsectionTOCS">
+   &#x00A0;<span class="subsectionToc" >6.1 <a 
+href="papersu13.html#x22-210006.1">Leveraging ChromeVox API</a></span>
+   </div>
+                                                                  
+
+                                                                  
+   <!--l. 816--><div class="crosslinks"><p class="noindent">[<a 
+href="papersu13.html" >next</a>] [<a 
+href="paperli2.html" >prev</a>] [<a 
+href="paperli2.html#tailpaperli2.html" >prev-tail</a>] [<a 
+href="paperse6.html" >front</a>] [<a 
+href="paper.html#paperse6.html" >up</a>] </p></div>
+<!--l. 816--><p class="indent" >   <a 
+ id="tailpaperse6.html"></a>  
+</body></html> 

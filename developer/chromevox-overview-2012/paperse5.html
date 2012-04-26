@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>Accessing Rich Internet Applications</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,uni-html4,3,sections+,next --> 
+<meta name="src" content="paper.tex"> 
+<meta name="date" content="2012-04-26 11:35:00"> 
+<link rel="stylesheet" type="text/css" href="paper.css"> 
+</head><body 
+>
+   <!--l. 537--><div class="crosslinks"><p class="noindent">[<a 
+href="paperli1.html" >next</a>] [<a 
+href="papersu12.html" >prev</a>] [<a 
+href="papersu12.html#tailpapersu12.html" >prev-tail</a>] [<a 
+href="#tailpaperse5.html">tail</a>] [<a 
+href="paper.html#paperse5.html" >up</a>] </p></div>
+   <h3 class="sectionHead"><span class="titlemark">5   </span> <a 
+href="paper.html#QQ2-18-19" id="x18-170005">Accessing Rich Internet Applications</a></h3>
+<!--l. 539--><p class="noindent" >The move to Asynchronous JavaScript and XML (AJAX-style) web pages led to
+screen readers losing ground with respect to making interactive web content
+accessible &#8212; with JavaScript code now defining the behavior of elements on the
+page, screen readers could no longer infer the interaction semantics of user
+interface controls on the page just from the HTML. Access to Rich Internet
+Applications (W3C&#x00A0;ARIA <span class="cite">[<a 
+href="paperli3.html#Xw3c:aria">13</a>,&#x00A0;<a 
+href="paperli3.html#Xschwerdtfeger2006rar">16</a>]</span>) helps adaptive technologies regain much
+of this lost ground by adding the following authoring features to HTML
+content:
+<!--l. 550--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="cmbx-10">Role</span> </dt><dd 
+class="description">Used to annotate HTML elements with interaction semantics, <span 
+class="cmti-10">e.g.</span>,&#x00A0;<span 
+class="cmsl-10">menu</span>.
+     This avoids adaptive technologies having to discover these semantics by
+     examining the DOM (which is difficult and error-prone) or by examining
+     JavaScript code (which is impossible, as JavaScript is Turing-complete).
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Properties</span> </dt><dd 
+class="description">Additional properties, <span 
+class="cmti-10">e.g.</span>,&#x00A0;the range of admissible values for a
+     <span 
+class="cmsl-10">slider </span>along with its current value.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">State</span> </dt><dd 
+class="description">The  current  interaction  state  of  controls.  These  can  be  dynamically
+     updated by JavaScript code in response to changes <span 
+class="cmti-10">e.g.</span>,&#x00A0;to indicate that
+     a toggle button is <span 
+class="cmsl-10">pressed</span>.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Live Regions</span> </dt><dd 
+class="description">Attributes to indicate that a piece of content on a web page
+     may be updated dynamically; this enables conformant browsers to raise
+     an event informing adaptive technologies of changes to portions of a web
+     page. A screen reader can then respond by speaking updated content on
+     the page.</dd></dl>
+<!--l. 567--><p class="indent" >   W3C&#x00A0;ARIA is now a Candidate Recommendation (CR) and is supported to
+varying degrees by today&#8217;s modern browser and screen reader combinations.
+ChromeVox implements a large percentage of the ARIA specification, and it is our
+goal to implement all aspects of the final W3C Recommendation. Below, we illustrate
+the differences that arise when implementing W3C&#x00A0;ARIA within a screen reader
+built as a web application versus a traditional screen reader. For a high-level
+overview, see figures fig.&#x00A0;<a 
+href="paperli1.html#x19-180013">3<!--tex4ht:ref: fig:srd-aria --></a> and fig.&#x00A0;<a 
+href="paperli2.html#x20-190014">4<!--tex4ht:ref: fig:chromevox-aria --></a>
+                                                                  
+
+                                                                  
+<!--l. 578--><p class="noindent" >
+   <div class="likesubsectionTOCS">
+   &#x00A0;<span class="likesubsectionToc" ><a 
+href="paperli1.html#x19-180005">ARIA Support In Traditional Screen Readers</a></span>
+<br />   &#x00A0;<span class="likesubsectionToc" ><a 
+href="paperli2.html#x20-190005">ARIA In ChromeVox</a></span>
+   </div>
+
+                                                                  
+
+                                                                  
+   <!--l. 703--><div class="crosslinks"><p class="noindent">[<a 
+href="paperli1.html" >next</a>] [<a 
+href="papersu12.html" >prev</a>] [<a 
+href="papersu12.html#tailpapersu12.html" >prev-tail</a>] [<a 
+href="paperse5.html" >front</a>] [<a 
+href="paper.html#paperse5.html" >up</a>] </p></div>
+<!--l. 703--><p class="indent" >   <a 
+ id="tailpaperse5.html"></a>  
+</body></html> 

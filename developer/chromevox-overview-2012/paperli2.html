@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>ARIA In ChromeVox</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,uni-html4,3,sections+,next --> 
+<meta name="src" content="paper.tex"> 
+<meta name="date" content="2012-04-26 11:35:00"> 
+<link rel="stylesheet" type="text/css" href="paper.css"> 
+</head><body 
+>
+   <!--l. 622--><div class="crosslinks"><p class="noindent">[<a 
+href="paperse6.html" >next</a>] [<a 
+href="paperli1.html" >prev</a>] [<a 
+href="paperli1.html#tailpaperli1.html" >prev-tail</a>] [<a 
+href="#tailpaperli2.html">tail</a>] [<a 
+href="paperse5.html#paperli2.html" >up</a>] </p></div>
+   <h4 class="likesubsectionHead"><a 
+href="paper.html#QQ2-20-22" id="x20-190005">ARIA In ChromeVox</a></h4>
+<!--l. 624--><p class="noindent" >The work on ARIA started sometime in 2003, with early working drafts published in
+2006. ARIA was first shown to be a viable solution when the desired behavior was
+implemented in Fire&#x00A0;Vox<span class="cite">[<a 
+href="paperli3.html#Xchen2006clc">3</a>,&#x00A0;<a 
+href="paperli3.html#Xthiessen2007ajax">17</a>]</span>, a Firefox extension that turned Firefox into a
+self-voicing browser. In this instance, a complete implementation was possible
+without the multiple actors enumerated in the previous section needing to
+collaborate. Because FireVox was a Firefox extension that handled all aspects of the
+auditory user interface, it could directly respond to the ARIA markup present in the
+HTML&#x00A0;DOM. The ARIA implementation in ChromeVox is inspired by the Fire&#x00A0;Vox
+implementation.
+<!--l. 636--><p class="indent" >   The ChromeVox implementation of ARIA is achieved in the following steps. To
+deliver effective access to rich web applications, we only need the collaboration of the
+web application author.
+<!--l. 641--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="cmbx-10">Mapping</span> </dt><dd 
+class="description">Map controls identified via the various ARIA <span 
+class="cmsl-10">role  </span>values to their
+     corresponding widget types.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Labels</span> </dt><dd 
+class="description">W3C&#x00A0;ARIA defines a number of new authoring idioms that enable
+     web developers to more flexibly label controls &#8212; this sets up the right
+     associations so that the user hears the relevant label text spoken when
+     navigating the page.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Configure</span> </dt><dd 
+class="description">Process attributes in the HTML&#x00A0;DOM that define <span 
+class="cmti-10">properties  </span>of
+     user interface controls such as sliders.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Listeners</span> </dt><dd 
+class="description">Register <span 
+class="cmti-10">listeners </span>that process updates to the dynamic attributes
+     that reflect the <span 
+class="cmsl-10">state </span>of user interface controls.
+     </dd><dt class="description">
+<span 
+class="cmbx-10">Live Regions</span> </dt><dd 
+class="description">Attach JavaScript handlers that process updates to <span 
+class="cmsl-10">live</span><span 
+class="cmsl-10">&#x00A0;regions</span>
+     to produce appropriate spoken feedback in response to dynamic updates
+     to page content.</dd></dl>
+<!--l. 659--><p class="indent" >   Notice that the implementation of ARIA in ChromeVox is significantly simpler
+than that observed with traditional screenreaders. The simplicity can be attributed
+to the following factors:
+                                                                  
+
+                                                                  
+     <ul class="itemize1">
+     <li class="itemize">Coordinating among fewer actors.
+     </li>
+     <li class="itemize">No  impedance  mismatch  in  the  programming  model  used  by  the  web
+     application being accessed and the screenreader that is used to make the
+     application accessible &#8212; they&#8217;re both web applications.</li></ul>
+<!--l. 672--><p class="indent" >   As shall be seen in the next section, this lack of impedance mismatch enables us
+to push the envelope with respect to implementing accessible web applications, and
+in the process discover new programming idioms that once proven could accelerate
+the coming of fully accessible web applications. One reason for the present lack of
+effective accessibility to web applications is the mismatch in the speed with which the
+web platform is itself evolving as against the pace of evolution seen in traditional
+desktop screen readers. The road to ARIA has been long and complex; we hope that
+in the future, the field of adaptive technology will come to see the same rapid
+pace of innovation that mainstream users on the web have experienced to
+date.
+<!--l. 686--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
+                                                                  
+
+                                                                  
+<a 
+ id="x20-190014"></a>
+                                                                  
+
+                                                                  
+<div class="center" 
+>
+<!--l. 687--><p class="noindent" >
+<!--l. 688--><p class="noindent" ><img 
+src="paper6x.png" alt="Web  Application
+
+
+
+
+
+
+
+  Web Browser
+
+
+
+
+
+
+   ChromeVox  " >
+HTML DOMHTML DOMHTML DOMJS</div>
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;4: </span><span  
+class="content">W3C&#x00A0;ARIA in ChromeVox.</span></div><!--tex4ht:label?: x20-190014 -->
+                                                                  
+
+                                                                  
+<!--l. 701--><p class="indent" >   </div><hr class="endfigure">
+   <!--l. 703--><div class="crosslinks"><p class="noindent">[<a 
+href="paperse6.html" >next</a>] [<a 
+href="paperli1.html" >prev</a>] [<a 
+href="paperli1.html#tailpaperli1.html" >prev-tail</a>] [<a 
+href="paperli2.html" >front</a>] [<a 
+href="paperse5.html#paperli2.html" >up</a>] </p></div>
+<!--l. 703--><p class="indent" >   <a 
+ id="tailpaperli2.html"></a>  
+</body></html> 

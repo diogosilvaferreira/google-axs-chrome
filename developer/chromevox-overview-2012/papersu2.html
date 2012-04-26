@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>Architecture: ChromeVox</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,uni-html4,3,sections+,next --> 
+<meta name="src" content="paper.tex"> 
+<meta name="date" content="2012-04-26 11:35:00"> 
+<link rel="stylesheet" type="text/css" href="paper.css"> 
+</head><body 
+>
+   <!--l. 172--><div class="crosslinks"><p class="noindent">[<a 
+href="paperse2.html" >next</a>] [<a 
+href="papersu1.html" >prev</a>] [<a 
+href="papersu1.html#tailpapersu1.html" >prev-tail</a>] [<a 
+href="#tailpapersu2.html">tail</a>] [<a 
+href="paperse1.html#papersu2.html" >up</a>] </p></div>
+   <h4 class="subsectionHead"><span class="titlemark">1.2   </span> <a 
+href="paper.html#QQ2-4-4" id="x4-30001.2">Architecture: ChromeVox</a></h4>
+<!--l. 174--><p class="noindent" >Chrome&#x00A0;OS is an operating system created by Google. A key insight behind its
+design is that it is now possible to do most (if not all) of one&#8217;s work within a web
+browser. Building on this insight, Chrome&#x00A0;OS machines boot up within seconds of
+turning on and immediately launch Chrome; from that point onwards all user
+interaction happens within the browser and all applications are implemented as web
+applications.
+<!--l. 178--><p class="indent" >   We created ChromeVox to be a screen reader built into Chrome&#x00A0;OS which led to
+the following design requirements:
+     <ul class="itemize1">
+     <li class="itemize">All applications such as word-processors, mail readers and spreadsheets
+     are implemented using HTML, CSS, and JavaScript.
+     </li>
+     <li class="itemize">All user interaction happens within the web browser.
+     </li>
+     <li class="itemize">The screen reader needs to respond to user interaction within all browser
+     tabs. Though the user is accessing web content the majority of the time,
+     the screen reader must still provide access to everything else on the system
+     &#8212; toolbars, menus, and dialogs that are part of Chrome and Chrome&#x00A0;OS
+     and which might not be implemented in the web programming model.
+     </li>
+     <li class="itemize">Alternative  feedback  such  as  speech  feedback  needs  to  be  either
+     implemented  using  web  technology,  or  provided  on  the  platform  and
+     accessed via web APIs.</li></ul>
+<!--l. 198--><p class="indent" >   Since all applications on Chrome&#x00A0;OS are <span 
+class="cmti-10">web </span>applications running in Chrome,
+and since an increasing proportion of the platform&#8217;s user interface is itself
+implemented in the web programming model, we chose to do away with the
+traditional metaphor of applications communicating via an accessibility API
+intermediated by the operating system. Instead, ChromeVox uses the HTML
+Document Object Model (DOM) as the means of communicating with web
+applications running within Chrome&#x00A0;<a 
+href="#x4-30012">2<!--tex4ht:ref: fig:screen-reader-chromeos --></a>.
+<!--l. 207--><p class="indent" >   For the small portion of the user interface that is not implemented in HTML, we
+expose these interaction elements to JavaScript via a light-weight custom interface.
+User interface elements in the &#8220;chrome of Chrome&#8221;, <span 
+class="cmti-10">e.g.</span>,&#x00A0;toolbar buttons, menus,
+and the address bar, raise events in response to user interaction that in turn produce
+                                                                  
+
+                                                                  
+appropriate alternative feedback through ChromeVox. But as HTML evolves to
+support ever-richer user interaction, we are seeing some of these native user interface
+components migrating to a web interaction model, possibly obviating these additional
+APIs over time.
+<!--l. 219--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
+                                                                  
+
+                                                                  
+<a 
+ id="x4-30012"></a>
+                                                                  
+
+                                                                  
+<div class="center" 
+>
+<!--l. 220--><p class="noindent" >
+<!--l. 221--><p class="noindent" ><img 
+src="paper1x.png" alt="Docs            Email             ChromeVox
+
+
+
+
+
+
+             HTML   DOM
+
+
+
+
+                Chrome
+
+
+
+
+              Chrome OS  " >
+WebAppWebAppWebAppBrowserNative Code</div>
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;2: </span><span  
+class="content">Web Applications including ChromeVox communicate with Chrome
+via the HTML DOM.</span></div><!--tex4ht:label?: x4-30012 -->
+                                                                  
+
+                                                                  
+<!--l. 239--><p class="indent" >   </div><hr class="endfigure">
+   <!--l. 242--><div class="crosslinks"><p class="noindent">[<a 
+href="paperse2.html" >next</a>] [<a 
+href="papersu1.html" >prev</a>] [<a 
+href="papersu1.html#tailpapersu1.html" >prev-tail</a>] [<a 
+href="papersu2.html" >front</a>] [<a 
+href="paperse1.html#papersu2.html" >up</a>] </p></div>
+<!--l. 242--><p class="indent" >   <a 
+ id="tailpapersu2.html"></a>  
+</body></html> 

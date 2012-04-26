@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>Architecture: Screen Readers</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,uni-html4,3,sections+,next --> 
+<meta name="src" content="paper.tex"> 
+<meta name="date" content="2012-04-26 11:35:00"> 
+<link rel="stylesheet" type="text/css" href="paper.css"> 
+</head><body 
+>
+   <!--l. 86--><div class="crosslinks"><p class="noindent">[<a 
+href="papersu2.html" >next</a>] [<a 
+href="paperse1.html" >prev</a>] [<a 
+href="paperse1.html#tailpaperse1.html" >prev-tail</a>] [<a 
+href="#tailpapersu1.html">tail</a>] [<a 
+href="paperse1.html#papersu1.html" >up</a>] </p></div>
+   <h4 class="subsectionHead"><span class="titlemark">1.1   </span> <a 
+href="paper.html#QQ2-3-2" id="x3-20001.1">Architecture: Screen Readers</a></h4>
+<!--l. 89--><p class="noindent" >First, we briefly outline the architecture of adaptive technologies such as screen
+readers found on traditional operating systems. Here are the design requirements and
+constraints under which these were designed:
+     <ul class="itemize1">
+     <li class="itemize">Applications  such  as  word  processors,  spreadsheets  and  mail  readers
+     implement platform-specific APIs that provide accessible information and
+     control of their user interfaces.
+     </li>
+     <li class="itemize">Adaptive technologies run as separate processes and communicate with
+     applications using these APIs.
+     </li>
+     <li class="itemize">These adaptive technologies expose commands and capabilities to users,
+     and provide alternative feedback via text-to-speech or braille.
+     </li>
+     <li class="itemize">When generic platform APIs fall short, many applications expose custom
+     interfaces that adaptive technology can leverage to create a customized
+     experience for that particular application. In other cases, some adaptive
+     technology may resort to hacks including &#8220;screen scraping&#8221; to provide a
+     more accessible experience for users.</li></ul>
+<!--l. 111--><p class="indent" >   Microsoft Windows accessibility APIs include Microsoft Active Accessibility
+(MSAA), which was the original accessibility API for Windows; IAccessible2, an
+extension to MSAA developed by the Linux Foundation; and UI Automation, a
+newer API from Microsoft. All of these Windows APIs are Component Object Model
+(COM) interfaces, which are supported in almost every major programming
+language. Mac OS X and iOS support the NSAccessibility protocol, which is available
+                                                                  
+
+                                                                  
+to any application built using the Objective-C Cocoa APIs, and a bridge between
+NSAccessibility and Java&#8217;s accessibility API is built-in. Most Linux distributions
+support the GNOME Accessibility Toolkit (ATK), which was developed jointly with
+the IAccessible2 API for Windows and shares a compatible semantic programming
+model. Adaptive technologies such as screen readers that leverage these APIs to
+provide accessibility may be provided by the operating system or by third
+parties.
+<!--l. 130--><p class="indent" >   In this environment, an <span 
+class="cmti-10">accessible </span>application is one that implements the
+platform-specific accessibility API within its user interface. Because native operating
+system widgets and many other user interface toolkits already implement the
+accessibility APIs, applications built exclusively using these widgets may be
+accessible without any extra work on the part of the application developer.
+However, such an application may still be more difficult for an adaptive
+technology user to work with if the conceptual design of the application made
+assumptions, <span 
+class="cmti-10">e.g.</span>,&#x00A0;that the user can see the spatial layout of controls. Thus, the
+application <span 
+class="cmti-10">publishes </span>information that is of interest to adaptive technology,
+<span 
+class="cmti-10">e.g.</span>,&#x00A0;the label of the currently focused widget. Screen Readers <span 
+class="cmti-10">subscribe </span>to
+this information via the platform accessibility API&#x00A0;<a 
+href="#x3-20011">1<!--tex4ht:ref: fig:screen-reader-win-macos --></a>. When working with
+an <span 
+class="cmti-10">accessible </span>application, the screen reader receives notifications via the
+accessibility API and subsequently provides appropriate alternative feedback,
+<span 
+class="cmti-10">e.g.</span>,&#x00A0;by speaking the label of the widget that is focused. Additionally, adaptive
+technologies like screen readers can query application state and in certain cases
+even drive the application, <span 
+class="cmti-10">e.g.</span>,&#x00A0;by setting focus to a given user interface
+control.
+<!--l. 153--><p class="indent" >   <hr class="figure"><div class="figure" 
+>
+                                                                  
+
+                                                                  
+<a 
+ id="x3-20011"></a>
+                                                                  
+
+                                                                  
+<div class="center" 
+>
+<!--l. 154--><p class="noindent" >
+<!--l. 155--><p class="noindent" ><img 
+src="paper0x.png" alt="Docs               Slides               Email
+
+
+
+
+                 Platform
+
+
+
+
+               Screen Reader  " >
+<span 
+class="cmr-9">Publish</span><span 
+class="cmr-9">Publish</span><span 
+class="cmr-9">Publish</span><span 
+class="cmr-9">Subscribe</span></div>
+<br /> <div class="caption" 
+><span class="id">Figure&#x00A0;1:  </span><span  
+class="content">Applications  communicate  bidirectionally  to  a  screen  reader  via
+platform accessibility APIs.</span></div><!--tex4ht:label?: x3-20011 -->
+                                                                  
+
+                                                                  
+<!--l. 170--><p class="indent" >   </div><hr class="endfigure">
+                                                                  
+
+                                                                  
+   <!--l. 172--><div class="crosslinks"><p class="noindent">[<a 
+href="papersu2.html" >next</a>] [<a 
+href="paperse1.html" >prev</a>] [<a 
+href="paperse1.html#tailpaperse1.html" >prev-tail</a>] [<a 
+href="papersu1.html" >front</a>] [<a 
+href="paperse1.html#papersu1.html" >up</a>] </p></div>
+<!--l. 172--><p class="indent" >   <a 
+ id="tailpapersu1.html"></a>  
+</body></html> 

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>Overview: Chrome Extensions</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html,uni-html4,3,sections+,next --> 
+<meta name="src" content="paper.tex"> 
+<meta name="date" content="2012-04-26 11:35:00"> 
+<link rel="stylesheet" type="text/css" href="paper.css"> 
+</head><body 
+>
+   <!--l. 242--><div class="crosslinks"><p class="noindent">[<a 
+href="paperse3.html" >next</a>] [<a 
+href="papersu2.html" >prev</a>] [<a 
+href="papersu2.html#tailpapersu2.html" >prev-tail</a>] [<a 
+href="#tailpaperse2.html">tail</a>] [<a 
+href="paper.html#paperse2.html" >up</a>] </p></div>
+   <h3 class="sectionHead"><span class="titlemark">2   </span> <a 
+href="paper.html#QQ2-5-6" id="x5-40002">Overview: Chrome Extensions</a></h3>
+<!--l. 244--><p class="noindent" >ChromeVox is built as a Chrome extension &#8212; see <span class="cite">[<a 
+href="paperli3.html#Xgoogle-chrome-extensions">9</a>]</span>. A detailed explanation of
+Chrome extensions is beyond the scope of this paper; however, we briefly
+outline the design of Chrome extensions in the context of the ChromeVox
+implementation.
+<!--l. 250--><p class="indent" >   A Chrome <span 
+class="cmti-10">extension </span>is a zipped bundle of files&#8212; HTML, CSS, JavaScript,
+images, and anything else needed by the extension &#8212; that adds functionality to the
+Google Chrome browser. Chrome extensions were inspired by Mozilla Firefox add-ons
+&#8212; in particular Greasemonkey, a Firefox add-on that made it easy to inject custom
+JavaScript into specific webpages &#8212; see&#x00A0;<span class="cite">[<a 
+href="paperli3.html#Xpilgrim2005ght">12</a>]</span>. A Chrome extension consists of
+primarily two parts: injected content and background content. The injected content
+of an extension consists of style sheets and JavaScript code that can be added to
+every running page. Content scripts run in a separate JavaScript context called an
+<span 
+class="cmti-10">isolated world </span>that does not share any global state with the scripts running in the
+page, while still having access to the DOM. Note that a content script functions <span 
+class="cmti-10">not</span>
+as part of the extension that it was packaged with, but as part of the loaded page
+into which it is <span 
+class="cmti-10">injected</span>. Background content consists of custom UI that
+the extension wants to show (built like any web app, with HTML, CSS,
+and JavaScript) and purely background scripts that are used to coordinate
+between different pages or keep track of global state. JavaScript running in the
+background portion of an extension can access some APIs that are not normally
+available to web pages, including information about bookmarks and tabs,
+speech APIs, and the ability to make web requests without the same-origin
+restriction. Content scripts and background scripts communicate using message
+passing.
+<!--l. 275--><p class="indent" >   A Chrome extension can provide any or all of the following types of
+functionality:
+     <ul class="itemize1">
+     <li class="itemize">Web mashups that present an optimized interface to oft-performed tasks.
+     </li>
+     <li class="itemize">Additional  user  interface  affordances  such  as  browser  action  icons  for
+     performing common actions.
+     </li>
+     <li class="itemize">New behaviors for web pages and applications in the browser.</li></ul>
+                                                                  
+
+                                                                  
+   <!--l. 286--><div class="crosslinks"><p class="noindent">[<a 
+href="paperse3.html" >next</a>] [<a 
+href="papersu2.html" >prev</a>] [<a 
+href="papersu2.html#tailpapersu2.html" >prev-tail</a>] [<a 
+href="paperse2.html" >front</a>] [<a 
+href="paper.html#paperse2.html" >up</a>] </p></div>
+<!--l. 286--><p class="indent" >   <a 
+ id="tailpaperse2.html"></a>  
+</body></html> 
