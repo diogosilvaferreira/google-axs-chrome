@@ -1,0 +1,23 @@
+Sandbar: height 59, bkgrnd f1f1f1
+Sandbar lower border: e5e5e5
+
+  Left: 34
+
+  Dogfood: top margin 8 
+
+  Search text: top margin 13, left margin 52, height 27, border d9d9d9
+
+  Search button: top margin 13, left margin 17, border 4b8df7
+                 inner border 4d90fe, or white when focused
+
+  Account: left margin 20, width 120
+
+  
+
+Mailbar: height 58
+Mailbar lower border: e5e5e5
+
+  Mail: dd4b39;  
+
+left margin: 34
+

@@ -1,0 +1,171 @@
+<html>
+<head>
+<link rel="stylesheet" href="gmail_mock.css" type="text/css" />
+<link rel="stylesheet" href="input_speech.css" type="text/css" />
+<script src="gmail_mock.js"></script>
+</head>
+<body onload="load()">
+
+<div id="main">
+  <div id="sandbar">
+    <button id="dogfood" aria-label="Google">
+    </button>
+    <input id="search_text" title="Search your mail">
+    <div id="search_button_wrapper">
+      <button id="search_button" title="Search">
+      </button>
+    </div>
+    <div id="account">
+      user@google.com
+    </div>
+  </div>
+
+  <div id="sidebar">
+    <div id="sidebar_mailbar">
+      <button id="mail">
+        Mail &#x25be;
+      </button>
+    </div>
+
+    <div id="compose_button_wrapper"><button id="compose_button">COMPOSE</button></div>
+
+    <div id="mailboxes" role="listbox" aria-label="Mailboxes">
+      <div class="active" role="option" tabindex="0">Inbox</div>
+      <div role="option" tabindex="-1">Important</div>
+      <div role="option" tabindex="-1">Sent mail</div>
+      <div role="option" tabindex="-1">Drafts</div>
+      <div role="option" tabindex="-1">All Mail</div>
+    </div>
+
+    <hr>
+
+    <h3>Chat and SMS</h3>
+
+    <input id="searchchat" placeholder="Search, chat, or SMS">
+
+    <div id="chatcontacts" role="listbox" title="Chat contacts">
+      <div role="option" tabindex="0"><img src="online.png" alt="Online"> Larry</div>
+      <div role="option" tabindex="-1"><img src="online.png" alt="Online"> Sergey</div>
+      <div role="option" tabindex="-1"><img src="online.png" alt="Online"> Eric</div>
+    </div>
+
+  </div>
+
+  <div id="content">
+
+    <div id="content_mailbar" role="toolbar" aria-label="Message Thread Actions">
+
+      <button id="checkall" title="Check all"> <img src="checkall.png"> </button>
+
+      <button id="archive" title="Archive"><img src="archive.png"></button>
+      <button id="spam" title="Spam"><img src="spam.png"></button>
+      <button id="delete" title="Delete"><img src="delete.png"></button>
+
+      <button id="moveto" title="Move To"><img src="moveto.png"></button>
+      <button id="labels" title="Labels"><img src="labels.png"></button>
+
+      <button id="more">
+        More &#x25be;
+      </button>
+
+      <div id="page">
+        1-25 of 42
+      </div>
+    </div>
+
+    <div id="threadlist_wrapper">
+
+      <table id="threadlist" role="listbox" title="Thread View">
+      </table>
+
+    </div>
+
+    <div id="thread_wrapper" style="display:none" title="Conversation View">
+
+      <div class="message">
+        <h3 id="subject" aria-live="polite">
+          Subject
+        </h3>
+
+        <div class="message">
+          <li id="message1" tabindex="-1" class="usericon">
+            <span id="description1" class="screen_reader_only"></span>
+            <img src="usericon.png" alt="">
+          </li>
+          <div class="messagemain" role="document">
+            <div class="messageheader">
+              <span class="sender" id="sender">sender</span>
+              <span class="date" id="date">date</span>
+            </div>
+            <div class="messageto">
+              to you
+            </div>
+            <div id="body" class="messagebody">
+              Body
+            </div>
+          </div>
+        </div>
+
+        <div class="message">
+          <li id="message2" tabindex="-1" class="usericon">
+            <span id="description2" class="screen_reader_only"></span>
+            <img src="usericon.png" alt="">
+          </li>
+          <div class="messagemain" role="document">
+            <div class="messageheader">
+              <span class="sender">me</span>
+              <span class="date">Dec 16</span>
+            </div>
+            <div class="messageto">
+              to <span id="sender2">you</span>
+            </div>
+            <div class="messagebody">
+              <div>Dear <span id="sender3">you</span>,</div>
+              <div>Thank you very much for the feedback.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div id="mic_wrap"></div>
+<img id="mic_glow" src="input_speech_glow.png">
+<img id="mic_normal" src="input_speech.png">
+<img id="mic_recording" src="input_speech_recording.png">
+
+<script>
+
+window.addEventListener('click', function() {
+  window.setTimeout(function() {
+    document.getElementById('mic_recording').style['-webkit-transform'] = 'scale(2)';
+    document.getElementById('mic_recording').style.opacity = 1;
+  }, 0);
+  window.setTimeout(function() {
+    document.getElementById('mic_glow').style['-webkit-animation-name'] = 'mic_glow_anim';
+  }, 200);
+  window.setTimeout(function() {
+    document.getElementById('mic_recording').style.opacity = 0;
+    document.getElementById('mic_glow').style['-webkit-animation-name'] = '';
+    document.getElementById('mic_glow').style.opacity = 0;
+  }, 5000);
+  window.setTimeout(function() {
+    document.getElementById('mic_wrap').style.opacity = 0;
+    document.getElementById('mic_wrap').style['-webkit-transform'] = 'scale(0)';
+    document.getElementById('mic_normal').style.opacity = 0;
+    document.getElementById('mic_normal').style['-webkit-transform'] = 'scale(0)';
+  }, 5500);
+  window.setTimeout(function() {
+    window.parent.postMessage('speech_reco_done', '*');
+  }, 5500);
+
+}, true);
+
+</script>
+
+</body>
+</html>

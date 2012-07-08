@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="star_styles.css" />
+  <script src="events.js"></script>
+  <script>
+    var starNames = {
+      0: 'No rating',
+      1: '1 star: Bad!',
+      2: '2 stars: Meh',
+      3: '3 stars: OK',
+      4: '4 stars: Awesome!',
+      5: '5 stars: Fantastic!'
+    };
+
+    var current_stars = 0;
+
+    function setstars(stars) {
+      current_stars = stars;
+      for (var i = 1; i <= 5; i++) {
+        var elem = document.getElementById('star' + i);
+        if (stars >= i) {
+          elem.className = 'star_full';
+        } else {
+          elem.className = 'star_empty';
+        }
+      }
+      var cancel = document.getElementById('star0');
+      if (stars > 0) {
+        cancel.style.visibility = 'visible';
+      } else {
+        cancel.style.visibility = 'hidden';
+      }
+      var caption = document.getElementById('star_caption');
+      caption.innerText = starNames[stars];
+      var stars_elem = document.getElementById('stars');
+      stars_elem.setAttribute('aria-valuenow', stars);
+      stars_elem.setAttribute('aria-valuetext', starNames[stars]);
+    }
+
+    function starkey(event) {
+      if (event.keyCode == 37 && current_stars > 0) {
+        setstars(current_stars - 1);
+        return true;
+      } else if (event.keyCode == 39 && current_stars < 5) {
+        setstars(current_stars + 1);
+        return true;
+      }
+      return false;
+    }
+
+    function initstar(star) {
+      var name = 'star' + star;
+      var elem = document.getElementById(name);
+      callAddEventListener(elem, 'click', function() {
+        setstars(star);
+      });
+    }
+
+    function initstars() {
+      for (var i = 0; i <= 5; i++) {
+        initstar(i);
+      }
+      var stars = document.getElementById('stars');
+      callAddEventListener(stars, 'keydown', function(event) {
+        starkey(event);
+      });
+    }
+
+    function load() {
+      initstars();
+      setstars(0);
+    }
+  </script>
+</head>
+<body onload="load()">
+  <div>
+    <div id="stars" class="star_rating" tabindex="0" role="slider"
+         aria-valuemin="0" aria-valuemax="5" aria-valuenow="3">
+      <span id="star0" class="star_cancel"></span>
+      <span id="star1" class="star_full"></span>
+      <span id="star2" class="star_full"></span>
+      <span id="star3" class="star_full"></span>
+      <span id="star4" class="star_empty"></span>
+      <span id="star5" class="star_empty"></span>
+      <span id="star_caption" class="star_caption">No rating</span>
+    </div>
+    <div id="update" aria-live="polite"></div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<html>
+<head>
+<style>
+@import "http://fonts.googleapis.com/css?family=Open Sans:regular,semibold,italic,italicsemibold|Inconsolata&amp;v2";
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 26px;
+  color: #767676;
+}
+td {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 34px;
+  font-weight: bold;
+}
+table#wheel {
+  margin: 0;
+  padding: 0;
+  border-collapse: collapse;
+}
+td {
+  margin: 0;
+  padding: 0;
+  width: 1em;
+  height: 2em;
+  border: 5px solid #666;
+  text-align: center;
+  color: #000;
+}
+.top {
+  border-top: none;
+}
+.left {
+  border-left: none;
+}
+.right {
+  border-right: none;
+}
+.bottom {
+  border-bottom: none;
+}
+.empty {
+  background-color: #9f9;
+}
+.blink {
+}
+body.on .blink {
+  background-color: #666;
+}
+</style>
+</head>
+<body>
+
+<table id="wheel" cellspacing=0 cellpadding=0>
+<tr>
+  <td class="top left"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="top right"></td>
+</tr>
+<tr>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="letter">C</td>
+  <td class="open"></td>
+  <td class="letter">N</td>
+  <td class="letter">T</td>
+  <td class="letter">R</td>
+  <td class="open"></td>
+  <td class="letter">L</td>
+  <td class="empty"></td>
+  <td class="blink"></td>
+  <td class="letter">L</td>
+  <td class="letter">T</td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+</tr>
+<tr>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="letter">D</td>
+  <td class="open"></td>
+  <td class="letter">L</td>
+  <td class="open"></td>
+  <td class="letter">T</td>
+  <td class="open"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+</tr>
+<tr>
+  <td class="bottom left"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="empty"></td>
+  <td class="bottom right"></td>
+</tr>
+</table>
+
+<script>
+  var on = false;
+  window.setInterval(function() {
+    on = !on;
+    if (on)
+      document.body.classList.add('on');
+    else
+      document.body.classList.remove('on');
+  }, 400);
+</script>
+
+</body>
+</html>

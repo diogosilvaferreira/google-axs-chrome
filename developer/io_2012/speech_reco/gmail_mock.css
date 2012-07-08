@@ -1,0 +1,391 @@
+body {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+#main {
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+  height: 1000px;
+  font-family: Arial, sans-serif;
+}
+
+#sandbar {
+  height: 57px;
+  background: #f4f4f4;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+#dogfood {
+  float: left;
+  margin-left: 34px;
+  margin-top: 8px;
+  background-color: #f4f4f4;
+  background-image: url('google_logo.png');
+  width: 121px;
+  height: 50px;
+  border: none;
+}
+
+#search_text {
+  float: left;
+  margin-top: 13px;
+  margin-left: 52px;
+  height: 27px;
+  border: 1px solid #d9d9d9;
+  width: 480px;
+}
+
+#search_button_wrapper {
+  float: left;
+  border-radius: 2px;
+  border: 1px solid #4b8df7;
+  margin-top: 13px;
+  margin-left: 17px;
+}
+
+#search_button {
+  border: 1px solid #4d90fe;
+  width: 66px;
+  height: 25px;
+  background: url('search.png');
+}
+
+#search_button:focus {
+  border: 1px solid #ffffff;
+  outline: none;
+}
+
+#account {
+  float: left;
+  color: #666;
+  font: 13px/27px Arial, sans-serif;
+  margin-left: 20px;
+  margin-top: 12px;
+  width: 120px;
+}
+
+#sidebar {
+  float: left;
+  width: 200px;
+  height: 1000px;
+}
+
+#sidebar_mailbar {
+  height: 57px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+#mail {
+  float: left;
+  margin-left: 34px;
+  margin-top: 17px;
+  width: 123px;
+  font: 19px Arial, sans-serif;
+  color: #dd4b39;
+  border: none;
+  background: #fff;
+}
+
+#compose_button_wrapper {
+  float: left;
+  border-radius: 2px;
+  border: 1px solid #d14836;
+  margin-top: 13px;
+  margin-left: 29px;
+}
+
+#compose_button {
+  color: #fff;
+  font-weight: bold;
+  border: 1px solid #d64937;
+  width: 110px;
+  height: 24px;
+  background: #d64937;
+  font-size: 11px;
+}
+
+#compose_button:focus {
+  border: 1px solid #ffffff;
+  outline: none;
+}
+
+#mailboxes {
+  float: left;
+  width: 190px;
+  margin-top: 10px;
+}
+
+#mailboxes div {
+  cursor: pointer;
+  padding-left: 26px;
+  font-size: 13px;
+  line-height: 180%;
+  width: 150px;
+  border-left: 4px solid #fff;
+}
+
+#mailboxes div:focus {
+  background: #eee;
+  outline: none;
+}
+
+#mailboxes div.active {
+  color: #d64937;
+  font-weight: bold;
+  border-left: 4px solid #d64937;
+}
+
+#sidebar hr {
+  float: left;
+  width: 190px;
+  margin-top: 10px;
+  border: none;
+  height: 2px;
+  background: #ccc;
+}
+
+#sidebar h3 {
+  float: left;
+  margin-left: 30px;
+  font-size: 13px;
+}
+
+#sidebar input {
+  float: left;
+  margin-left: 30px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+}
+
+#chatcontacts {
+  float: left;
+  width: 190px;
+  margin-top: 10px;
+}
+
+#chatcontacts div {
+  padding-left: 26px;
+  font-size: 13px;
+  line-height: 180%;
+  width: 150px;
+  border-left: 4px solid #fff;
+}
+
+#chatcontacts div img {
+  margin-right: 3px;
+}
+
+#chatcontacts div:focus {
+  background: #eee;
+  outline: none;
+}
+
+
+#content {
+  float: left;
+  width: 800px;
+}
+
+#content_mailbar {
+  height: 57px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+#checkall {
+  float: left;
+  margin-top: 13px;
+  width: 72;
+  height: 29px;
+  border-radius: 2px;
+  border: 1px solid #d9d9d9;
+  background-color: #f4f4f4;
+}
+
+#archive {
+  float: left;
+  margin-top: 13px;
+  margin-left: 16px;
+  width: 72;
+  height: 29px;
+  border-radius: 2px 0 0 2px;
+  border: 1px solid #d9d9d9;
+  background-color: #f4f4f4;
+}
+
+#spam {
+  float: left;
+  margin-top: 13px;
+  width: 72;
+  height: 29px;
+  border-left: 0;
+  border-right: 1px solid #d9d9d9;
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
+  background-color: #f4f4f4;
+}
+
+#delete {
+  float: left;
+  margin-top: 13px;
+  width: 72;
+  height: 29px;
+  border-radius: 0 2px 2px 0;
+  border-left: 0;
+  border-right: 1px solid #d9d9d9;
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
+  background-color: #f4f4f4;
+}
+
+#moveto {
+  float: left;
+  margin-top: 13px;
+  margin-left: 16px;
+  width: 72;
+  height: 29px;
+  border-radius: 2px 0 0 2px;
+  border: 1px solid #d9d9d9;
+  background-color: #f4f4f4;
+}
+
+#labels {
+  float: left;
+  margin-top: 13px;
+  width: 72;
+  height: 29px;
+  border-radius: 0 2px 2px 0;
+  border-left: 0;
+  border-right: 1px solid #d9d9d9;
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
+  background-color: #f4f4f4;
+}
+
+#more {
+  float: left;
+  margin-top: 13px;
+  margin-left: 52px;
+  width: 72;
+  height: 29px;
+  border-radius: 2px;
+  border: 1px solid #d9d9d9;
+  background-color: #f4f4f4;
+}
+
+#page {
+  float: left;
+  font: 13px/27px Arial, sans-serif;
+  font-weight: bold;
+  margin-left: 40px;
+  margin-top: 13px;
+  width: 120px;
+}
+
+#threadlist {
+  width: 800px;
+  table-layout: fixed;
+  border-spacing: 0;
+}
+
+#threadlist tr {
+  height: 32px;
+  cursor: pointer;
+}
+
+#threadlist tr:focus {
+  background: #eee;
+  outline: none;
+}
+
+#threadlist tr td:first-child {
+  padding-left: 8px;
+  padding-top: 2px;
+  border-left: 2px solid #fff;
+}
+
+#threadlist tr.active td:first-child {
+  border-left: 2px solid #00f;
+}
+
+#threadlist td {
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  overflow: hidden;
+  height: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-bottom: 1px solid #ddd;
+}
+
+#threadlist tr.unread td {
+  font-weight: bold;
+}
+
+.usericon {
+  display: inline-block;
+  width: 50px;
+  padding: 10px;
+  vertical-align: top;
+  outline: none;
+}
+
+.messagemain {
+  display: inline-block;
+  width: 600px;
+  padding: 10px;
+}
+
+.sender {
+  font: 13px/27px Arial, sans-serif;
+  font-weight: bold;
+}
+
+.date {
+  padding-left: 400px;
+  font: 13px/27px Arial, sans-serif;
+}
+
+.messageto {
+  font: 13px/27px Arial, sans-serif;
+  color: #696969;  
+}
+
+.messagebody {
+  font: 13px/27px Arial, sans-serif;
+}
+
+.message .usericon {
+  border-left: 2px solid #fff;
+}
+
+.message .usericon:focus {
+  border-left: 2px solid #00f;
+}
+
+#subject {
+  outline: none;
+  font: 20px Arial, sans-serif;
+  font-weight: bold;
+  padding: 10px 10px 0 10px;
+}
+
+#mock_info {
+  font: 13px/27px Arial, sans-serif;
+  color: #696969;  
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin: 40px;
+}
+
+.screen_reader_only {
+  display: block;
+  height: 0px;
+  overflow: hidden;
+}

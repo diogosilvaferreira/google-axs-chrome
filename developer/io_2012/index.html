@@ -1,0 +1,1278 @@
+<!--
+Advancing Accessibility for the Web
+Google IO 2012 Talk by:
+  Charles Chen
+  Dominic Mazzoni
+  Rachel Shearer
+
+Based on:
+Google IO 2012 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Advancing Accessibility for the Web</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+
+  <!-- TODO: move to a theme file -->
+  <style>
+    ol.roman {
+      list-style-type: upper-roman;
+      margin-left: 2em;
+    }
+    ol.overview li {
+      margin-bottom: 2em;
+    }
+    ol li ul {
+      margin-top: 1em;
+    }
+    .devtools_demo {
+      background-color: white;
+    }
+    .no-bullets:before  {
+      content: '';
+    }
+  </style>
+
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar"><img alt="" src="images/google_developers_icon_128.png"></aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+      <p>Adapted from the slides presented at Google I/O on June 29, 2012.
+        <br>
+        Press right-arrow to advance, 'F' for fullscreen, 'P' for presenter notes.
+      </p>
+    </hgroup>
+  </slide>
+
+  <slide class="fill nobackground" style="background-image: url(images/io_2011_pic_widescreen.png)">
+    <aside class="note">
+      <section>
+        <ul>
+          <li>At last year's I/O, Dominic and I gave a talk on making web apps more
+            accessible.
+          <li>We gave tips like "use native HTML elements" and "make sure you label your input
+            fields." You can look at that talk on YouTube if you're interested.
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="white">Last Year</h2>
+    </hgroup>
+    <footer class="source white">source: YouTube</footer>
+  </slide>
+
+
+  <slide class="fill nobackground" style="background-image: url(images/io_2011_pic_with_charles_photo_widescreen.png)">
+    <aside class="note">
+      <section>
+        <ul>
+          <li>This year, we're back...but we also have CHARLES, which is pretty great. So we've
+            decided to go into high gear this year.
+          <li>We're going to go beyond basic tips and really get into some accessibility tools,
+            techniques, and APIs that we're really excited about. Some of these have never been
+            shown in public before.
+          <li>We want you to leave today knowing how to build more accessible web apps,
+            but we're also hoping to inspire you to go out and build entirely new accessibility
+            solutions.
+          <li>Here's a glimpse of what's in store:
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="white">This Year</h2>
+    </hgroup>
+    <footer class="source white">source: YouTube</footer>
+  </slide>
+
+
+  <slide>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>I'm going to show you two tools that we wrote that will help you find and
+            eliminate accessibility errors.
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>Testing for Accessibility</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li class="no-bullets" style="float:left">
+          <img src="images/access_dev_tools_screenshot_cropped.png" alt="Accessibility Dev Tools screenshot"
+          style="padding:10px;border:2px solid #767676;margin-left:-65px;margin-top:15%">
+          <p>Accessibility Developer Tools</p></li>
+        <li class="no-bullets" style="margin-left: 400px">
+          <img src="images/chromevox.png" alt="ChromeVox screenshot"
+               style="padding:10px;border:2px solid #767676;margin-right:-30px;margin-left:25px;margin-top:25%">
+          <p style="text-align: center">ChromeVox</p></li>
+      </ul>
+    </article>
+  </slide>
+
+
+  <slide>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Dominic is going to talk about some advanced screen reader accessibility techniques
+            and demo a couple of accessible editors.
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>Advanced Screen Reader Accessibility</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li class="no-bullets" style="display: inline-block">
+          <img src="images/text_editor_cropped.png" alt="Accessible Text Editor screenshot"
+          style="padding:10px;border:2px solid #767676;margin-left:-65px;margin-top:25%">
+          <p>Accessible Text Editor</p></li>
+
+        <li class="no-bullets" style="display: inline-block; margin-left: 2em">
+          <img src="ssh_icon.png" alt="Secure shell icon" style="margin-left: 3em"><br>
+          <p>Accessible Terminal Emulator</p></li>
+      </ul>
+    </article>
+  </slide>
+
+
+  <slide>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Charles is going to introduce ChromeVox Extensions and show off the PlusVox extension.
+            PlusVox is a ChromeVox extension for Google+ power users.
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>ChromeVox Extensions</h2>
+    </hgroup>
+    <article class="flexbox vcenter">
+      <img src="images/plus_plain.png" alt="Google+ Screenshot"
+           style="padding:10px;border:2px solid #767676;">
+      <p>PlusVox ChromeVox Extension</p>
+    </article>
+  </slide>
+
+
+  <slide>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Then Dominic is going to jump back on stage and talk about his favorite Chrome Speech
+            APIs.
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>APIs for low vision</h2>
+    </hgroup>
+    <article>
+      <div style="-webkit-filter: invert()">
+       <div style="background: white; float:left; padding: 1em;">
+         <img src="piano-photo.jpg" style="float: left; margin-right: 1em;"
+              alt="Example inverted photo">
+         <p>
+           We can invert all content on this page, including images, with the following css:
+         </p>
+         <code class="prettyprint" data-lang="css" style="margin-top: 1em">
+           html {<br>
+           &nbsp;&nbsp;-webkit-filter: invert()<br>
+           }
+         </code>
+       </div>
+      </div>
+    </article>
+  </slide>
+
+  <slide>
+    <style>
+      #galaxy_wrap {
+        background: black;
+        overflow: hidden;
+        height: 500px;
+      }
+      #galaxy_thumb {
+        position: relative;
+        top: -300px;
+        -webkit-transform: scale(0.8) perspective(250px) rotateX(10deg) translateY(-200px);
+      }
+    </style>
+    <hgroup>
+      <h2>APIs for speech</h2>
+    </hgroup>
+    <article>
+      <div id="galaxy_wrap">
+        <div id="galaxy_thumb">
+          <img src="nasa-milky-way-1200.jpg" alt="">
+        </div>
+      </div>
+    </article>
+  </slide>
+
+  <slide class="segue dark nobackground">
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Ok, so that was the game plan. Let's dive in. First up is tools for finding
+            accessibility errors.
+      </ul>
+      </section>
+    </aside>
+    <aside class="gdbar"><img alt="" src="images/google_developers_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Finding Accessibility Errors</h2>
+    </hgroup>
+  </slide>
+
+
+  <slide>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>My team works a lot with other web developers at Google, and we've noticed
+            a couple of things.
+          <li>First, it's that many -- and I'd even say most -- web apps *can* be made
+            more accessible to users with disabilities. Assistive technologies are getting better
+            and better at handling rich, interactive pages. New HTML5 and ARIA techniques can go
+            a long way to bridge the gap.
+          <li>But the sad thing is, it's the simplest errors that can cause the biggest problems
+            for users. Something as simple as a text field that isn't labeled, or a button that
+            isn't focusable, can make an application unusable.
+          <li>So if simplest errors are causing problems, we should be able to test for them, right?
+      </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>Two things we know to be true</h2>
+    </hgroup>
+    <article class="flexbox vcenter gray4" style="font-size:30px">
+      <p>Many web apps are <b>not</b> fundamentally inaccessible in design.</p>
+      <br>
+      <p>Simple errors can cause <b>big</b> problems for users!</p>
+    </article>
+  </slide>
+
+
+  <slide>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Unfortunately, many of the available accessibility testing tools aren't great.
+          <li>They might be years out of date, where they assume web pages are more like documents
+            than interactive applications.
+          <li>Some of them only work on specific platforms, or assume that the end user will be
+            using a particular platform.
+          <li>And many of them don't integrate with your existing workflow as a developer.
+          <li>We've found that many developers already spend much of their time in Chrome's
+            Developer Tools...so why not test accessibility there?
+          <li>So we created the Accessibility Developer Tools.
+        </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>Existing tools didn't meet our needs</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Some recommend older techniques like
+            <code class="prettyprint">accesskey</code>,
+            <code class="prettyprint">longdesc</code>,
+            <code class="prettyprint">noscript</code>,
+            over newer alternatives from ARIA or HTML5
+        <li>Some only work well for static content, with limited support for web apps
+        <li>Some don't integrate well with existing workflows
+        <li>Some only work on one platform
+      </ul>
+      <br>
+      <ul>
+        <li class="no-bullets">...That's why we created the <b>Accessibility Developer Tools</b>
+          for Chrome!
+      </ul>
+    </article>
+  </slide>
+
+
+  <slide>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Here's just some of the errors the Accessibility Developer Tools checks for.
+          <li>This isn't a complete list, but it covers a lot of the basics.
+          <li>It makes sure that images and form fields are labeled, it checks if UI controls
+            are focusable, it checks whether ARIA roles are being used correctly. It calculates
+            the contrast ratio for text to make sure it's contrasty enough. We also do some
+            checks for video accessibility, including looking for captions and fallback content.
+          <li>You'll notice that these are simple errors. We decided to focus on these kinds of
+            errors because (as I said before) these are the kinds of things that can cause the
+            biggest problems for users.
+          <li>We also wanted to work on catching the kinds of errors that we felt we could
+            detect consistently and correctly. These errors are also some of the easiest for
+            developers to fix!
+          <li>As work on this project continues we'll be expanding the kinds of errors we check
+            for.
+        </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="devtools_demo">
+        <img src="images/devtools_icon128.png" height=75px alt="">Accessibility Developer Tools</h2>
+      <h3>(A Chrome Extension)</h3>
+    </hgroup>
+    <article>
+      <table>
+        <tr>
+          <th>Category</th>
+          <th>Some things we check for</th>
+        <tr>
+          <td>Labels and Alternative Content</td><td class="gray4">Images and form fields are labeled</td>
+        </tr>
+        <tr>
+          <td>Keyboard Accessibility</td><td class="gray4">Focusable UI controls</td>
+        </tr>
+        <tr>
+          <td>ARIA</td><td class="gray4">Valid ARIA roles</td>
+        </tr>
+        <tr>
+          <td>Low-vision Accessibility</td><td class="gray4">Foreground/background contrast ratio</td>
+        </tr>
+        <tr>
+          <td>Video Accessibility</td><td class="gray4">Captions and fallback content</td>
+        </tr>
+      </table>
+    </article>
+  </slide>
+
+
+  <slide>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>I also want to mention ChromeVox, which is an extension we launched at I/O last year.
+          <li>ChromeVox is a no-cost screen reader for Chrome, and it's also the screen reader
+            included on Chrome OS.
+          <li>But it's more than a screen reader -- we encourage developers to use it as a testing
+            tool. It interprets pages the same way that other screen readers do, but it has all
+            of the advantages of being a Chrome Extension.
+          <li>It's easy to set up and easy to use, and integrates right into Chrome.
+        </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="devtools_demo">
+        <img src="images/chromevox_icon128.png" height=75px alt="">ChromeVox</h2>
+      <h3>(Another Chrome Extension)</h3>
+    </hgroup>
+    <article>
+      <ul>
+            <li>A screen reader built using JavaScript, HTML, and CSS!
+            <li>You control it using keyboard shortcuts.
+            <li>Speaks using the Chrome Text-To-Speech API.
+            </ul>
+      </ul>
+    </article>
+  </slide>
+
+
+  <slide>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>That being said, let's jump into a demo. I want to show you how you can use these
+            two tools to find and fix accessibility errors.
+          <li>This is a web form where you enter your name and check some boxes
+            indicating your interest.
+          <li>It looks pretty simple. But the first thing I want to do is run ChromeVox on it and
+            show you what happens...
+          <li>...So it's clear this page has some errors. Now let's try running the Accessibility
+            Developer Tools.
+        </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="devtools_demo">Demo</h2>
+    </hgroup>
+    <article class="axextdemo">
+      <style>
+        .axextdemo input[type="text"] {
+          margin: 1em 0 0 0;
+          padding: 0.5em 1em;
+          font-size: 18pt;
+        }
+        .axextdemo button {
+          padding: 0.5em 1em;
+          font-size: 18pt;
+        }
+        .axextdemo button:focus {
+          outline: #6af solid 1px;
+        }
+        .axextdemo .mycheck {
+          display: table-cell;
+          margin: 0;
+          border: 1px solid #ccc;
+          border-radius: 2px;
+          height: 60px;
+          vertical-align: middle;
+          padding: 0 1em 0 2.5em;
+          font-size: 18pt;
+          -webkit-transition: all 0.2s linear;
+          cursor: pointer;
+          background-image: url('check1.png');
+          background-repeat: no-repeat;
+          background-position: 10px 0;
+        }
+        .axextdemo .mycheck:hover {
+          border: 1px solid #666;
+          box-shadow: 0 0 6px 2px #aaf inset;
+        }
+        .axextdemo .mycheck[aria-checked="true"] {
+          background-image: url('check2.png');
+        }
+        .axextdemo .mydialog {
+          position: absolute;
+          left: 20%;
+          top: 45%;
+          width: 400px;
+          border: 1px solid #999;
+          border-radius: 2px;
+          box-shadow: 4px 4px 4px #aaa;
+          padding: 1em;
+          background: #fff;
+          opacity: 0.0;
+          -webkit-transition: all 0.2s linear;
+        }
+        .axextdemo .fineprint {
+          display: inline-block;
+          font-size: 14pt;
+          color: #aaa;
+          margin: 0.3em 0 1em 0;
+          background-color: white;
+        }
+      </style>
+      <p>
+        Enter your name:<br>
+        <input type="text" id="name">
+      </p>
+      <p>
+        <span id="check1" class="mycheck" role="check" onclick="clickme()">
+          Yes, please add me to your mailing list!
+        </span>
+        <span class="fineprint">You may receive one email per week.</span>
+      </p>
+      <button id="go1">
+        Register Now
+      </button>
+      <div id="dialog1" class="mydialog" role="dialog" title="Thanks">
+        <p>
+          Thanks for registering!
+        </p>
+        <button id="close1">
+          Close
+        </button>
+      </div>
+      <div style="margin-top: 1em;">
+        Download <a href="http://goo.gl/rVokq">Accessibility Developer Tools</a>
+        from the Chrome Web Store and try it on this page now.
+      </div>
+      <script>
+        var check1 = document.getElementById('check1');
+        var go1 = document.getElementById('go1');
+        var dialog1 = document.getElementById('dialog1');
+        var close1 = document.getElementById('close1');
+        function togglecheck(evt) {
+          if (check1.hasAttribute('aria-checked')) {
+            check1.removeAttribute('aria-checked');
+          } else {
+            check1.setAttribute('aria-checked', true);
+          }
+        }
+        check1.addEventListener('click', togglecheck, false);
+        check1.addEventListener('keydown', function(evt) {
+          if (evt.keyCode == 32 || evt.keyCode == 13) {
+            togglecheck(evt);
+            evt.stopPropagation();
+            evt.preventDefault();
+            return false;
+          }
+        }, false);
+        go1.addEventListener('click', function() {
+          dialog1.style.opacity = 1.0;
+          close1.focus();
+        }, false);
+        close1.addEventListener('click', function() {
+          dialog1.style.opacity = 0.0;
+        }, false);
+      </script>
+    </article>
+  </slide>
+
+
+  <slide>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>So here we are -- use Accessibility Developer Tools & ChromeVox to test
+            for accessibility.
+          <li>The nice thing about the Developer Tools are that they list all the errors out in
+            front of you so you can fix them while you're developing.
+          <li>The strength of ChromeVox is that it enables you to interact with your web app in the
+            same way that a user might.
+          <li>Our goals with both of these tools are to put accessibility testing in front of
+            <b>more developers</b>
+          <li>Emphasize <b>practical accessibility</b> of modern web apps
+          <li>Enable testing <b>earlier</b> in the development process
+        </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h2 class="devtools_demo">Accessibility Developer Tools & ChromeVox</h2>
+      <h3>No cost. Open source. Better together.</h3>
+    </hgroup>
+    <article style="font-size:30px">
+      <ul>
+        <li class="no-bullets"><img src="images/devtools_icon128.png" height=30px alt=""> Accessibility Developer Tools:
+          <ul>
+            <li><a href="http://goo.gl/rVokq">http://goo.gl/rVokq</a>
+                (Web Store link)
+          </ul>
+        <li class="no-bullets"><img src="images/chromevox_icon128.png" height=30px alt=""> ChromeVox:
+          <ul>
+            <li><a href="http://goo.gl/ddR5A">goo.gl/ddR5A</a> (Web Store link)
+            <li><a href="http://chromevox.com">chromevox.com</a>
+            <li><a href="http://google-axs-chrome.code.google.com">google-axs-chrome.code.google.com</a>
+          </ul>
+      </ul>
+    </article>
+  </slide>
+
+
+  <slide class="segue dark nobackground">
+    <aside class="note">
+      <section>
+        <ul>
+          <li>So now that you have some tools for testing for accessibility basics, we'd like to
+            show you how to go above and beyond the basics to make awesome apps that are accessible.
+          <li>Here's Dominic...
+        </ul>
+      </section>
+    </aside>
+    <aside class="gdbar"><img alt="" src="images/google_developers_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Advanced Accessibility Techniques</h2>
+    </hgroup>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>Custom user interfaces and ARIA</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Native HTML5 links and controls are accessible by default, e.g.:
+          <ul>
+            <div><code class="prettyprint">
+                &lt;button&gt;Click here&lt;/button&gt;
+            </code></div>
+            <div><code class="prettyprint">
+                &lt;input type=range&gt;&lt;/input&gt;
+            </code></div>
+            <div><code class="prettyprint">
+                &lt;textarea&gt;&lt;/textarea&gt;
+            </code></div>
+          </ul>
+        <li>ARIA (Accessible Rich Internet Applications), now part of HTML5,
+            allows you to build arbitrary custom controls and make them
+            accessible, for example a ratings gadget from last year's talk:
+
+            <iframe width=800 height=60
+             style="margin-top: 0.5em; height: 60px; border: none;"
+             src="star_rating/star_rating.html"></iframe>
+
+          <ul>
+            <div><code class="prettyprint">
+                &lt;div id="stars" class="star_rating" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="5" aria-valuenow="3"&gt;...&lt;/div&gt;
+            </code></div>
+          </ul>
+
+        <li>You can find plenty of examples online for accessible
+            buttons, dialogs, list boxes, combo boxes, and more.
+            What's next on the horizon?
+      </ul>
+    </article>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>Options for Text Editors</h2>
+    </hgroup>
+    <article>
+        <h3>What options do you have for an HTML text editor?</h3>
+
+          <ul>
+            <li><code class="prettyprint">
+                &lt;input type="text"&gt;&lt;/input&gt;
+            </code>
+            <li><code class="prettyprint">
+                &lt;textarea&gt;&lt;/textarea&gt;
+            </code>
+            <li><code class="prettyprint">
+                &lt;div contentEditable&gt;&lt;/div&gt;
+            </code>
+            <li>or roll your own
+          </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Custom text editor example 1</h2>
+    </hgroup>
+    <article>
+      <iframe width=600 height=400
+       style="height: 400px; border: none; margin: 2em 0 0 6em;"
+       src="wheel/wheel.html"></iframe>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Custom text editor example 2</h2>
+    </hgroup>
+    <article>
+      <iframe width=800 height=400 scrolling=no
+       style="height: 400px; border: 1px solid #999;"
+       src="contact_cards/contact_cards.html"></iframe>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Custom Text Editors</h2>
+    </hgroup>
+    <article>
+        <h3>Why roll your own?</h3>
+          <ul>
+            <li>Want rich text
+            <li>contentEditable buggy, different across browsers
+            <li>Want features that aren't possible with contentEditable
+          </ul>
+
+        <li>Is it possible to make your own text editor accessible?
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>An Accessible Custom Text Editor</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Below is a text editor written in pure JavaScript.
+        <li>No input, textarea, or contentEditable!
+        <li>It's accessible today with Chrome and several screen readers.
+      </ul>
+
+      <iframe width=800 height=240
+       style="height: 240px; border: none;"
+       src="text_editor/text_editor.html"></iframe>
+
+    </article>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>Custom Text Editor accessibility</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Make it focusable
+        <li>Give it a role=textbox
+        <li>Use the native cursor/selection (but optionally draw it yourself)
+      </ul>
+      <pre class="prettyprint">
+     &lt;div role="textbox" aria-multiline="true" tabIndex=0&gt;
+        ...
+     &lt;/div&gt;
+     &lt;script&gt;
+       var sel = window.getSelection();
+       sel.setBaseAndExtent(node, index, node, index);
+     &lt;/script&gt;
+      </pre>
+    </article>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>Terminal Emulator</h2>
+    </hgroup>
+    <article>
+      <div style="float: right; margin: 0 2em;">
+        <img src="ssh_icon.png" alt=""><br>
+        <span style="color: #090; position: relative; left: -8px; top: -10px;">Secure Shell</span>
+      </div>
+      <ul>
+        <li>Google has built a Secure Shell app for Chrome with a pure-HTML terminal emulator.
+        <li>Could it be accessible too?
+        <li>Similar to the custom text box, we made the following changes:
+        <ul>
+          <li>Make it focusable
+          <li>Give it a role=textbox
+          <li>Sync the native cursor/selection with the terminal cursor
+        </ul>
+        <li>With no other changes, this worked! With minor heuristics in ChromeVox,
+            it was possible to get a pretty good experience.
+      </ul>
+    </article>
+  </slide>
+
+  <slide class="segue dark nobackground">
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Chrome Extensions using additional ChromeVox APIs
+          <li>Enable developers to enhance the eyes-free experience
+        </ul>
+      </section>
+    </aside>
+    <aside class="gdbar"><img alt="" src="images/google_developers_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>ChromeVox Extensions</h2>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Google+ Without PlusVox</h2>
+    </hgroup>
+    <article class="flexbox vcenter">
+      <img src="images/plusvox_demo_shot.png" alt="PlusVox Demo screenshot">
+    </article>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>ChromeVox APIs</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Chrome Extensions using additional ChromeVox APIs
+
+        <li>
+      <pre class="prettyprint" style="font-size:30px">
+        cvox.Api.setSpeechForNode(targetNode, nodeDescriptions)
+      </pre>
+              <li>Rearrange content based on higher-level understanding of the web app
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>PlusVox</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Google+ already has shortcuts for navigating through the stream
+        <li>Enhance the Google+ eyes-free experience for heavy users
+        <li>Better spoken feedback
+           <ul>
+              <li>Eliminates repetitive information
+              <li>Changes spoken order to be more meaningful
+              <li>Gives additional information (number of comments)
+           </ul>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>PlusVox</h2>
+    </hgroup>
+    <article>
+          <pre id="plusvox_code_01" class="prettyprint" data-lang="javascript">
+function generateSpeechForThread(domObj) {
+  var op = new gPlusPost();
+  op.author = authorFromDomObj(domObj);
+
+  ...
+
+  var commentCountNode = getCommentCount(domObj);
+
+  var nodeDescs = new Array();
+  nodeDescs.push(generateNodeDescriptionFromPost(op));
+
+  <b>cvox.Api.setSpeechForNode(domObj, nodeDescs);</b>
+}
+      </pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>ChromeVox APIs</h2>
+    </hgroup>
+    <article>
+      <pre class="prettyprint"style="font-size:30px">
+        cvox.Api.syncToNode(targetNode, speakNode)
+      </pre>
+      <pre class="prettyprint" style="font-size:30px">
+        cvox.Api.click(targetElement, shiftKey)
+      </pre>
+      <p style="font-size:30px"><a href=''>Full list of APIs</a>
+    </article>
+  </slide>
+
+  <slide class="segue dark nobackground">
+    <aside class="note">
+      <section>
+        <ul>
+          <li>In this last section of the talk, we'll address APIs you can use to build
+          new custom accessibility solutions.
+          <li>Turn OFF ChromeVox here.
+        </ul>
+      </section>
+    </aside>
+    <aside class="gdbar"><img alt="" src="images/google_developers_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>New APIs for Accessibility</h2>
+    </hgroup>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>CSS3 Filter Effects</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>New emerging W3C standard
+        <li>Apply color filters to everything - including iframes, video, etc.
+      </ul>
+
+      <pre class="prettyprint" data-lang="css" style="margin-top: 1em">#element1 {
+  -webkit-filter: invert()
+}
+#element1 {
+  -webkit-filter: brightness(20%)
+}
+#element1 {
+  -webkit-filter: grayscale()
+}
+#element1 {
+  -webkit-filter: invert() contrast(80%)
+}
+</pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Inverting</h2>
+    </hgroup>
+    <article>
+
+       <p>
+         <button id="invert1">Invert page</button>
+         <button id="invert_reset1">Reset</button>
+       </p>
+
+       <p>
+         <img src="piano-photo.jpg" style="float: left; margin-right: 1em;"
+              alt="Example photo to be inverted">
+         <p>
+           We can invert all content on this page, including images, with the following css:
+         </p>
+         <code class="prettyprint" data-lang="css" style="margin-top: 1em">
+           html {<br>
+           &nbsp;&nbsp;-webkit-filter: invert()<br>
+           }
+         </code>
+       </p>
+
+       <script>
+         document.getElementById('invert1').addEventListener('click', function() {
+           document.documentElement.style['-webkit-filter'] = 'invert()';
+         });
+         document.getElementById('invert_reset1').addEventListener('click', function() {
+           document.documentElement.style['-webkit-filter'] = '';
+         });
+       </script>
+
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Inverting (preserve images)</h2>
+    </hgroup>
+    <article>
+
+       <p>
+         <button id="invert2">Invert page</button>
+         <button id="invert_reset2">Reset</button>
+       </p>
+
+       <p>
+         <img id="piano2" src="piano-photo.jpg" style="float: left; margin-right: 1em;"
+              alt="Example photo that is no longer inverted">
+         <p>
+           We can use a simple rule to avoid inverting JPEG images:
+         </p>
+         <code class="prettyprint" data-lang="css" style="margin-top: 1em">
+           html {<br>
+           &nbsp;&nbsp;-webkit-filter: invert()<br>
+           }<br>
+           img[src*="jpg"] {<br>
+           &nbsp;&nbsp;-webkit-filter: invert()<br>
+           }<br>
+         </code>
+         <p style="margin-top: 1em">
+            Note that the I/O logo at the bottom is still inverted.<br>
+            (This often works better for UI images, as opposed to photos.)
+         </p>
+       </p>
+
+       <script>
+         document.getElementById('invert2').addEventListener('click', function() {
+           document.documentElement.style['-webkit-filter'] = 'invert()';
+           document.getElementById('piano2').style['-webkit-filter'] = 'invert()';
+         });
+         document.getElementById('invert_reset2').addEventListener('click', function() {
+           document.documentElement.style['-webkit-filter'] = '';
+           document.getElementById('piano2').style['-webkit-filter'] = '';
+         });
+       </script>
+
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>High Contrast extension</h2>
+    </hgroup>
+    <article>
+      <img src="high_contrast_screenshot_widescreen.png" alt="Screenshot of High Contrast extension">
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Chrome Speech Recognition Extension API</h2>
+    </hgroup>
+    <article>
+      <h3>Any text box can be speech-enabled with a single attribute, like this:</h3>
+
+      <pre class="prettyprint" data-lang="javascript" style="font-size: 120%"
+      >&lt;input x-webkit-speech&gt;</pre>
+
+      <center>
+        <input x-webkit-speech style="font-size: 160%; margin: 0.5em 1em;"
+         placeholder="Search">
+      </center>
+
+      <ul>
+        <li>Chrome also provides a more advanced app/extension API for speech recognition
+        <li>This API is still experimental - the details may change
+      </ul>
+    </article>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>Speech Recognition API example</h2>
+    </hgroup>
+    <article>
+      <pre class="prettyprint livecode" data-lang="javascript" style="margin-top: 1em">
+function checkStart() {
+  if (chrome.extension.lastError) {
+    alert("Couldn't start speech input: " + chrome.extension.lastError.message);
+  }
+}
+function recognitionFailed(error) {
+  alert("Speech input failed: " + error.code);
+}
+function recognitionSucceeded(result) {
+  alert("Recognized '" + result.hypotheses[0].utterance +
+        "' with confidence " + result.hypotheses[0].confidence);
+}
+chrome.experimental.speechInput.onError.addListener(recognitionFailed);
+chrome.experimental.speechInput.onResult.addListener(recognitionSucceeded);
+chrome.experimental.speechInput.start({ "language": "en" }, checkStart);
+</pre>
+
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Speech Recognition Demo</h2>
+    </hgroup>
+    <article>
+      <iframe width=800 height=460 scrolling="no"
+       style="height: 460px; border: none;"
+       src="speech_reco/index.html"></iframe>
+     <script>
+        window.addEventListener('message', function(evt) {
+          if (evt.data == 'speech_reco_done') {
+            window.slidedeck.nextSlide();
+          }
+        }, false);
+      </script>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Speech Recognition Results</h2>
+    </hgroup>
+    <article>
+
+      <pre class="prettyprint" data-lang="javascript"
+           style="margin-top: 1em; font-size: 110%; line-height: 150%;">{hypotheses:
+  [{confidence:0.836, utterance: "open email from larry page"},
+   {confidence:0,     utterance: "open the email from larry page"},
+   {confidence:0,     utterance: "open email to mary paint"},
+   {confidence:0,     utterance: "open email merry paint"},
+   {confidence:0,     utterance: "open email flary paint"}]}</pre>
+
+    </article>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>Chrome TTS Extension API</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li><b>Any</b> Chrome app or extension can generate synthesized speech
+            using the<br>
+            <a href="http://code.google.com/chrome/extensions/tts.html">
+            Text-to-speech (TTS) extension API</a>.
+        <li>Used not only for accessibility, but also for dozens of other applications:
+        <ul>
+          <li>Speak highlighted text on the page.
+          <li>Speak new mail subject lines as they come in.
+          <li>Reminders for calendar events.
+        </ul>
+      </ul>
+    </article>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>TTS Demo</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Try using the API right now:
+      </ul>
+      <p>
+         Install and run
+         <a href="https://chrome.google.com/webstore/detail/chhkejkkcghanjclmhhpncachhgejoel">
+           TTS Demo
+         </a>
+         from the Chrome Web Store.
+      </p>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Chrome TTS Engine API</h2>
+    </hgroup>
+    <article>
+
+      <p>Users can install new text-to-speech voices with just a click!</p>
+
+      <pre class="prettyprint livecode" data-lang="javascript" style="margin-top: 1em">
+var speakListener = function(utterance, options, sendTtsEvent) {
+  sendTtsEvent({'event_type': 'start', 'charIndex': 0})
+  // (start speaking)
+  sendTtsEvent({'event_type': 'end', 'charIndex': utterance.length})
+};
+var stopListener = function() {
+  // (stop all speech)
+};
+chrome.ttsEngine.onSpeak.addListener(speakListener);
+chrome.ttsEngine.onStop.addListener(stopListener);
+      </pre>
+
+
+    </article>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>TTS Engine implementation possibilities</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>The TTS Engine API just handles dispatching requests for speech to your extension -
+            it's up to you how to actually generate the speech and output the audio.
+        <li>What are some different ways to generate speech from a Chrome extension?
+        <ul>
+          <li>Send request to server, stream resulting audio
+          <li>Pure-JavaScript using HTML5 Audio APIs
+          <li>Our preferred solution: Native Client
+        </ul>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Introducing a new TTS engine...</h2>
+    </hgroup>
+    <article>
+      <p style="font-size: 120%">
+        The voice you've been listening to just now is now available on the
+        Chrome Web Store!
+      </p>
+
+      <img src="images/google_tts.png" alt="" style="float: left; margin-top: 1.2em;">
+      <h3 style="margin-top: 1.7em; padding-left: 1em;">
+        US English Female Text-to-speech (by Google)
+        <br>
+        <a href="http://goo.gl/GR75u">goo.gl/GR75u</a> (Web Store Link)
+      </h3>
+
+      <ul style="margin-top: 2em;">
+        <li>Built using Native Client, runs on all platforms<br>
+            (4 GB of RAM, dual-core CPU highly recommended)
+        <li>~500 MB of voice data
+        <li>Same voice used for Voice Search on Android 4.1 "Jelly Bean"
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>One more thing...</h2>
+    </hgroup>
+    <article>
+      <p>
+        One cool TTS API feature is the ability
+        to listen for <i>events</i> and synchronize your UI with speech...
+      </p>
+      <p>
+         Install and run
+         <a href="https://chrome.google.com/webstore/detail/ldkaddifndokimnoafoiiigkmfgbkgad">
+           Animated TTS Demo
+         </a>
+         from the Chrome Web Store.
+      </p>
+
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Let's Recap</h2>
+    </hgroup>
+    <article>
+      <ol class="roman">
+        <li><b class="red">Finding accessibility errors</b>
+          <ul>
+            <li>Accessibility Developer Tools extension
+          </ul>
+
+        <li><b class="blue">Advanced accessibility techniques</b>
+          <ul>
+            <li>Text Editor, Terminal, ChromeVox Extensions
+          </ul>
+
+        <li><b class="green">Accessibility APIs</b>
+          <ul>
+            <li>CSS3 Filters,
+                Chrome Speech Recognition API,
+                Chrome TTS API,
+                Chrome TTS Engine API
+          </ul>
+      </ol>
+    </article>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>Resources</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li><a href="http://goo.gl/rVokq">
+                Accessibility Developer Tools
+        <li><a href="http://goo.gl/GR75u">
+                US English Female Text-to-speech (by Google)
+            </a>
+        <li>
+         <a href="https://chrome.google.com/webstore/detail/chhkejkkcghanjclmhhpncachhgejoel">
+           TTS Demo app
+         </a>
+        <li>
+         <a href="https://chrome.google.com/webstore/detail/ldkaddifndokimnoafoiiigkmfgbkgad">
+           Animated TTS Demo app
+         </a>
+        <li><a href="http://chromevox.com">chromevox.com</a>
+        <li>Discussion group: <a href="https://groups.google.com/forum/?fromgroups#!forum/axs-chrome-discuss">
+        groups.google.com/group/axs-chrome-discuss</a>
+      </ul>
+    </article>
+  </slide>
+
+
+
+  <slide class="logoslide dark nobackground">
+    <article class="flexbox vcenter">
+      <span><img alt="" src="images/google_developers_logo_white.png"></span>
+    </article>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<div tabindex=-1 id="offscreen" style="position: absolute; left: -1000px" aria-hidden="true"></div>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    .CaretBrowsing_Caret {
+      position: absolute;
+      z-index: 2147483647;
+      min-height: 10px;
+      background-color: #000;
+    }
+
+    .CaretBrowsing_AnimateCaret {
+      position: absolute;
+      z-index: 2147483647;
+      min-height: 10px;
+    }
+
+    body {
+      width: 48em;
+      height: 5em;
+      padding: 0;
+      margin: 0;
+    }
+
+    div#textbox {
+      color: #090;
+      font-family: courier, monospace;
+      font-weight: bold;
+      font-size: 16pt;
+      border: 1px solid #999;
+      outline: none;
+      margin: 1em;
+      padding: 0.5em;
+      font-size: 18pt;
+      height: 5em;
+      line-height: 1.5em;
+      white-space: pre-wrap;
+    }
+
+  </style>
+  <script src="traverse_util.js"></script>
+  <script src="caretbrowsing.js"></script>
+  <script>
+    function load() {
+      console.log('load');
+      var mytext = document.getElementById('textbox');
+      mytext.addEventListener('focus', function() {
+        CaretBrowsing.init(mytext);
+        CaretBrowsing.forceEnabled = true;
+        CaretBrowsing.isEnabled = true;
+        CaretBrowsing.setInitialCursor();
+        CaretBrowsing.updateIsCaretVisible();
+        CaretBrowsing.updateCaretOrSelection(true);
+      }, false);
+      function onblur() {
+        console.log('blur');
+        CaretBrowsing.forceEnabled = false;
+        CaretBrowsing.isEnabled = false;
+        CaretBrowsing.updateIsCaretVisible();
+      }
+      mytext.addEventListener('blur', onblur, false);
+      window.addEventListener('blur', onblur, false);
+      function insertChar(char) {
+        var sel = window.getSelection();
+        var selText = sel.toString();
+        if (selText) {
+          sel.deleteFromDocument();
+        }
+        var node = sel.focusNode;
+        var index = sel.focusOffset;
+        if (node.constructor == Text) {
+          node.data = node.data.substr(0, index) +
+                      char +
+                      node.data.substr(index);
+          var sel = window.getSelection();
+          sel.setBaseAndExtent(node, index + 1, node, index + 1);
+        }
+      }
+      mytext.addEventListener('keydown', function(evt) {
+        if (evt.keyCode == 10 || evt.keyCode == 13) {
+          insertChar('\n');
+          evt.stopPropagation();
+          evt.preventDefault();
+        }
+        if (evt.keyCode == 8) {
+          // backspace
+          var sel = window.getSelection();
+          var selText = sel.toString();
+          if (selText == '') {
+            CaretBrowsing.moveLeft({shiftKey: true});
+          }
+          var node = sel.focusNode;
+          var index = sel.focusOffset;
+          sel.deleteFromDocument();
+          sel.setBaseAndExtent(node, index, node, index);
+          evt.stopPropagation();
+          evt.preventDefault();
+        }
+      }, false);
+      mytext.addEventListener('keypress', function(evt) {
+        insertChar(String.fromCharCode(evt.charCode));
+        evt.stopPropagation();
+        evt.preventDefault();
+      }, false);
+      window.setTimeout(function() {
+        mytext.focus();
+      }, 100);
+    }
+  </script>
+</head>
+<body onload="load()">
+<div id="textbox" tabindex=0 role="textbox" aria-multiline="true">This is not a &lt;textarea&gt; or contentEditable -
+it's implemented in pure JavaScript!</div>
+</body>
+</html>

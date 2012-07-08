@@ -1,0 +1,105 @@
+<html>
+<head>
+<style>
+@import "http://fonts.googleapis.com/css?family=Open Sans:regular,semibold,italic,italicsemibold|Inconsolata&amp;v2";
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 26px;
+  color: #767676;
+}
+#share {
+  color: #e7a;
+  margin-bottom: 0.5em;
+}
+.horiz {
+  width: 100%;
+  clear: left;
+  margin-bottom: 12.5em;
+}
+#to_label, #subj_label {
+  float: left;
+  width: 6em;
+  text-align: right;
+  padding-right: 1em;
+}
+#to_wrap {
+  float: left;
+  width: 20em;
+  height: 9em;
+  border: 1px solid #000;
+  padding: 1em;
+  line-height: 300%;
+}
+#subj_wrap {
+  float: left;
+  width: 20em;
+  border: 1px solid #000;
+  padding: 1em;
+}
+.card {
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  border-radius: 1em;
+  color: #000;
+}
+.email {
+  background-color: #f99;
+}
+.twitter {
+  background-color: #9f9;
+}
+.plus {
+  background-color: #99f;
+}
+.typing {
+}
+#cursor {
+  margin: 0 0 -10px 3px;
+  display: inline-block;
+  width: 2px;
+  height: 1.6em;
+  background-color: #000;
+}
+body.on #cursor {
+  background-color: #fff;
+}
+</style>
+</head>
+<body>
+
+<div id="outer">
+
+  <div id="share">Share this high score with...</div>
+
+  <div class="horiz">
+    <label id="to_label">To:</label>
+    <div id="to_wrap">
+      <span class="card email">larry.page@google.com</span>,
+      <span class="card twitter">@googleaccess</span>,
+      <span class="card plus">+chrome</span>,
+      <span class="card typing">sergey.brin@goo<span id="cursor"></span></span>
+    </div>
+  </div>
+
+  <div class="horiz">
+    <label id="subj_label">Subject:</label>
+    <div id="subj_wrap">
+      All your base are belong to us.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var on = false;
+  window.setInterval(function() {
+    on = !on;
+    if (on)
+      document.body.classList.add('on');
+    else
+      document.body.classList.remove('on');
+  }, 400);
+</script>
+
+</body>
+</html>
