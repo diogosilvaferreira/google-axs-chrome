@@ -1,0 +1,33 @@
+{
+  "name": "HTML5 Audio Description (via screenreader)",
+  "version": "1",
+  "description": "This extension plays audio description track elements of HTML5 videos via a screenreader.",
+  "permissions": [
+    "<all_urls>",
+    "tts"
+  ],
+
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+
+  "minimum_chrome_version": "19",
+
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "all_frames": true,
+      "js": [
+        "closure/closure_preinit.js",
+        "closure/base.js",
+        "content_script.js"
+      ]
+    }
+  ],
+
+  "manifest_version": 2
+}

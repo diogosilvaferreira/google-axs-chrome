@@ -1,0 +1,232 @@
+<html>
+<head>
+  <title>Options: HTML5 Audio Description (via text to speech)</title>
+  <style>
+    body {
+      font-family: arial, helvetica, sans-serif;
+    }
+    .banner {
+      width: 100%;
+      float: left;
+    }
+    .banner_left {
+      padding: 8px;
+      float: left;
+    }
+    .banner_right {
+      padding: 8px;
+    }
+    .body_wrapper {
+      width: 100%;
+      float: left;
+    }
+    .body_left {
+      border: 0;
+      padding: 0;
+      margin: 0;
+      width: 50%;
+      float: left;
+    }
+    .body_right {
+      border: 0;
+      padding: 0;
+      margin: 0;
+      width: 46%;
+      float: left;
+    }
+    .body_inner {
+      padding: 0 32px;
+    }
+    .browser_action {
+      vertical-align: middle;
+      margin: 0 2px 3px 2px;
+    }
+    .ctrl_label {
+      width: 100px;
+      float: left;
+    }
+    .ctrl_wrap {
+      margin: 18px 8px;
+    }
+    .ctrl {
+      width: 200px;
+    }
+    .shortcut {
+      width: 125px;
+      float: left;
+    }
+    .shortcut_desc {
+      margin: 18px 8px;
+    }
+    #hotkey {
+      font-size: 16px;
+      width: 15em;
+      margin-left: 12px;
+    }
+    #test {
+    }
+    #defaults {
+      margin-left: 24px;
+    }
+  </style>
+  <script src="options.js"></script>
+</head>
+<body>
+
+<div class="banner">
+  <div class="banner_left">
+    <!--<img src=".png" class="logo" alt="">-->
+  </div>
+  <div class="banner_right">
+    <h1>HTML5 Audio Description (via text to speech)</h1>
+    <p>
+      This extension plays audio description track elements of HTML5 videos via Chrome
+      text to speech extension.
+    </p>
+  </div>
+</div>
+
+<div class="body_wrapper">
+  <div class="body_left">
+    <div class="body_inner">
+      <h2>Text to Speech Settings</h2>
+
+      <div class="ctrl_label">
+        <label for="voice">Voice:</label>
+      </div>
+      <div class="ctrl_wrap">
+        <select id="voice" class="ctrl"></select>
+      </div>
+
+      <div class="ctrl_label">
+        <label for="rate">Rate:</label>
+      </div>
+      <div class="ctrl_wrap">
+        <input id="rate" type="range" class="ctrl"
+               min=0.5 max=2.0 step=0.1 value=1.0></input>
+      </div>
+
+      <div class="ctrl_label">
+        <label for="pitch">Pitch:</label>
+      </div>
+      <div class="ctrl_wrap">
+        <input id="pitch" type="range" class="ctrl"
+               min=0.5 max=1.5 step=0.1 value=1.0></input>
+      </div>
+
+      <div class="ctrl_label">
+        <label for="volume">Volume:</label>
+      </div>
+      <div class="ctrl_wrap">
+        <input id="volume" type="range" class="ctrl"
+               min=0.0 max=1.0 step=0.1 value=1.0></input>
+      </div>
+
+      <div class="ctrl_label">
+         &nbsp;
+      </div>
+      <div class="ctrl_wrap">
+        <button id="test">Test Speech</button>
+        <button id="defaults">Defaults</button>
+      </div>
+
+      <h2>Keyboard shortcuts</h2>
+      <h3>On a webpage:</h3>
+      <h4>"Speech" is short for "text to speech"</h4>
+      <div class="shortcut">
+        Ctrl:
+      </div>
+      <div class="shortcut_desc">
+        Stop speaking
+      </div>
+      <div class="shortcut">
+        Alt + a:
+      </div>
+      <div class="shortcut_desc">
+        Use speech default settings
+      </div>
+      <div class="shortcut">
+        Alt + up arrow:
+      </div>
+      <div class="shortcut_desc">
+        Increase speech volume
+      </div>
+      <div class="shortcut">
+        Alt + down arrow:
+      </div>
+      <div class="shortcut_desc">
+        Decrease speech volume
+      </div>
+      <div class="shortcut">
+        Alt + c:
+      </div>
+      <div class="shortcut_desc">
+        Increase speech rate
+      </div>
+      <div class="shortcut">
+        Alt + z:
+      </div>
+      <div class="shortcut_desc">
+        Decrease speech rate
+      </div>
+      <div class="shortcut">
+        Alt + s:
+      </div>
+      <div class="shortcut_desc">
+        Increase speech pitch
+      </div>
+      <div class="shortcut">
+        Alt + x:
+      </div>
+      <div class="shortcut_desc">
+        Decrease speech pitch
+      </div>
+      <h3>When video has focus:</h3>
+      <div class="shortcut">
+        Alt + r:
+      </div>
+      <div class="shortcut_desc">
+        Detect if audio descriptions on/off
+      </div>
+      <div class="shortcut">
+        Alt + b:
+      </div>
+      <div class="shortcut_desc">
+        Turn audio descriptions on/off
+      </div>
+      <div class="shortcut">
+        Space:
+      </div>
+      <div class="shortcut_desc">
+        Play/pause video
+      </div>
+      <div class="shortcut">
+        Left arrow:
+      </div>
+      <div class="shortcut_desc">
+        Fast forward
+      </div>
+      <div class="shortcut">
+        Right arrow:
+      </div>
+      <div class="shortcut_desc">
+        Rewind
+      </div>
+      <div class="shortcut">
+        Up arrow:
+      </div>
+      <div class="shortcut_desc">
+        Increase volume of video
+      </div>
+      <div class="shortcut">
+        Down arrow:
+      </div>
+      <div class="shortcut_desc">
+        Decrease volume of video
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
