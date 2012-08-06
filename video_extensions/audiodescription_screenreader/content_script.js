@@ -79,6 +79,13 @@ a11y.VideoElement = function(videoElement, selectedVideoId) {
    */
   this.intervalId_ = 0;
 
+  /**
+   * Whether we have spoken documentation
+   * @type {boolean}
+   * @private
+   */
+  this.spokenDocumentation_ = false;
+
   if (a11y.Video.userTesting) {
    this.elem_.addEventListener(
       'keydown',
@@ -109,6 +116,15 @@ a11y.VideoElement.prototype.setInitDefaultTrack = function() {
 a11y.VideoElement.prototype.initialDefaultTrack = function() {
   var i;
   var retTrack;
+
+  // If the track experiment is not enabled, announce and return
+  // This checks if textTracks is NULL (no support for track)
+  // (When textTracks has length 0, that means that track is supported,
+  // but there are no tracks)
+  if (!this.elem_.textTracks) {
+    a11y.Video.trackNotSupported();
+    return;
+  }
 
   /**
    * Associative array for language that user wants.
@@ -163,11 +179,32 @@ a11y.VideoElement.prototype.initialDefaultTrack = function() {
   }
 
   // Activate description track.
-  if (retTrack && retTrack.mode !== TextTrack.SHOWING) {
-    retTrack.mode = TextTrack.HIDDEN;
+  if (retTrack) {
+    if (retTrack.mode !== TextTrack.SHOWING) {
+      retTrack.mode = TextTrack.HIDDEN;
+    }
+
+    // Add documentation announcement on focus of video
+    // that this video has audio descriptions
+    this.elem_.onfocus = this.onFocus(this);
   }
 
   return retTrack;
+};
+
+/**
+ * Onfocus of video element, speak documentation.
+ * @param {VideoElement} vid Which video received the focus event.
+ * @return {function} Returns the function as described above.
+ */
+a11y.VideoElement.prototype.onFocus = function(vid) {
+  return function() {
+    console.log('focus on video');
+    if (!vid.spokenDocumentation_) {
+      a11y.Video.speakVideoAnnouncement(vid);
+      vid.spokenDocumentation_ = true;
+    }
+  };
 };
 
 /**
@@ -222,6 +259,10 @@ a11y.VideoElement.prototype.cuechange = function(vid) {
           // Using innerText (compatible with Chrome)
           // but for future development, other browsers may not support
           // http://www.quirksmode.org/dom/w3c_html.html
+          // Blank the aria-live region so if the same text is announced twice,
+          // the screenreader will read it twice (otherwise there will be no
+          // update to the live region)
+          document.getElementById(vid.idString_).innerText = '';
           document.getElementById(vid.idString_).innerText = cue.text;
       }
     }
@@ -296,7 +337,17 @@ a11y.VideoElement.prototype.deactivateTrack = function() {
 a11y.Video.initVideoElems = function() {
   var j;
   var videoElementList = document.getElementsByTagName('video');
-  var videoWithAudioDesc = false;
+
+  a11y.Video.announcementDiv = document.createElement('div');
+  a11y.Video.announcementDiv.setAttribute('id',
+      a11y.Video.announcementDivId);
+  a11y.Video.announcementDiv.setAttribute('role', 'alert');
+  a11y.Video.announcementDiv.setAttribute('aria-live', 'assertive');
+  // Make the live region hidden off screen, set tabindex=-1
+  a11y.Video.announcementDiv.style.cssText =
+      a11y.Video.offScreenCSStext;
+  a11y.Video.announcementDiv.setAttribute('tabindex', '-1');
+  document.body.appendChild(a11y.Video.announcementDiv);
 
   // If there are videos, init the track to specified language if possible
   if (videoElementList.length > 0) {
@@ -315,20 +366,10 @@ a11y.Video.initVideoElems = function() {
             // There is a video with audio description on page.
             // We will announce the presence of videos in the title.
             // We will announce on/off through an aria-live region.
-            if (a11y.Video.videoElems[j].descTrack_ && !videoWithAudioDesc) {
-              videoWithAudioDesc = true;
+            if (a11y.Video.videoElems[j].descTrack_ &&
+                !a11y.Video.videoWithAudioDesc) {
+              a11y.Video.videoWithAudioDesc = true;
               console.log('found video with audio description');
-
-              a11y.Video.announcementDiv = document.createElement('div');
-              a11y.Video.announcementDiv.setAttribute('id',
-                  a11y.Video.announcementDivId);
-              a11y.Video.announcementDiv.setAttribute('aria-live', 'assertive');
-              // Make the live region hidden off screen, set tabindex=-1
-              a11y.Video.announcementDiv.style.cssText =
-                  a11y.Video.offScreenCSStext;
-              a11y.Video.announcementDiv.setAttribute('tabindex', '-1');
-
-              document.body.appendChild(a11y.Video.announcementDiv);
 
               var originalTitle = document.title;
               document.title = originalTitle + '. has audio described video';
@@ -391,17 +432,28 @@ a11y.Video.keyDown = function(evt) {
         for (j = 0; j < a11y.Video.videoElems.length; j++) {
           a11y.Video.videoElems[j].deactivateTrack();
           a11y.Video.audioDescOn = false;
-          a11y.Video.announcementDiv.innerText = 'Audio description off.';
+          a11y.Video.updateAnnouncement('Audio description off.');
         }
       } else {
         for (j = 0; j < a11y.Video.videoElems.length; j++) {
           a11y.Video.videoElems[j].activateTrack(
               a11y.Video.videoElems[j].descTrack_);
           a11y.Video.audioDescOn = true;
-          a11y.Video.announcementDiv.innerText = 'Audio description on.';
+          a11y.Video.updateAnnouncement('Audio description on.');
         }
       }
       console.log('audioDescOn ' + a11y.Video.audioDescOn);
+    }
+  } else if (key == 82) {
+    // keycode for 'r' is 82
+    // repeat documentation announcement
+    if (a11y.Video.altChar) {
+      a11y.Video.speakVideoAnnouncement();
+    }
+  } else if (key == 191) {
+    // keycode for '?' is 191
+    if (a11y.Video.altChar) {
+      a11y.Video.updateAnnouncement(a11y.Video.announceShortcuts);
     }
   }
 };
@@ -414,6 +466,64 @@ a11y.Video.keyUp = function(evt) {
   if (evt.keyCode == a11y.Video.altKey) {
     a11y.Video.altChar = false;
   }
+};
+
+/**
+ * Check if the <track> element is supported.
+ * http://modernizr.com/docs/
+ * @return {boolean} Returns if track is supported.
+ */
+a11y.Video.isTrackSupported = function() {
+  var video = document.createElement('video');
+  return typeof video.addTextTrack === 'function';
+};
+
+/**
+ * Update announcement aria-live region to announce that
+ * the <track> element is not supported
+ */
+a11y.Video.trackNotSupported = function() {
+  a11y.Video.updateAnnouncement(a11y.Video.announceTrackNotSupported);
+};
+
+/**
+ * Speak documentation depending on audio description on/off.
+ */
+a11y.Video.speakVideoAnnouncement = function() {
+  var text = '';
+  if (!a11y.Video.isTrackSupported()) {
+    text += a11y.Video.announceTrackNotSupported;
+  } else if (a11y.Video.videoWithAudioDesc) {
+    text += 'This video has audio descriptions. ';
+
+    if (a11y.Video.audioDescOn) {
+      text += 'Audio description on. ';
+      text += 'To disable them, press alt b . ';
+    } else {
+      text += 'Audio description off. ';
+      text += 'To enable them, press alt b . ';
+    }
+
+    text += 'To repeat this message, press alt r .';
+  } else {
+    text += 'This video does not have audio descriptions. ';
+  }
+  text += 'For keyboard shorcuts, press alt question mark .';
+  a11y.Video.updateAnnouncement(text);
+};
+
+/**
+ * Update the announcement aria-live region.
+ * @param {string} text The new text.
+ */
+a11y.Video.updateAnnouncement = function(text) {
+  // Blank the aria-live region so if the same text is announced twice,
+  // the screenreader will read it twice (otherwise there will be no update
+  // to the live region)
+  // For example, if the user hits alt-r twice in a row, we want that
+  // announcement to be spoken twice.
+  a11y.Video.announcementDiv.innerText = '';
+  a11y.Video.announcementDiv.innerText = text;
 };
 
 /**
@@ -450,6 +560,28 @@ a11y.Video.offScreenCSStext =
  * @type {boolean}
  */
 a11y.Video.userTesting = true;
+/**
+ * Announcement string that track is not supported.
+ * @type {string}
+ */
+a11y.Video.announceTrackNotSupported = 'This video may have audio ' +
+    'descriptions but the HTML5 track element has not been enabled. ' +
+    'For audio descriptions to work, please go to ' +
+    'chrome colon slash slash flags, find the track experiment, ' +
+    'enable it, and restart the browser.';
+/**
+ * Announcement of shorcuts.
+ * @type {string}
+ */
+a11y.Video.announceShortcuts = 'List of keyboard commands. ' +
+    'To repeat this list of commands, press alt question mark. ' +
+    'To detect if audio descriptions are on or off, press alt r . ' +
+    'To turn audio descriptions on or off, press alt b .';
+/**
+ * Boolean whether there is an audio described video.
+ * @type {boolean}
+ */
+a11y.Video.videoWithAudioDesc = false;
 
 a11y.Video.initVideoElems();
 a11y.Video.initKeyCommands();

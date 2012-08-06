@@ -36,9 +36,7 @@ function VideoElement(e, num) {
   // This is to identify different videos on a page (if there are multiple).
   // When a background page sends a message (ex., 'play'),
   // it needs to send it to a specific video, identified by videoId.
-  // Set the @tabindex=0 so that it can be the activeElement
   this.videoId = num;
-  this.elem.setAttribute('tabindex', 0);
 
   this.altChar = false;
   this.audioDescOn = true;
@@ -56,11 +54,10 @@ function VideoElement(e, num) {
  * Initializes the track. Sets up speaking on cue change.
  */
 VideoElement.prototype.initTrack = function() {
-  this.trackList = this.elem.textTracks;
-  var i, j;
+  var i;
 
   // If the track experiment is not enabled, announce and return
-  if (!this.trackList) {
+  if (!this.elem.textTracks) {
     chrome.extension.sendRequest(
         {'speak': announceTrackNotSupported}
     );
@@ -70,39 +67,59 @@ VideoElement.prototype.initTrack = function() {
   // Associative array for language that user wants
   // key = language, value = true
   var userLang = {};
-  for (j = 0; j < languageList.length; j++) {
-    userLang[languageList[j]] = true;
+  for (i = 0; i < languageList.length; i++) {
+    userLang[languageList[i]] = true;
   }
 
   // Select appropriate track, in order of preference:
-  // 1. @default
-  // 2. match language
-  // 3. just select the first one
-  for (i = 0; i < this.trackList.length; i++) {
-    if (this.trackList[i].kind == 'descriptions') {
+  // 1. mode=TextTrack.SHOWING
+  // 2. @default
+  // 3. match language
+  // 4. just select the first one
 
-      // 3. Select the first desc track if no other match
-      if (!this.descTrack) {
-        this.descTrack = this.trackList[i];
-      }
+  // Loop through all tracks, looking for kind='descriptions'
+  // Select the first occurrence of SHOWING, @default, language match
+  // Select the appropriate track (in the above order)
 
-      // 1. Select <track> if @default, and break
-      if (this.trackList[i].defaultSelected) {
-        this.descTrack = this.trackList[i];
-          break;
-      }
-
-      // 2. Select <track> if language match, and break
-      if (userLang[this.trackList[i].language]) {
-        this.descTrack = this.trackList[i];
+  var firstShowing, firstDefault, firstLangMatch, firstDesc;
+  for (i = 0; i < this.elem.textTracks.length; i++) {
+    if (this.elem.textTracks[i].kind === 'descriptions') {
+      if (!firstShowing &&
+          this.elem.textTracks[i].mode === TextTrack.SHOWING) {
+        firstShowing = this.elem.textTracks[i];
         break;
+      }
+
+      if (!firstDefault && this.elem.textTracks[i].defaultSelected) {
+        firstDefault = this.elem.textTracks[i];
+      }
+
+      if (!firstLangMatch && userLang[this.elem.textTracks[i].language]) {
+        firstLangMatch = this.elem.textTracks[i];
+      }
+
+      if (!firstDesc) {
+        firstDesc = this.elem.textTracks[i];
       }
     }
   }
 
+  if (firstShowing) {
+    this.descTrack = firstShowing;
+  } else if (firstDefault) {
+    this.descTrack = firstDefault;
+  } else if (firstLangMatch) {
+    this.descTrack = firstLangMatch;
+  } else {
+    this.descTrack = firstDesc;
+  }
+
   // Activate description track, if there is one
   if (this.descTrack) {
-    this.descTrack.mode = TextTrack.HIDDEN;
+    if (this.descTrack.mode !== TextTrack.SHOWING) {
+      this.descTrack.mode = TextTrack.HIDDEN;
+    }
+
     this.descTrack.oncuechange = this.cuechange(this);
 
     // Add documentation announcement on focus of video
@@ -112,7 +129,7 @@ VideoElement.prototype.initTrack = function() {
 };
 
 /**
- * Onfocus on of video element, speak documentation.
+ * Onfocus of video element, speak documentation.
  * @param {VideoElement} vid Which video received the focus event.
  * @return {function} Returns the function as described above.
  */
@@ -210,11 +227,9 @@ VideoElement.prototype.keyDownListener = function(vid) {
           console.log('audioDescOn ' + vid.audioDescOn);
         }
       }
-    } else if (evt.keyCode == 82 &&
-               (vid.descTrack || !isTrackSupported())) {
+    } else if (evt.keyCode == 82) {
       // keycode for 'r' is 82
-      // repeat documentation announcement,
-      // if audio description exists
+      // repeat documentation announcement
       if (vid.altChar) {
         vid.speakVideoAnnouncement(vid);
       }
@@ -245,7 +260,7 @@ VideoElement.prototype.speakVideoAnnouncement = function(vid) {
     chrome.extension.sendRequest(
       {'speak': announceTrackNotSupported}
     );
-  } else {
+  } else if (vid.descTrack) {
     chrome.extension.sendRequest(
         {'speak': announceWithAudioDesc}
     );
@@ -262,6 +277,10 @@ VideoElement.prototype.speakVideoAnnouncement = function(vid) {
 
     chrome.extension.sendRequest(
         {'speak': announceRepeat}
+    );
+  } else {
+    chrome.extension.sendRequest(
+        {'speak': announceWithoutAudioDesc}
     );
   }
   chrome.extension.sendRequest(
@@ -341,6 +360,8 @@ VideoElement.prototype.cuechange = function(vid) {
   return function() {
     // Here, "this" refers to a textTrack.
     // Only read the first active cue, ignoring all other active cues.
+    // (It's possible to have overlapping cues; in this case, we will only
+    // read the first one)
     if (this.activeCues.length > 0) {
       var cue = this.activeCues[0];
 
@@ -450,13 +471,14 @@ var alertNoVoice = false;
 
 var languageList;
 var announceWithAudioDesc = 'This video has audio descriptions.';
+var announceWithoutAudioDesc = 'This video does not have audio descriptions.';
 var announceAudioDescOn = 'Audio descriptions are on. ' +
     'To disable them, press alt b .';
 var announceAudioDescOff = 'Audio descriptions are off. ' +
     'To enable them, press alt b .';
 var announceRepeat = 'To repeat this message, press alt r .';
 var announceKeyHelp = 'For text to speech shortcuts, press ' +
-    'alt h. ' +
+    'alt h . ' +
     'For per video keyboard shortcuts, ' +
     'press alt question mark while focused on video.';
 var announceKeyCommands = 'List of keyboard commands. ' +
@@ -470,10 +492,11 @@ var announceKeyCommands = 'List of keyboard commands. ' +
     'To rewind, press the left arrow. ' +
     'To increase volume of video, press the up arrow. ' +
     'To decrease volume of video, press the down arrow.';
-var announceTrackNotSupported = 'This video has audio descriptions but ' +
+var announceTrackNotSupported = 'This video may have audio descriptions but ' +
     'the HTML5 track element has not been enabled. ' +
     'For audio descriptions to work, please go to ' +
-    'chrome colon slash slash flags to enable the track experiment.';
+    'chrome colon slash slash flags, find the track experiment, ' +
+    'enable it, and restart the browser.';
 var announceTTSCommands = 'List of text to speech commands. ' +
     'To repeat this list of commands, press alt h . ' +
     'To stop speaking, press control. ' +

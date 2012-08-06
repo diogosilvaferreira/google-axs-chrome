@@ -29,5 +29,8 @@
     }
   ],
 
+  "icons": { "128": "chrome-a11y-audio-ext-icon-v1.png",
+             "48": "chrome-a11y-audio-ext-icon-v1-48.png" },
+
   "manifest_version": 2
 }
