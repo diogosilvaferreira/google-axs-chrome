@@ -27,6 +27,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
       var slides;
       var showAllSlidesButton;
       var ignoreFocusEvents = false;
+      var focusedEl;
       var currentStars = 3;
 
       function $(element) {
@@ -62,7 +63,10 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
           window.setTimeout(function() {
             var slideIndex = parseInt(location.hash.substr(1), 10) - 1;
             ignoreFocusEvents = true;
-            slides[slideIndex].focus();
+
+            // Set focus on the first element in the slide
+            setFocusInsideSlide(slides[slideIndex]);
+
             console.log('onSlideEnter focus');
             window.setTimeout(function() {
               ignoreFocusEvents = false;
@@ -71,8 +75,43 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
         }, 600);
       }
 
+      function setFocusInsideSlide(slide) {
+        var firstSlideEl = slide.querySelector('.firstFocusableElt');
+        if (!firstSlideEl) {
+          firstSlideEl = slide;
+        }
+        // Don't set focus twice if this element is already focused
+        if (focusedEl != firstSlideEl) {
+          try {
+            firstSlideEl.focus();
+          } catch (e) {
+            // Swallow this. If this element did not receive focus, IE will
+            // try to throw an error.
+          }
+        }
+        focusedEl = null;
+      }
+
+      /* Gets the first child node that is an element */
+      function getFirstElementChild(node) {
+        // firstElementChild not supported in all browsers:
+        // http://www.quirksmode.org/dom/w3c_traversal.html
+        if (node.firstElementChild != undefined &&
+            node.firstElementChild.tagName != 'STYLE') {
+          return node.firstElementChild;
+        } else {
+          var child = node.firstChild;
+          while (child && (child.nodeType != Node.ELEMENT_NODE ||
+              (child.tagName == 'STYLE'))) {
+            child = child.nextSibling;
+          }
+          return child;
+        }
+      }
+
       function onFocus(e) {
         console.log('focus ' + e.target);
+        focusedEl = e.target;
         document.pageXOffset = 0;
         if (ignoreFocusEvents) {
           console.log('ignore focus');
@@ -111,6 +150,17 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
           slides[i].setAttribute('tabindex', '-1');
           slides[i].setAttribute('slideIndex', i);
           slides[i].setAttribute('title', 'Slide ' + (i + 1));
+
+          // Make the first element inside of every slide focusable.
+          var firstSlideEl = getFirstElementChild(slides[i]);
+          if (!firstSlideEl) {
+            firstSlideEl = slides[i];
+          }
+          if (firstSlideEl.tabIndex < 0) {
+            firstSlideEl.setAttribute('tabindex', '-1');
+          }
+          firstSlideEl.classList.add('firstFocusableElt');
+          firstSlideEl.style.outline = 'none';
         }
 
         document.addEventListener('slideenter', onSlideEnter, true);
@@ -119,6 +169,8 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
         window.setTimeout(function() {
           updateShowAllSlidesButton();
         }, 0);
+
+        onSlideEnter();
       }
 
       // Star rating gadget
@@ -478,7 +530,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 
   </style>
 </head>
-<body style="display: none">
+<body style="display: none" onload='initAriaPreso()'>
 
 <section class='slides layout-regular'>
 
@@ -1709,6 +1761,12 @@ function setSelected(elem) {
 
 
   <article class="biglogo"></article>
+
+
+  <!-- This presentation shows only a few slides at a time. This works in
+       most screen readers too, but for those where it doesn't, here's a
+       way to just show all slides. -->
+  <button id='showAllSlidesButton' onclick='showAllSlides()'></button>
 
 </section>
 
