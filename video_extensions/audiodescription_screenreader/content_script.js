@@ -86,6 +86,13 @@ a11y.VideoElement = function(videoElement, selectedVideoId) {
    */
   this.spokenDocumentation_ = false;
 
+  /**
+   * The on cuechange function (for removing eventListener)
+   * @type {function()}
+   * @private
+   */
+  this.cueChangeFunction_ = null;
+
   if (a11y.Video.userTesting) {
    this.elem_.addEventListener(
       'keydown',
@@ -225,51 +232,6 @@ a11y.VideoElement.prototype.getUniqueDivId = function(vid) {
 };
 
 /**
- * Cue change function. Looks for active cue and updates aria-live region.
- * @param {!VideoElement} vid Which video's cue changed.
- * @return {function} Returns the function as described above.
- */
-a11y.VideoElement.prototype.cuechange = function(vid) {
-  return function() {
-    // Here, "this" refers to a textTrack.
-    // Only read the first active cue, ignoring all other active cues.
-    // (It's possible to have overlapping cues; in this case, we will only
-    // read the first one)
-    if (this.activeCues.length > 0) {
-      var cue = this.activeCues[0];
-
-        if (document.getElementById(vid.idString_)) {
-          cue.onexit = function() {
-             chrome.extension.sendRequest(
-              {'isSpeaking': true},
-              function(response) {
-                if (response.isSpeaking) {
-                  console.log('isSpeaking');
-                  vid.elem_.pause();
-                  vid.pausedByExtension_ = true;
-                  vid.intervalId_ = window.setInterval(
-                      a11y.VideoElement.isSpeakingPolling,
-                      500,
-                      vid);
-                }
-              }
-            );
-          };
-
-          // Using innerText (compatible with Chrome)
-          // but for future development, other browsers may not support
-          // http://www.quirksmode.org/dom/w3c_html.html
-          // Blank the aria-live region so if the same text is announced twice,
-          // the screenreader will read it twice (otherwise there will be no
-          // update to the live region)
-          document.getElementById(vid.idString_).innerText = '';
-          document.getElementById(vid.idString_).innerText = cue.text;
-      }
-    }
-  };
-};
-
-/**
  * Function that is polled to check if the screenreader has stopped speaking.
  * @param {!VideoElement} vid The video that will restart playing
  *     when the screenreader stops speaking.
@@ -297,22 +259,26 @@ a11y.VideoElement.prototype.activateTrack = function(track) {
   this.descTrack_ = track;
 
   if (this.descTrack_) {
+     this.cueChangeFunction_ = goog.bind(a11y.Video.createCueChangeFunction,
+         this.descTrack_, this);
      this.descTrack_.addEventListener(
         'cuechange',
-        this.cuechange(this),
+        this.cueChangeFunction_,
         false);
   }
 
-  var ariaLiveRegion = document.createElement('div');
-  ariaLiveRegion.setAttribute('id', this.idString_);
-  ariaLiveRegion.setAttribute('aria-live', 'polite');
-  // Make the live region hidden off screen, set tabindex = -1
-  ariaLiveRegion.style.cssText = a11y.Video.offScreenCSStext;
-  ariaLiveRegion.setAttribute('tabindex', '-1');
+  if (!a11y.Video.audioDescWithAnnouncementDiv) {
+    var ariaLiveRegion = document.createElement('div');
+    ariaLiveRegion.setAttribute('id', this.idString_);
+    ariaLiveRegion.setAttribute('aria-live', 'polite');
+    // Make the live region hidden off screen, set tabindex = -1
+    ariaLiveRegion.style.cssText = a11y.Video.offScreenCSStext;
+    ariaLiveRegion.setAttribute('tabindex', '-1');
 
-  // From https://developer.mozilla.org/En/DOM/Node.insertBefore
-  var parentDiv = this.elem_.parentNode;
-  parentDiv.insertBefore(ariaLiveRegion, this.elem_.nextSibling);
+    // From https://developer.mozilla.org/En/DOM/Node.insertBefore
+    var parentDiv = this.elem_.parentNode;
+    parentDiv.insertBefore(ariaLiveRegion, this.elem_.nextSibling);
+  }
 };
 
 /**
@@ -323,12 +289,63 @@ a11y.VideoElement.prototype.deactivateTrack = function() {
   if (this.descTrack_) {
     this.descTrack_.removeEventListener(
         'cuechange',
-        this.cuechange(this),
+        this.cueChangeFunction_,
         false);
   }
 
-  var parentDiv = this.elem_.parentNode;
-  parentDiv.removeChild(document.getElementById(this.idString_));
+  if (document.getElementById(this.idString_)) {
+    var parentDiv = this.elem_.parentNode;
+    parentDiv.removeChild(document.getElementById(this.idString_));
+  }
+};
+
+
+/**
+ * Cue change function. Looks for active cue and updates aria-live region.
+ * @param {!VideoElement} vid Which video's cue changed.
+ * @this {TextTrack} Will be goog.bind to textTrack
+ */
+a11y.Video.createCueChangeFunction = function(vid) {
+  // Here, "this" refers to a textTrack.
+  // Only read the first active cue, ignoring all other active cues.
+  // (It's possible to have overlapping cues; in this case, we will only
+  // read the first one)
+  if (this.activeCues.length > 0) {
+    var cue = this.activeCues[0];
+
+    if (a11y.Video.audioDescWithAnnouncementDiv ||
+        document.getElementById(vid.idString_)) {
+      cue.onexit = function() {
+         chrome.extension.sendRequest(
+             {'isSpeaking': true},
+             function(response) {
+               if (response.isSpeaking) {
+               console.log('isSpeaking');
+               vid.elem_.pause();
+               vid.pausedByExtension_ = true;
+               vid.intervalId_ = window.setInterval(
+                   a11y.VideoElement.isSpeakingPolling,
+                   500,
+                   vid);
+               }
+             }
+         );
+      };
+
+      // Using innerText (compatible with Chrome)
+      // but for future development, other browsers may not support
+      // http://www.quirksmode.org/dom/w3c_html.html
+      // Blank the aria-live region so if the same text is announced twice,
+      // the screenreader will read it twice (otherwise there will be no
+      // update to the live region)
+      if (a11y.Video.audioDescWithAnnouncementDiv) {
+        a11y.Video.updateAnnouncement(cue.text);
+      } else {
+        document.getElementById(vid.idString_).innerText = '';
+        document.getElementById(vid.idString_).innerText = cue.text;
+      }
+    }
+  }
 };
 
 /**
@@ -363,6 +380,10 @@ a11y.Video.initVideoElems = function() {
             // Set the audio desc track using our default rules
             a11y.Video.videoElems[j].setInitDefaultTrack();
 
+            // Turn on audio desc track by default
+            a11y.Video.videoElems[j].activateTrack(
+                a11y.Video.videoElems[j].descTrack_);
+
             // There is a video with audio description on page.
             // We will announce the presence of videos in the title.
             // We will announce on/off through an aria-live region.
@@ -392,7 +413,7 @@ a11y.Video.initKeyCommands = function() {
    * Are audio descriptions enabled.
    * @type {boolean}
    */
-  a11y.Video.audioDescOn = false;
+  a11y.Video.audioDescOn = true;
   /**
    * Is the alt key pressed.
    * @type {boolean}
@@ -454,6 +475,24 @@ a11y.Video.keyDown = function(evt) {
     // keycode for '?' is 191
     if (a11y.Video.altChar) {
       a11y.Video.updateAnnouncement(a11y.Video.announceShortcuts);
+    }
+  } else if (key == 81) {
+    // keycode for 'q' is 81
+    if (a11y.Video.altChar) {
+      if (a11y.Video.audioDescWithAnnouncementDiv) {
+        a11y.Video.audioDescWithAnnouncementDiv = false;
+        if (a11y.Video.audioDescOn) {
+          for (j = 0; j < a11y.Video.videoElems.length; j++) {
+            if (!document.getElementById(
+                    a11y.Video.videoElems[j].idString_)) {
+              a11y.Video.videoElems[j].activateTrack(
+                  a11y.Video.videoElems[j].descTrack_);
+            }
+          }
+        }
+      } else {
+        a11y.Video.audioDescWithAnnouncementDiv = true;
+      }
     }
   }
 };
@@ -582,6 +621,16 @@ a11y.Video.announceShortcuts = 'List of keyboard commands. ' +
  * @type {boolean}
  */
 a11y.Video.videoWithAudioDesc = false;
+/**
+ * Boolean: if true, use the a11y.Video.announcementDiv for audio descriptions,
+ * else create a new ariaLiveRegion for each <video>.
+ * Note: it looks like there is a bug on Mac:
+ * the ariaLiveRegion is not spoken by VoiceOver.
+ * The quick fix is to use the a11y.Video.announcementDiv instead.
+ * This is not desired implementation, but it fixes the bug.
+ * @type {boolean}
+ */
+a11y.Video.audioDescWithAnnouncementDiv = true;
 
 a11y.Video.initVideoElems();
 a11y.Video.initKeyCommands();
