@@ -43,7 +43,7 @@ jawbreaker.newGame = function(width, height, colors) {
 /**
  * return the string of enum color
  * @param {number} color number representation of color.
- * @return {String} string representation of color.
+ * @return {string} string representation of color.
  */
 jawbreaker.getColorString = function(color) {
   return COLORS[color];
@@ -688,7 +688,14 @@ jawbreaker.speakElement = function(node, nodeDescs) {
  */
 jawbreaker.init = function() {
 
-  if (!document.body || !window.cvox || jawbreaker.ready) {return}
+  if (!document.body || !window.cvox) {
+    window.setTimeout(jawbreaker.init, 100);
+    return;
+  }
+
+  if (jawbreaker.ready) {
+    return;
+  }
 
   //describe the game instructions
 
