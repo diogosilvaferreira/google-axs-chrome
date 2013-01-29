@@ -1,0 +1,657 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org" />
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+  <link href="http://developer.chrome.com/stable/static/css/site.css" rel="stylesheet"
+  type="text/css" />
+  <link href="http://developer.chrome.com/stable/static/css/print.css" rel="stylesheet"
+  type="text/css" media="print" />
+  <link href="http://developer.chrome.com/stable/static/css/prettify.css" rel=
+  "stylesheet" type="text/css" />
+  <link href="http://www.google.com/images/icons/product/chrome-16.png" rel="icon" type=
+  "image/ico" />
+  <link href="http://developer.chrome.com/stable/static/css/api.css" rel="stylesheet"
+  type="text/css" />
+
+  <title>ChromeVox API</title>
+</head>
+
+<body>
+  <div id="gc-pagecontent">
+    <h1 class="page_title">cvox.Api</h1>
+
+    <div id="toc">
+      <h2>Contents</h2>
+
+      <ol>
+        <li>
+          <a href="#apiReference">API reference: cvox.Api</a>
+
+          <ol>
+            <li>
+              <a href="#types">Types</a>
+
+              <ol>
+                <li><a href="#type-NodeDescription">NodeDescription</a></li>
+              </ol>
+            </li>
+
+            <li>
+              <a href="#methods">Methods</a>
+
+              <ol>
+                <li><a href="#method-isChromeVoxActive">isChromeVoxActive</a></li>
+
+                <li><a href="#method-speak">speak</a></li>
+
+                <li><a href="#method-speakNode">speakNode</a></li>
+
+                <li><a href="#method-stop">stop</a></li>
+
+                <li><a href="#method-playEarcon">playEarcon</a></li>
+
+                <li><a href="#method-syncToNode">syncToNode</a></li>
+
+                <li><a href="#method-getCurrentNode">getCurrentNode</a></li>
+
+                <li><a href="#method-setSpeechForNode">setSpeechForNode</a></li>
+
+                <li><a href="#method-getBuild">getBuild</a></li>
+
+                <li><a href="#method-getVersion">getVersion</a></li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </div>
+
+    <p id="classSummary">Use the <code>cvox.Api</code> module to control ChromeVox.</p>
+
+    <h2 id="apiReference">API Reference: cvox.Api</h2>
+
+    <div class="api_reference">
+      <h3 id="types">Types</h3>
+
+      <div>
+        <h3 id="type-NodeDescription">NodeDescription</h3>
+
+        <div>
+          <dl>
+            <dt><span class="type_name">( <span id="typeTemplate">object</span>
+            )</span></dt>
+
+            <dd>Data structure for holding information on how to speak a particular node.
+            The string data is separated into context, text, userValue, and annotation to
+            enable ChromeVox to speak each of these with the voice settings that are
+            consistent with how ChromeVox normally presents information about nodes to
+            users.</dd>
+
+            <dd>
+              <h4 id="NodeDescription-properties">Properties of <a href=
+              "#type-NodeDescription">NodeDescription</a></h4>
+            </dd>
+
+            <dd>
+              <dl>
+                <dd>
+                  <div>
+                    <a name="property-NodeDescription-context" id=
+                    "property-NodeDescription-context"></a>
+
+                    <dl>
+                      <dt><span class="variable">context</span> <span class="property">(
+                      <span id="typeTemplate">string</span> )</span></dt>
+
+                      <dd>Contextual information that the user should hear first which is
+                      not part of main content itself. For example, the user/date of a
+                      given post.</dd>
+                    </dl>
+                  </div>
+
+                  <div>
+                    <a name="property-NodeDescription-text" id=
+                    "property-NodeDescription-text"></a>
+
+                    <dl>
+                      <dt><span class="variable">text</span> <span class="property">(
+                      <span id="typeTemplate">string</span> )</span></dt>
+
+                      <dd>The main content of the node.</dd>
+                    </dl>
+                  </div>
+
+                  <div>
+                    <a name="property-NodeDescription-userValue" id=
+                    "property-NodeDescription-userValue"></a>
+
+                    <dl>
+                      <dt><span class="variable">userValue</span> <span class=
+                      "property">( <span id="typeTemplate">string</span> )</span></dt>
+
+                      <dd>Anything that the user has entered.</dd>
+                    </dl>
+                  </div>
+
+                  <div>
+                    <a name="property-NodeDescription-annotation" id=
+                    "property-NodeDescription-annotation"></a>
+
+                    <dl>
+                      <dt><span class="variable">annotation</span> <span class=
+                      "property">( <span id="typeTemplate">string</span> )</span></dt>
+
+                      <dd>The role and state of the object.</dd>
+                    </dl>
+                  </div>
+                </dd>
+              </dl>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <h3 id="methods">Methods</h3>
+
+      <div>
+        <h4 id="method-isChromeVoxActive">isChromeVoxActive</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.isChromeVoxActive</span>()
+        </div>
+
+        <div class="description">
+          <p>Returns true if ChromeVox is currently running. If the API is available in
+          the JavaScript namespace but this method returns false, it means that the user
+          has (temporarily) disabled ChromeVox.</p>
+
+          <h4>Return value - boolean</h4>
+
+          <p>True if ChromeVox is currently active.</p>
+        </div>
+      </div>
+
+      <div>
+        <h4 id="method-speak">speak</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.speak</span>(<span>string <span class=
+          "variable">textString</span></span>, <span class="optional">number <span class=
+          "variable">queueMode</span></span>, <span class="optional">object <span class=
+          "variable">properties</span></span>)
+        </div>
+
+        <div class="description">
+          <p>Speaks the given string using the specified queueMode and properties.</p>
+
+          <h4>Parameters</h4>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-NodeDescription-textString" id=
+                "property-NodeDescription-textString"></a>
+
+                <dl>
+                  <dt><span class="variable">textString</span> <span class="property">(
+                  <span id="typeTemplate">string</span> )</span></dt>
+
+                  <dd>The string of text to be spoken.</dd>
+                </dl>
+              </div>
+
+              <div>
+                <a name="property-NodeDescription-queueMode" id=
+                "property-NodeDescription-queueMode"></a>
+
+                <dl>
+                  <dt><span class="variable">queueMode</span> <span class="property">(
+                  <span class="optional">optional</span> <span id=
+                  "typeTemplate">number</span> )</span></dt>
+
+                  <dd>Valid modes are 0 for flush; 1 for queue.</dd>
+                </dl>
+              </div>
+
+              <div>
+                <a name="property-NodeDescription-properties" id=
+                "property-NodeDescription-properties"></a>
+
+                <dl>
+                  <dt><span class="variable">properties</span> <span class="property">(
+                  <span class="optional">optional</span> <span id=
+                  "typeTemplate">object</span> )</span></dt>
+
+                  <dd>Speech properties to use for this utterance.</dd>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div>
+        <h4 id="method-speakNode">speakNode</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.speakNode</span>(<span>Node <span class=
+          "variable">targetNode</span></span>, <span class="optional">number <span class=
+          "variable">queueMode</span></span>, <span class="optional">object <span class=
+          "variable">properties</span></span>)
+        </div>
+
+        <div class="description">
+          <p>Speaks the given node using the specified queueMode and properties.</p>
+
+          <h4>Parameters</h4>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-NodeDescription-targetNode" id=
+                "property-NodeDescription-targetNode"></a>
+
+                <dl>
+                  <dt><span class="variable">targetNode</span> <span class="property">(
+                  <span id="typeTemplate">Node</span> )</span></dt>
+
+                  <dd>A DOM node to speak</dd>
+                </dl>
+              </div>
+
+              <div>
+                <a name="property-NodeDescription-queueMode" id=
+                "property-NodeDescription-queueMode"></a>
+
+                <dl>
+                  <dt><span class="variable">queueMode</span> <span class="property">(
+                  <span class="optional">optional</span> <span id=
+                  "typeTemplate">number</span> )</span></dt>
+
+                  <dd>Valid modes are 0 for flush; 1 for queue.</dd>
+                </dl>
+              </div>
+
+              <div>
+                <a name="property-NodeDescription-properties" id=
+                "property-NodeDescription-properties"></a>
+
+                <dl>
+                  <dt><span class="variable">properties</span> <span class="property">(
+                  <span class="optional">optional</span> <span id=
+                  "typeTemplate">object</span> )</span></dt>
+
+                  <dd>Speech properties to use for this utterance.</dd>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div>
+        <h4 id="method-stop">stop</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.stop</span>()
+        </div>
+
+        <div class="description">
+          <p>Stops speech.</p>
+        </div>
+      </div>
+
+      <div>
+        <h4 id="method-playEarcon">playEarcon</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.playEarcon</span>(<span>string <span class=
+          "variable">earcon</span></span>)
+        </div>
+
+        <div class="description">
+          <p>Plays the specified earcon sound.</p>
+
+          <h4>Parameters</h4>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-NodeDescription-earcon" id=
+                "property-NodeDescription-earcon"></a>
+
+                <dl>
+                  <dt><span class="variable">earcon</span> <span class="property">(
+                  <span id="typeTemplate">string</span> )</span></dt>
+
+                  <dd>
+                    An earcon name. Valid names are:
+
+                    <ul>
+                      <li>ALERT_MODAL</li>
+
+                      <li>ALERT_NONMODAL</li>
+
+                      <li>BULLET</li>
+
+                      <li>BUSY_PROGRESS_LOOP</li>
+
+                      <li>BUSY_WORKING_LOOP</li>
+
+                      <li>BUTTON</li>
+
+                      <li>CHECK_OFF</li>
+
+                      <li>CHECK_ON</li>
+
+                      <li>COLLAPSED</li>
+
+                      <li>EDITABLE_TEXT</li>
+
+                      <li>ELLIPSIS</li>
+
+                      <li>EXPANDED</li>
+
+                      <li>FONT_CHANGE</li>
+
+                      <li>INVALID_KEYPRESS</li>
+
+                      <li>LINK</li>
+
+                      <li>LISTBOX</li>
+
+                      <li>LIST_ITEM</li>
+
+                      <li>NEW_MAIL</li>
+
+                      <li>OBJECT_CLOSE</li>
+
+                      <li>OBJECT_DELETE</li>
+
+                      <li>OBJECT_DESELECT</li>
+
+                      <li>OBJECT_OPEN</li>
+
+                      <li>OBJECT_SELECT</li>
+
+                      <li>PARAGRAPH_BREAK</li>
+
+                      <li>SEARCH_HIT</li>
+
+                      <li>SEARCH_MISS</li>
+
+                      <li>SECTION</li>
+
+                      <li>TASK_SUCCESS</li>
+
+                      <li>WRAP</li>
+
+                      <li>WRAP_EDGE</li>
+                    </ul>
+                  </dd>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div>
+        <h4 id="method-syncToNode">syncToNode</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.syncToNode</span>(<span>Node <span class=
+          "variable">targetNode</span></span>, <span class="optional">boolean
+          <span class="variable">speakNode</span></span>)
+        </div>
+
+        <div class="description">
+          <p>Synchronizes ChromeVox's internal cursor to the targetNode so that when the
+          user resumes reading, they will be starting from a reasonable position.</p>
+
+          <h4>Parameters</h4>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-NodeDescription-targetNode" id=
+                "property-NodeDescription-targetNode"></a>
+
+                <dl>
+                  <dt><span class="variable">targetNode</span> <span class="property">(
+                  <span id="typeTemplate">Node</span> )</span></dt>
+
+                  <dd>The node that ChromeVox should be synced to.</dd>
+                </dl>
+              </div>
+
+              <div>
+                <a name="property-NodeDescription-speakNode" id=
+                "property-NodeDescription-speakNode"></a>
+
+                <dl>
+                  <dt><span class="variable">speakNode</span> <span class="property">(
+                  <span class="optional">optional</span> <span id=
+                  "typeTemplate">boolean</span> )</span></dt>
+
+                  <dd>If true, speaks out the node. Defaults to FALSE.</dd>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div>
+        <h4 id="method-getCurrentNode">getCurrentNode</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.getCurrentNode</span>(<span class="optional">function
+          <span class="variable">callback</span></span>)
+        </div>
+
+        <div class="description">
+          <p>Retrieves the current node and calls the given callback function with
+          it.</p>
+
+          <h4>Parameters</h4>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-getCurrentNode-callback" id=
+                "property-getCurrentNode-callback"></a>
+
+                <dl>
+                  <dt><span class="variable">callback</span> <span class="property">(
+                  <span id="typeTemplate">function</span> )</span></dt>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+
+          <h4>Callback function</h4>
+          <pre class="prettyprint">
+<span class="kwd">function</span><span class="pun">(</span>currentNode<span class=
+"pun">)</span><span class="pln"> </span><span class="subdued"><span class=
+"pun">{...}</span></span><span class="pun">;</span>
+</pre>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-callback-currentNode" id=
+                "property-callback-currentNode"></a>
+
+                <dl>
+                  <dt><span class="variable">currentNode</span> <span class="property">(
+                  <span id="typeTemplate">Node</span> )</span></dt>
+
+                  <dd>The current node in ChromeVox.</dd>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div>
+        <h4 id="method-setSpeechForNode">setSpeechForNode</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.setSpeechForNode</span>(<span>Node <span class=
+          "variable">targetNode</span></span>, <span>array <span class=
+          "variable">nodeDescriptions</span></span>)
+        </div>
+
+        <div class="description">
+          <p>Specifies how the targetNode should be spoken using an array of
+          NodeDescriptions.</p>
+
+          <h4>Parameters</h4>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-setSpeechForNode-targetNode" id=
+                "property-setSpeechForNode-targetNode"></a>
+
+                <dl>
+                  <dt><span class="variable">targetNode</span> <span class="property">(
+                  <span id="typeTemplate">Node</span> )</span></dt>
+
+                  <dd>The node that the NodeDescriptions should be applied to.</dd>
+                </dl>
+              </div>
+
+              <div>
+                <a name="property-setSpeechForNode-nodeDescriptions" id=
+                "property-setSpeechForNode-nodeDescriptions"></a>
+
+                <dl>
+                  <dt><span class="variable">nodeDescriptions</span> <span class=
+                  "property">( <span id="typeTemplate">Array of NodeDescription</span>
+                  )</span></dt>
+
+                  <dd>The Array of NodeDescriptions for the given node.</dd>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div>
+        <h4 id="method-getBuild">getBuild</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.getBuild</span>(<span class="optional">function <span class=
+          "variable">callback</span></span>)
+        </div>
+
+        <div class="description">
+          <p>Retrieves the build info string and calls the given callback function with
+          it.</p>
+
+          <h4>Parameters</h4>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-getCurrentNode-callback" id=
+                "property-getCurrentNode-callback"></a>
+
+                <dl>
+                  <dt><span class="variable">callback</span> <span class="property">(
+                  <span id="typeTemplate">function</span> )</span></dt>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+
+          <h4>Callback function</h4>
+          <pre class="prettyprint">
+<span class="kwd">function</span><span class="pun">(</span>buildInfoString<span class=
+"pun">)</span><span class="pln"> </span><span class="subdued"><span class=
+"pun">{...}</span></span><span class="pun">;</span>
+</pre>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-callback-currentNode" id=
+                "property-callback-currentNode"></a>
+
+                <dl>
+                  <dt><span class="variable">buildInfoString</span> <span class=
+                  "property">( <span id="typeTemplate">string</span> )</span></dt>
+
+                  <dd>The build info.</dd>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div>
+        <h4 id="method-getVersion">getVersion</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.getVersion</span>(<span class="optional">function <span class=
+          "variable">callback</span></span>)
+        </div>
+
+        <div class="description">
+          <p>Retrieves the version string and calls the given callback function with
+          it.</p>
+
+          <h4>Parameters</h4>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-getCurrentNode-callback" id=
+                "property-getCurrentNode-callback"></a>
+
+                <dl>
+                  <dt><span class="variable">callback</span> <span class="property">(
+                  <span id="typeTemplate">function</span> )</span></dt>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+
+          <h4>Callback function</h4>
+          <pre class="prettyprint">
+<span class="kwd">function</span><span class="pun">(</span>versionString<span class=
+"pun">)</span><span class="pln"> </span><span class="subdued"><span class=
+"pun">{...}</span></span><span class="pun">;</span>
+</pre>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-callback-currentNode" id=
+                "property-callback-currentNode"></a>
+
+                <dl>
+                  <dt><span class="variable">versionString</span> <span class=
+                  "property">( <span id="typeTemplate">string</span> )</span></dt>
+
+                  <dd>The version.</dd>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
