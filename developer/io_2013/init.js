@@ -1,6 +1,10 @@
 window.setTimeout(function(){
 var scriptTag = document.createElement("script");
-scriptTag.src = 'mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+// Use this if you are running a local copy of MathJax:
+//scriptTag.src = 'mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+//
+// Otherwise, use this:
+scriptTag.src = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
 document.getElementsByTagName('head')[0].appendChild(scriptTag);
 initMathJax();
 },100);
