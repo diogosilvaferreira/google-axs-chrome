@@ -1,0 +1,25 @@
+Unzip the contents of mathjax-MathJax-24a378e.zip into the mathjax directory.
+
+You should end up with something like this for the main slides directory:
+
+
+io_2013
+io_2013/images
+...
+io_2013/js
+...
+io_2013/mathjax
+io_2013/mathjax/config
+io_2013/mathjax/extensions
+io_2013/mathjax/fonts
+io_2013/mathjax/images
+io_2013/mathjax/jax
+io_2013/mathjax/MathJax.js
+...
+io_2013/scripts
+...
+io_2013/theme
+...
+app.yaml
+config.rb
+...

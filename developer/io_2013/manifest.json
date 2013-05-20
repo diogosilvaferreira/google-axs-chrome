@@ -1,0 +1,17 @@
+{
+   "manifest_version": 2,
+   "app": {
+      "launch": {
+         "local_path": "template.html"
+      }
+   },
+   "name": "I/O 2013 A11y",
+   "description": "Advancing Web Accessibility with ChromeVox",
+   "icons": {
+      "128": "images/google_developers_icon_128.png"
+   },
+   "content_security_policy": "script-src 'unsafe-eval' 'self'; object-src 'unsafe-eval' 'self'",
+   "offline_enabled": true,
+   "permissions": [ "experimental", "tts", "unlimitedStorage", "windows"],
+   "version": "0.1"
+}

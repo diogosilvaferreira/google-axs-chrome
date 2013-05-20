@@ -1,0 +1,536 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="all" href="theme/css/io2013.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="logoslide nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/google_developers_logo.png"></span>
+    </article>
+  </slide>
+
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <aside class="note">
+      <section>
+        <p><b>Give an awesome talk!</b></p>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>Overview</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Intro</li>
+        <li>Walking through the DOM</li>
+        <li>Reading Math</li>
+        <li>Using ChromeVox APIs</li>
+        <li>Conclusion</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Intro</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>ChromeVox is a screen reader for Chrome which brings the speed, versatility, and security of Chrome to visually impaired users</li>
+        <li>Built on web technologies</li>
+        <li>Advancing accessibility</li>
+        <li>Benefits for end users and web developers</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Walking through the DOM</h2>
+    </hgroup>
+    <article>
+      <table>        <tr>
+        <td><pre>
+&ltul&gt
+&ltli&gt &lta href="google.com"&gt Web &lt/a&gt &lt/li&gt
+&ltli&gt&lta href="google.com/maps"&gtMaps&lt/a&gt&lt/li&gt
+&ltli&gt&lta href="google.com/images"&gtImages&lt/a&gt&lt/li&gt
+&ltli&gt&lta href="gmail.com/"&gtGmail&lt/a&gt&lt/li&gt
+&lt/ul&gt
+&ltp&gtGoogle&lt/p&gt
+&ltinput type="text" aria-label="Search"&gt
+&ltbutton&gtSearch&lt/button&gt
+        </pre></td>
+        <td><div>
+          <ul>
+            <li><a href="google.com">Web</a></li>
+            <li><a href="google.com/maps">Maps</a></li>
+            <li><a href="google.com/images">Images</a></li>
+            <li><a href="gmail.com/">Gmail</a></li>
+          </ul>
+          <p>Google</p>
+          <input type="text" aria-label="Search">
+          <button>Search</button>
+        </div></td>
+      </tr></table>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Mathematics in ChromeVox</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Aural rendering of mathematical content</li>
+        <li>Either given as MathML or rendered by MathJax</li>
+        <li>On all platforms supporting Chrome</li>
+        <li>Epub3 readers can leverage this via WebViews</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Rendering Math</h2>
+    </hgroup>
+    <article>
+      <center>
+        <math>
+          <mrow>
+            <mi>x</mi>
+            <mo>=</mo>
+            <mfrac>
+              <mrow>
+                <mo>&#x2212;</mo>
+                <mi>b</mi>
+                <mo>&#x00B1;</mo>
+                <msqrt>
+                  <mrow>
+                    <msup>
+                      <mi>b</mi>
+                      <mn>2</mn>
+                    </msup>
+                    <mo>&#x2212;</mo>
+                    <mn>4</mn>
+                    <mi>a</mi>
+                    <mi>c</mi>
+                  </mrow>
+                </msqrt>
+              </mrow>
+              <mrow>
+                <mn>2</mn>
+                <mi>a</mi>
+              </mrow>
+            </mfrac>
+          </mrow>
+        </math>
+      </center>
+      <br>
+      <table>
+        <tr><td>
+      <pre class="prettyprint" data-lang="MathML">
+&lt;math&gt;
+  &lt;mrow&gt;
+    &lt;mi&gt;x&lt;/mi&gt;
+    &lt;mo&gt;=&lt;/mo&gt;
+    &lt;mfrac&gt;
+      &lt;mrow&gt;
+        &lt;mo&gt;&#x2212;&lt;/mo&gt;
+        &lt;mi&gt;b&lt;/mi&gt;
+        &lt;mo&gt;&#x00B1;&lt;/mo&gt;
+        &lt;msqrt&gt;
+          &lt;mrow&gt;
+      ...
+&lt;/math&gt;
+          </pre>
+              </td>
+              <td>
+      <pre class="prettyprint" data-lang="MathJax">
+
+&lt;span class=​"MathJax" id=​"MathJax-Element-1-Frame" style&gt;
+ &lt;nobr&gt;
+  &lt;span class=​"math" id=​"MathJax-Span-1"&gt;
+   &lt;span style=​"display:​ inline-block;​ position:​....&gt;
+    &lt;span style=​"position:​ absolute;​ clip:​ rect(27.5px ...&gt;
+      &lt;span class=​"mrow" id=​"MathJax-Span-2"&gt;
+        &lt;span class=​"mrow" id=​"MathJax-Span-3"&gt;
+          &lt;span class=​"mi" id=​"MathJax-Span-4" style=​... &gt;
+          &lt;span class=​"mo" id=​"MathJax-Span-5" style=​... &gt;
+          &lt;span class=​"mfrac" id=​"MathJax-Span-6" ...&gt;
+            &lt;span style=​"display:​ inline-block;"​  ...&gt;
+           ....
+&lt;/span&gt;
+          </pre>
+            </td></tr>
+          </table>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Reading Math</h2>
+    </hgroup>
+    <article>
+      <center>
+        <math>
+          <mrow>
+            <mi>x</mi>
+            <mo>=</mo>
+            <mfrac>
+              <mrow>
+                <mo>&#x2212;</mo>
+                <mi>b</mi>
+                <mo>&#x00B1;</mo>
+                <msqrt>
+                  <mrow>
+                    <msup>
+                      <mi>b</mi>
+                      <mn>2</mn>
+                    </msup>
+                    <mo>&#x2212;</mo>
+                    <mn>4</mn>
+                    <mi>a</mi>
+                    <mi>c</mi>
+                  </mrow>
+                </msqrt>
+              </mrow>
+              <mrow>
+                <mn>2</mn>
+                <mi>a</mi>
+              </mrow>
+            </mfrac>
+          </mrow>
+        </math>
+          </center><br>
+      <ul>
+        <li>Aural rendering of math during normal text navigation
+        </li>
+        <li>
+          Both MathML and MathJax are rendered similarly
+        </li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Exploring Math (Now and Future)</h2>
+    </hgroup>
+    <article>
+      <center>
+        <math>
+          <mrow>
+            <mi>x</mi>
+            <mo>=</mo>
+            <mfrac>
+              <mrow>
+                <mo>&#x2212;</mo>
+                <mi>b</mi>
+                <mo>&#x00B1;</mo>
+                <msqrt>
+                  <mrow>
+                    <msup>
+                      <mi>b</mi>
+                      <mn>2</mn>
+                    </msup>
+                    <mo>&#x2212;</mo>
+                    <mn>4</mn>
+                    <mi>a</mi>
+                    <mi>c</mi>
+                  </mrow>
+                </msqrt>
+              </mrow>
+              <mrow>
+                <mn>2</mn>
+                <mi>a</mi>
+              </mrow>
+            </mfrac>
+          </mrow>
+        </math>
+      </center><br>
+
+      <ul>
+        <li>Math expressions are explicitly announced</li>
+        <li>Expressions can be entered and further inspected at different levels of detail</li>
+      </ul><br>
+
+     <ul>
+        <li><font color="RED">Currently:</font> Traversal follows syntactic structure</li>
+        <li><font color="RED">Future:</font> More semantic and customisable ways to explore expressions</li>
+      </ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Customizing Math</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Speech rules are customisable</li>
+        <li>Both for nodes and characters</li>
+      </ul>
+      <center>
+        \[\frac{a}{b}c\qquad \frac{A}{\neg A}\ \neg_F\]
+      </center>
+      <pre class="prettyprint" data-lang="javascript">
+cvox.MathNode.defineMathmlRule('mfrac', 'default.english',
+  '[n] ./*[1]; [s] "divided by"; [n] ./*[2]');
+</pre>
+      <pre class="prettyprint" data-lang="javascript">
+cvox.MathNode.defineMathmlRule('mfrac', 'logic.english',
+  '[n] ./*[2]; [s] "follows from"; [n] ./*[1]; [s] "by"');
+</pre>
+      <ul>
+        <li>Optional changes of pitch, rate, volume, pausing</li>
+      </ul>
+
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Interfacing to Math</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Pass the math node directly to ChromeVox at the
+        <strong>right level</strong></li>
+      </ul>
+          <table>
+            <tr><td>
+      <pre class="prettyprint" data-lang="MathML" style="float-left">
+
+&lt;math&gt;
+      ...
+&lt;/math&gt;
+          </pre>
+              </td>
+              <td>
+      <pre class="prettyprint" data-lang="MathJax" style="float-right">
+&lt;span class=​"math" id=​"MathJax-Span-1"&gt;
+           ....
+&lt;/span&gt;
+          </pre>
+            </td></tr>
+          </table>
+      <ul>
+        <li>Use ChromeVox API to get node spoken</li>
+      </ul>
+      <pre class="prettyprint" data-lang="javascript">
+        cvox.Api.syncToNode(node, true);
+      </pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Using ChromeVox APIs</h2>
+    </hgroup>
+    <article>
+      <ul>
+        <li>Enable web developers to give ChromeVox hints
+          <ul>
+            <li>How to speak</li>
+            <li>Where the user is</li>
+            <li>What the user is trying to do</li>
+          </ul>
+        </li>
+        <li><a href="http://google-axs-chrome.googlecode.com/svn/trunk/developer/chromevox-api/cvox_api.html">API documentation</a></li>
+      </ul>
+    </article>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h2>ChromeVox APIs</h2>
+      <h3>Speaking custom messages</h3>
+    </hgroup>
+    <article>
+      <pre class="prettyprint" data-lang="javascript">
+case 72: // H: Toggle code highlighting
+  document.body.classList.toggle('highlight-code');
+  if (document.body.classList.contains("highlight-code")){
+    speak("Code highlighting enabled.");
+  } else {
+    speak("Code highlighting off.");
+  }
+  break;
+...
+function speak(text) {
+  if (cvoxApiExists()) {
+    <b>cvox.Api.speak(text);</b>
+  }
+}
+      </pre>
+    </article>
+  </slide>
+
+  <slide>
+    <aside class="note">
+      <section>
+        <p><b>Show how easy it was to add these APIs to the I/O slide template.</b></p>
+      </section>
+    </aside>
+    <hgroup>
+      <h2>ChromeVox APIs</h2>
+      <h3>Speaking custom messages</h3>
+    </hgroup>
+    <article>
+      <pre class="prettyprint" data-lang="javascript">
+function speakCurrentSlideNotes() {
+  var currentSlide = document.getElementsByClassName("current")[0];
+  if (cvoxApiExists()) {
+    var note = currentSlide.getElementsByClassName('note')[0];
+    if (note) {
+      cvox.Api.syncToNode(note, false);
+      <b>cvox.Api.speak(note.innerText, 0, {'pitch' : 0.7});</b>
+    } else {
+      <b>cvox.Api.speak('No notes available.', 0, {'pitch' : 0.7});</b>
+    }
+  }
+}
+      </pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>ChromeVox APIs</h2>
+      <h3>Syncing position</h3>
+    </hgroup>
+    <article>
+      <pre class="prettyprint" data-lang="javascript">
+function speakCurrentSlide(speakEntireSlide) {
+  var currentSlide = document.getElementsByClassName("current")[0];
+  var currentHeading = currentSlide.getElementsByTagName("h2")[0];
+  if (cvoxApiExists()) {
+    if (!speakEntireSlide) {
+<b>      cvox.Api.syncToNode(currentHeading, true);</b>
+    } else {
+      var slideText = "";
+      for (var i=0, node; node = currentSlide.childNodes[i]; i++) {
+        if (!node.className || (node.className && (node.className != 'note'))) {
+          slideText = slideText + node.textContent + '.\n';
+        }
+      }
+<b>      cvox.Api.syncToNode(currentHeading, false);
+      cvox.Api.speak(slideText);</b>
+    }
+  }
+}
+      </pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>ChromeVox APIs</h2>
+      <h3>Handling user navigation</h3>
+    </hgroup>
+    <article>
+      <pre class="prettyprint" data-lang="javascript">
+function cvoxEventsHandler(evt) {
+<b>  var command = evt.detail.command;</b>
+  // There is only one heading per slide, so if the user tries to go to the
+  // next/prev heading, automatically change slides and focus on the title.
+  switch (command) {
+<b>    case 'nextHeading':</b>
+      window.slidedeck.nextSlide();
+      speakCurrentSlide(false);
+      break;
+<b>    case 'previousHeading':</b>
+      window.slidedeck.prevSlide();
+      speakCurrentSlide(false);
+      break;
+  }
+}
+<b>document.addEventListener("cvoxUserEvent", cvoxEventsHandler, true);</b>
+      </pre>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Conclusions</h2>
+    </hgroup>
+    <article>
+      <h3>Covered in this talk</h3>
+      <ul>
+        <li>Navigating the DOM at different granularities</li>
+        <li>Special content: Mathematics</li>
+        <li>ChromeVox API</li>
+      </ul>
+      <h3>NOT covered in this talk</h3>
+      <ul>
+        <li>Braille support</li>
+        <li>More advanced content: Tables</li>
+        <li>HTML5 UI controls: date/time, media, etc.</li>
+      </ul>
+    </article>
+  </slide>
+
+
+  <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="images/google_developers_icon_128.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>&lt;Thank You!&gt;</h2>
+      <p>Please check out our office hours and sandbox.</p>
+      <p>http://chromevox.com</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
+    </p>
+  </slide>
+
+  <slide class="logoslide dark nobackground">
+    <article class="flexbox vcenter">
+      <span><img src="images/google_developers_logo_white.png"></span>
+    </article>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+<script src='init.js'></script>
+<script src='chrome-extension://kgejglhpjiefppelpmljglcjbhoiplfn/chromevox/injected/api_util.js'></script>
+<script src='chrome-extension://kgejglhpjiefppelpmljglcjbhoiplfn/chromevox/injected/api.js'></script>
+<script src='chrome-extension://mndnfokpggljbaajbnioimlmbfngpief/chromevox/injected/api_util.js'></script>
+<script src='chrome-extension://mndnfokpggljbaajbnioimlmbfngpief/chromevox/injected/api.js'></script>
+</body>
+</html>
