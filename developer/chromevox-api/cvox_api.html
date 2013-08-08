@@ -60,9 +60,17 @@
 
                 <li><a href="#method-setSpeechForNode">setSpeechForNode</a></li>
 
+                <li><a href="#method-click">click</a></li>
+
                 <li><a href="#method-getBuild">getBuild</a></li>
 
                 <li><a href="#method-getVersion">getVersion</a></li>
+
+                <li><a href="#method-getCvoxModifierKeys">getCvoxModifierKeys</a></li>
+
+                <li><a href="#method-isKeyShortcut">isKeyShortcut</a></li>
+
+                <li><a href="#method-setKeyEcho">setKeyEcho</a></li>
               </ol>
             </li>
           </ol>
@@ -82,7 +90,7 @@
 
         <div>
           <dl>
-            <dt><span class="type_name">( <span id="typeTemplate">object</span>
+            <dt><span class="type_name">( <span class="typeTemplate">object</span>
             )</span></dt>
 
             <dd>Data structure for holding information on how to speak a particular node.
@@ -105,7 +113,7 @@
 
                     <dl>
                       <dt><span class="variable">context</span> <span class="property">(
-                      <span id="typeTemplate">string</span> )</span></dt>
+                      <span class="typeTemplate">string</span> )</span></dt>
 
                       <dd>Contextual information that the user should hear first which is
                       not part of main content itself. For example, the user/date of a
@@ -119,7 +127,7 @@
 
                     <dl>
                       <dt><span class="variable">text</span> <span class="property">(
-                      <span id="typeTemplate">string</span> )</span></dt>
+                      <span class="typeTemplate">string</span> )</span></dt>
 
                       <dd>The main content of the node.</dd>
                     </dl>
@@ -131,7 +139,7 @@
 
                     <dl>
                       <dt><span class="variable">userValue</span> <span class=
-                      "property">( <span id="typeTemplate">string</span> )</span></dt>
+                      "property">( <span class="typeTemplate">string</span> )</span></dt>
 
                       <dd>Anything that the user has entered.</dd>
                     </dl>
@@ -143,7 +151,7 @@
 
                     <dl>
                       <dt><span class="variable">annotation</span> <span class=
-                      "property">( <span id="typeTemplate">string</span> )</span></dt>
+                      "property">( <span class="typeTemplate">string</span> )</span></dt>
 
                       <dd>The role and state of the object.</dd>
                     </dl>
@@ -198,7 +206,7 @@
 
                 <dl>
                   <dt><span class="variable">textString</span> <span class="property">(
-                  <span id="typeTemplate">string</span> )</span></dt>
+                  <span class="typeTemplate">string</span> )</span></dt>
 
                   <dd>The string of text to be spoken.</dd>
                 </dl>
@@ -210,7 +218,7 @@
 
                 <dl>
                   <dt><span class="variable">queueMode</span> <span class="property">(
-                  <span class="optional">optional</span> <span id=
+                  <span class="optional">optional</span> <span class=
                   "typeTemplate">number</span> )</span></dt>
 
                   <dd>Valid modes are 0 for flush; 1 for queue.</dd>
@@ -223,7 +231,7 @@
 
                 <dl>
                   <dt><span class="variable">properties</span> <span class="property">(
-                  <span class="optional">optional</span> <span id=
+                  <span class="optional">optional</span> <span class=
                   "typeTemplate">object</span> )</span></dt>
 
                   <dd>Speech properties to use for this utterance.</dd>
@@ -257,7 +265,7 @@
 
                 <dl>
                   <dt><span class="variable">targetNode</span> <span class="property">(
-                  <span id="typeTemplate">Node</span> )</span></dt>
+                  <span class="typeTemplate">Node</span> )</span></dt>
 
                   <dd>A DOM node to speak</dd>
                 </dl>
@@ -269,7 +277,7 @@
 
                 <dl>
                   <dt><span class="variable">queueMode</span> <span class="property">(
-                  <span class="optional">optional</span> <span id=
+                  <span class="optional">optional</span> <span class=
                   "typeTemplate">number</span> )</span></dt>
 
                   <dd>Valid modes are 0 for flush; 1 for queue.</dd>
@@ -282,7 +290,7 @@
 
                 <dl>
                   <dt><span class="variable">properties</span> <span class="property">(
-                  <span class="optional">optional</span> <span id=
+                  <span class="optional">optional</span> <span class=
                   "typeTemplate">object</span> )</span></dt>
 
                   <dd>Speech properties to use for this utterance.</dd>
@@ -326,7 +334,7 @@
 
                 <dl>
                   <dt><span class="variable">earcon</span> <span class="property">(
-                  <span id="typeTemplate">string</span> )</span></dt>
+                  <span class="typeTemplate">string</span> )</span></dt>
 
                   <dd>
                     An earcon name. Valid names are:
@@ -423,7 +431,7 @@
 
                 <dl>
                   <dt><span class="variable">targetNode</span> <span class="property">(
-                  <span id="typeTemplate">Node</span> )</span></dt>
+                  <span class="typeTemplate">Node</span> )</span></dt>
 
                   <dd>The node that ChromeVox should be synced to.</dd>
                 </dl>
@@ -435,7 +443,7 @@
 
                 <dl>
                   <dt><span class="variable">speakNode</span> <span class="property">(
-                  <span class="optional">optional</span> <span id=
+                  <span class="optional">optional</span> <span class=
                   "typeTemplate">boolean</span> )</span></dt>
 
                   <dd>If true, speaks out the node. Defaults to FALSE.</dd>
@@ -450,7 +458,7 @@
         <h4 id="method-getCurrentNode">getCurrentNode</h4>
 
         <div class="summary lower">
-          <span>cvox.Api.getCurrentNode</span>(<span class="optional">function
+          <span>cvox.Api.getCurrentNode</span>(<span class="variable">function
           <span class="variable">callback</span></span>)
         </div>
 
@@ -468,7 +476,7 @@
 
                 <dl>
                   <dt><span class="variable">callback</span> <span class="property">(
-                  <span id="typeTemplate">function</span> )</span></dt>
+                  <span class="typeTemplate">function</span> )</span></dt>
                 </dl>
               </div>
             </dd>
@@ -489,7 +497,7 @@
 
                 <dl>
                   <dt><span class="variable">currentNode</span> <span class="property">(
-                  <span id="typeTemplate">Node</span> )</span></dt>
+                  <span class="typeTemplate">Node</span> )</span></dt>
 
                   <dd>The current node in ChromeVox.</dd>
                 </dl>
@@ -522,7 +530,7 @@
 
                 <dl>
                   <dt><span class="variable">targetNode</span> <span class="property">(
-                  <span id="typeTemplate">Node</span> )</span></dt>
+                  <span class="typeTemplate">Node</span> )</span></dt>
 
                   <dd>The node that the NodeDescriptions should be applied to.</dd>
                 </dl>
@@ -534,7 +542,7 @@
 
                 <dl>
                   <dt><span class="variable">nodeDescriptions</span> <span class=
-                  "property">( <span id="typeTemplate">Array of NodeDescription</span>
+                  "property">( <span class="typeTemplate">Array of NodeDescription</span>
                   )</span></dt>
 
                   <dd>The Array of NodeDescriptions for the given node.</dd>
@@ -546,10 +554,53 @@
       </div>
 
       <div>
+        <h4 id="method-click">click</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.click</span>(<span>Element <span class="variable">targetElement</span>,
+          </span><span>boolean <span class="variable">shiftKey</span></span>)
+        </div>
+
+        <div class="description">
+          <p>Simulate a click on an element.</p>
+
+          <h4>Parameters</h4>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-click-targetElement" id=
+                "property-click-targetElement"></a>
+
+                <dl>
+                  <dt><span class="variable">targetElement</span> <span class="property">(
+                  <span class="typeTemplate">Element</span> )</span></dt>
+
+                  <dd>The element that should be clicked.</dd>
+                </dl>
+              </div>
+
+              <div>
+                <a name="property-click-shiftKey" id=
+                "property-click-shiftKey"></a>
+
+                <dl>
+                  <dt><span class="variable">shiftKey</span> <span class="property">(
+                  <span class="typeTemplate">boolean</span> )</span></dt>
+
+                  <dd>Specifies if shift is held down.</dd>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div>
         <h4 id="method-getBuild">getBuild</h4>
 
         <div class="summary lower">
-          <span>cvox.Api.getBuild</span>(<span class="optional">function <span class=
+          <span>cvox.Api.getBuild</span>(<span class="variable">function <span class=
           "variable">callback</span></span>)
         </div>
 
@@ -562,12 +613,12 @@
           <dl>
             <dd>
               <div>
-                <a name="property-getCurrentNode-callback" id=
-                "property-getCurrentNode-callback"></a>
+                <a name="property-getBuild-callback" id=
+                "property-getBuild-callback"></a>
 
                 <dl>
                   <dt><span class="variable">callback</span> <span class="property">(
-                  <span id="typeTemplate">function</span> )</span></dt>
+                  <span class="typeTemplate">function</span> )</span></dt>
                 </dl>
               </div>
             </dd>
@@ -588,7 +639,7 @@
 
                 <dl>
                   <dt><span class="variable">buildInfoString</span> <span class=
-                  "property">( <span id="typeTemplate">string</span> )</span></dt>
+                  "property">( <span class="typeTemplate">string</span> )</span></dt>
 
                   <dd>The build info.</dd>
                 </dl>
@@ -602,7 +653,7 @@
         <h4 id="method-getVersion">getVersion</h4>
 
         <div class="summary lower">
-          <span>cvox.Api.getVersion</span>(<span class="optional">function <span class=
+          <span>cvox.Api.getVersion</span>(<span class="variable">function <span class=
           "variable">callback</span></span>)
         </div>
 
@@ -615,12 +666,12 @@
           <dl>
             <dd>
               <div>
-                <a name="property-getCurrentNode-callback" id=
-                "property-getCurrentNode-callback"></a>
+                <a name="property-getVersion-callback" id=
+                "property-getVersion-callback"></a>
 
                 <dl>
                   <dt><span class="variable">callback</span> <span class="property">(
-                  <span id="typeTemplate">function</span> )</span></dt>
+                  <span class="typeTemplate">function</span> )</span></dt>
                 </dl>
               </div>
             </dd>
@@ -641,9 +692,158 @@
 
                 <dl>
                   <dt><span class="variable">versionString</span> <span class=
-                  "property">( <span id="typeTemplate">string</span> )</span></dt>
+                  "property">( <span class="typeTemplate">string</span> )</span></dt>
 
                   <dd>The version.</dd>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div>
+        <h4 id="method-getCvoxModifierKeys">getCvoxModifierKeys</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.getCvoxModifierKeys</span>(<span class="variable">function <span class=
+          "variable">callback</span></span>)
+        </div>
+
+        <div class="description">
+          <p>Retrieves the array of key codes that represent the ChromeVox modifer keys,
+          and calls the given callback function with it.</p>
+
+          <h4>Parameters</h4>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-getCvoxModifierKeys-callback" id=
+                "property-getCvoxModifierKeys-callback"></a>
+
+                <dl>
+                  <dt><span class="variable">callback</span> <span class="property">(
+                  <span class="typeTemplate">function</span> )</span></dt>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+
+          <h4>Callback function</h4>
+          <pre class="prettyprint">
+<span class="kwd">function</span><span class="pun">(</span>keyCodes<span class=
+"pun">)</span><span class="pln"> </span><span class="subdued"><span class=
+"pun">{...}</span></span><span class="pun">;</span>
+</pre>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-callback-getCvoxModifierKeys" id=
+                "property-callback-getCvoxModifierKeys"></a>
+
+                <dl>
+                  <dt><span class="variable">keyCodes</span> <span class=
+                  "property">( <span class="typeTemplate">Array.&lt;number&gt;</span> )</span></dt>
+
+                  <dd>The key codes.</dd>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div>
+        <h4 id="method-isKeyShortcut">isKeyShortcut</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.isKeyShortcut</span>(<span>Event <span class="variable">keyEvent</span>,</span>
+          <span class="variable">function <span class=
+          "variable">callback</span></span>)
+        </div>
+
+        <div class="description">
+          <p>Returns if ChromeVox will handle the given key Event.</p>
+
+          <h4>Parameters</h4>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-isKeyShortcut-keyEvent" id=
+                "property-isKeyShortcut-keyEvent"></a>
+
+                <dl>
+                  <dt><span class="variable">keyEvent</span> <span class="property">(
+                  <span class="typeTemplate">Event</span> )</span></dt>
+
+                  <dd>The Event that ChromeVox may handle.</dd>
+                </dl>
+              </div>
+
+              <div>
+                <a name="property-isKeyShortcut-callback" id=
+                "property-isKeyShortcut-callback"></a>
+
+                <dl>
+                  <dt><span class="variable">callback</span> <span class="property">(
+                  <span class="typeTemplate">function</span> )</span></dt>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+
+          <h4>Callback function</h4>
+          <pre class="prettyprint">
+<span class="kwd">function</span><span class="pun">(</span>isHandled<span class=
+"pun">)</span><span class="pln"> </span><span class="subdued"><span class=
+"pun">{...}</span></span><span class="pun">;</span>
+</pre>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-callback-isKeyShortcut" id=
+                "property-callback-isKeyShortcut"></a>
+
+                <dl>
+                  <dt><span class="variable">isHandled</span> <span class=
+                  "property">( <span class="typeTemplate">boolean</span> )</span></dt>
+
+                  <dd>Whether or not ChromeVox will handle this key Event.</dd>
+                </dl>
+              </div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <div>
+        <h4 id="method-setKeyEcho">setKeyEcho</h4>
+
+        <div class="summary lower">
+          <span>cvox.Api.setKeyEcho</span>(<span>boolean <span class=
+          "variable">keyEcho</span></span>)
+        </div>
+
+        <div class="description">
+          <p>Set key echoing on key press on or off.</p>
+
+          <h4>Parameters</h4>
+
+          <dl>
+            <dd>
+              <div>
+                <a name="property-NodeDescription-keyEcho" id=
+                "property-NodeDescription-keyEcho"></a>
+
+                <dl>
+                  <dt><span class="variable">keyEcho</span> <span class="property">(
+                  <span class="typeTemplate">boolean</span> )</span></dt>
+
+                  <dd>Whether key echoing should be on or off.</dd>
                 </dl>
               </div>
             </dd>
