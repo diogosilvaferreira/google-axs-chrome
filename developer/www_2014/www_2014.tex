@@ -1,0 +1,88 @@
+\documentclass{sig-alternate}
+
+\begin{document}
+\title{Accessibility to Scientific Material: The Case of Speaking Math}
+\numberofauthors{2} %  in this sample file, there are a *total*
+
+\author{
+% You can go ahead and credit any number of authors here,
+% e.g. one 'row of three' or two rows (consisting of one row of three
+% and a second row of one, two or three).
+%
+% The command \alignauthor (no curly braces needed) should
+% precede each author name, affiliation/snail-mail address and
+% e-mail address. Additionally, tag each line of
+% affiliation/address with \affaddr, and tag the
+% e-mail address with \email.
+%
+% 1st. author
+\alignauthor
+Volker Sorge\titlenote{Work was done while author spent a sabbatical at Google,
+  Inc., Mountain View, CA, USA.}\\
+       \affaddr{School of Computer Science}\\
+       \affaddr{The University of Birmingham, UK}\\
+       \email{V.Sorge@cs.bham.ac.uk}
+% 2nd. author
+\alignauthor
+Charles Chen, T.V. Raman, David Tseng\\
+       \affaddr{Google, Inc.}\\
+       \affaddr{Mountain View, CA, USA}\\
+       \email{\{clchen|raman|dtseng\}@google.com}
+}
+
+
+\maketitle
+\begin{abstract}
+As we move away from the traditional methods of publishing and teaching to the
+provision of web-based content more and more scientific and teaching material
+becomes available online often in novel formats such as interactive diagrams or
+simulations. Ensuring full accessibility to this material for users that rely
+primarily on voice output from their computer becomes a challenging
+problem. Already the text to speech translation of fairly conventional
+scientific content like mathematical formulae, which contain rich structure and
+for which a well defined markup language exists, is non-trivial.
+
+We present our efforts of making the speech translation of
+mathematical formulas a first class citizen in a general screen
+reader. We demonstrate how we can deal with the collection of formats
+that is presently used to render mathematics on the web and how we
+extend the idea of letting users engage with content on different
+levels of granularity to specialised content like maths.
+\end{abstract}
+\category{}{}{}
+%A category including the fourth, optional field follows...
+\category{}{}{}[]
+
+\terms{}
+
+\keywords{}
+
+\section{Introduction}\label{sec:intro}
+As we move away from the traditional methods of publishing and
+teaching to the provision of web-based content more and more
+scientific and teaching material becomes available online often in
+novel formats such as interactive diagrams or simulations. Ensuring
+full accessibility to this material for users that rely primarily on
+voice output from their computer becomes a challenging
+problem. Already the text to speech translation of fairly conventional
+scientific content like mathematical formulae, which contain rich
+structure and for which a well defined markup language exists, is
+non-trivial.
+
+
+In this paper we report on our effort to integrate the basic support
+for voicing mathematical content on the web into the ChromeVox screen
+reader. We shall present some of the main challenges to making maths
+on the web accessible, where it is given in a variety of ways and
+formats. We shall outline the rule based approach we have pursued and
+how it fits with ChromeVox's philosophy to enable users to explore
+content at different levels of granularity. It has led to an
+implementation of a flexible speech rule engine that allows to
+customise the reading experience along several axes and that also
+provides an API for easy adaptation to specialised content by users
+and web site authors.
+
+\bibliographystyle{plain}
+\bibliography{www_2014}  
+
+\end{document}
