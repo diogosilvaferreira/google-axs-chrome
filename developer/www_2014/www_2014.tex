@@ -1,4 +1,45 @@
 \documentclass{sig-alternate}
+\usepackage{graphicx}
+\usepackage{listings}
+\def\lstxml{
+  \lstset{language=XML,
+    keywordstyle=\ttfamily,
+    identifierstyle=\ttfamily\bfseries, 
+    % commentstyle=\color{Brown},
+    stringstyle=\ttfamily,
+    showstringspaces=false,
+    columns=[l]flexible, %% , basewidth={0.5em,0.4em}
+    morekeywords={encoding,
+      mrow,math,mfrac,mi,msqrt,mo,mn,span,nobr,img}
+  }
+}
+
+\def\lstjs{
+  \lstset{language=Java,
+    keywordstyle=\ttfamily,
+    identifierstyle=\ttfamily\bfseries, 
+    % commentstyle=\color{Brown},
+    stringstyle=\ttfamily,
+    showstringspaces=false,
+    columns=[l]flexible, %% , basewidth={0.5em,0.4em}
+    morekeywords={cvox,Api,Math,defineRule}
+  }
+}
+
+\def\lsttex{
+  \lstset{language={[LaTeX]TeX},
+    texcsstyle=*\bfseries,
+    keywordstyle=\ttfamily,
+    identifierstyle=\ttfamily\bfseries, 
+    % commentstyle=\color{Brown},
+    stringstyle=\ttfamily,
+    showstringspaces=false,
+    columns=[l]flexible, %% , basewidth={0.5em,0.4em}
+    moretexcs=intertext,
+    morekeywords={sum,Sigma}
+  }
+}
+
 
 \begin{document}
 \title{Accessibility to Scientific Material: The Case of Speaking Math}
@@ -85,18 +126,149 @@ and web site authors.
 \section{Mathematics on the Web}
 \label{sec:math}
 
+Ideally, mathematical formulas on a webpage should be represented in its own
+specialised markup language, MathML~\cite{mathml}. But although MathML is
+officially part of the HTML5 standard~\cite{html5}, not all of the major
+browsers also implement MathML rendering, hence support for formulas included in
+pure MathML on web pages is sketchy. Consequently in reality mathematics on the
+web comes in a variety of flavours.
+
+Alternatively, formulas are often still given as images. 
+
+In order 
+one had to provide text-to-speech support for all 
+
+We will briefly sketch the different formats we have to deal with in this
+section.
+
 \subsection{MathML}
 \label{sec:mathml}
+
+\ldots briefly mention distinction between presentation and content MathML
+\ldots
+
+It provides markup for the most common layout elements encountered in
+mathematics, such as sub- and superscripts, fractions, square roots etc.  In
+addition it provides markup to define mathematics specific styles, spacing, etc.
+as well as specialised attributes such as for fonts, accents, etc.
+
 
 \subsection{MathJax Rendering}
 \label{sec:mathjax}
 
+MathJax is a javascript display engine~\cite{mathjax} with the goal to display
+mathematical formulas consistently on all browsers. It can use a number of input
+formats and translates them into simple HTML markup that visually render a maths
+expression in a browser, regardless of whether the browser supports MathML.
+In particular, it can work with MathML markup, {\LaTeX}, and
+AsciiMath~\cite{asciimath}.
+
+
+
 \subsection{Hidden Markup}
 \label{sec:images}
 
+Traditionally mathematical formulas would be embedded into web content using
+images generated from documents that were previously generated with systems
+specialising on rendering mathematics, for example, {\LaTeX}. And despite the
+obvious drawbacks of having content in images, such as lack of scalability, this
+method is still an option that is chosen by many major web sites containing
+mathematical content (e.g., Wikipedia~\cite{wikipedia},
+MathWorld~\cite{mathworld}), to provide content consistently at reliable
+performance, independent of third party libraries.  While the mathematics given
+in image form is effectively inaccessible, the original source from which a
+formula has been generated is often given in form of alternative text attribute
+of the image tag.  For instance, in the case of Wikipedia, most of the
+mathematics images have alternative text provided in \LaTeX, whereas Mathworld
+contains AsciiMath markup. This form of hidden markup can then be displayed in
+text-only browers or used for copy-and-paste operations,
+
+In ChromeVox we exploit hidden markup as well, to ensure a consistent
+screenreading experience of all mathematical content on the web.  In particular,
+we rely on the MathJax library to translate hidden markup into a MathML
+representation that we can speak instead. We describe in detail the treatment of
+alternative representations in Sec.~\ref{sec:alternative}.
+
+\begin{figure*}[t!]
+  \begin{center}
+\leavevmode
+
+\lstxml
+\begin{lstlisting}
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mstyle displaystyle="true">
+    <mi>x</mi>
+    <mo>=</mo>
+    <mfrac>
+      <mrow>
+        <mo>&#x2212;<!-- \u2212 --></mo>
+        <mi>b</mi>
+        <mo>&#x00B1;<!-- ± --></mo>
+        <msqrt>
+          <msup>
+            <mi>b</mi>
+            <mn>2</mn>
+          </msup>
+          <mo>&#x2212;<!-- \u2212 --></mo>
+          <mn>4</mn>
+          <mi>a</mi>
+          <mi>c</mi>
+        </msqrt>
+      </mrow>
+      <mrow>
+        <mn>2</mn>
+        <mi>a</mi>
+      </mrow>
+    </mfrac>
+  </mstyle>
+</math>
+
+<todo> ... Mathjax <todo>
+
+
+<img class="tex" 
+      alt="x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}" 
+      src="//upload.wikimedia.org/math/3/c/a/3ca857f705daba6b9e6e6d3ccad7990f.png" />
+
+\end{lstlisting}
+\caption{Three representations of the quadratic formula.}
+\label{fig:quadratic}
+  \end{center}
+\end{figure*}
 
 \section{ChromeVox}
 \label{sec:chromevox}
+
+
+
+\begin{figure}[h!]
+  \begin{center}
+    \leavevmode
+    \includegraphics[width=.4\columnwidth]{images/granularity1}
+    \includegraphics[width=.4\columnwidth]{images/granularity2}
+    \caption{Schematic depiction of granularities.}
+    \label{fig:granularity}
+  \end{center}
+\end{figure}
+
+\begin{figure}[h!]
+  \begin{center}
+    \leavevmode
+    \includegraphics[width=.4\columnwidth]{images/walker1}
+    \includegraphics[width=.4\columnwidth]{images/walker2}
+    \caption{Schematic depiction of different walkers.}
+    \label{fig:walkers}
+  \end{center}
+\end{figure}
+
+\begin{figure}[h!]
+  \begin{center}
+    \leavevmode
+    \includegraphics[width=.5\columnwidth]{images/substructure1}
+    \caption{Schematic depiction of alternative represenatations.}
+    \label{fig:walkers}
+  \end{center}
+\end{figure}
 
 \section{Translating Mathematics}
 \label{sec:translate}
@@ -107,11 +279,13 @@ and web site authors.
 \section{Alternative Representations}
 \label{sec:alternative}
 
+
+
+
 \section{Conclusions}
 \label{sec:conc}
 
 
-\bibliographystyle{plain}
-\bibliography{www_2014}  
+\bibliographystyle{plain} \bibliography{www_2014}
 
 \end{document}
