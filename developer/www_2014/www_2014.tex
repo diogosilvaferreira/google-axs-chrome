@@ -1,6 +1,11 @@
 \documentclass{sig-alternate}
 \usepackage{graphicx}
+\usepackage{url}
+\usepackage{paralist}
 \usepackage{listings}
+
+% \DeclareUnicodeCharacter{B1}{\pm}
+%% LANGUAGE      Markup definitions
 \def\lstxml{
   \lstset{language=XML,
     keywordstyle=\ttfamily,
@@ -9,6 +14,7 @@
     stringstyle=\ttfamily,
     showstringspaces=false,
     columns=[l]flexible, %% , basewidth={0.5em,0.4em}
+    escapeinside={(@*}{*@)},
     morekeywords={encoding,
       mrow,math,mfrac,mi,msqrt,mo,mn,span,nobr,img}
   }
@@ -63,12 +69,12 @@
 % e-mail address with \email.
 %
 % 1st. author
-\alignauthor
-Volker Sorge\titlenote{Work was done while author spent a sabbatical at Google,
-  Inc., Mountain View, CA, USA.}\\
-       \affaddr{School of Computer Science}\\
-       \affaddr{The University of Birmingham, UK}\\
-       \email{V.Sorge@cs.bham.ac.uk}
+  \alignauthor Volker Sorge\titlenote{This work was done while the author spent a
+    sabbatical at Google,
+    Inc., Mountain View, CA, USA.}\\
+  \affaddr{School of Computer Science}\\
+  \affaddr{The University of Birmingham, UK}\\
+  \email{V.Sorge@cs.bham.ac.uk}
 % 2nd. author
 \alignauthor
 Charles Chen, T.V. Raman, David Tseng\\
@@ -133,7 +139,11 @@ reader.
 % this is not as straight forward for a 
 
 
-
+As an example we consider the quadratic formula:
+\begin{equation}
+  \label{eq:quadratic}
+  x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}
+\end{equation}
 
 
 We shall present some of the main challenges to making maths
@@ -149,12 +159,12 @@ and web site authors.
 \section{Mathematics on the Web}
 \label{sec:math}
 
-Ideally, mathematical formulas on a webpage should be represented in its own
-specialised markup language, MathML~\cite{mathml}. But although MathML is
-officially part of the HTML5 standard~\cite{html5}, not all of the major
-browsers also implement MathML rendering, hence support for formulas included in
-pure MathML on web pages is sketchy. Consequently in reality mathematics on the
-web comes in a variety of flavours. One can identify predominant three ways in which 
+Mathematical formulas on webpages can be represented in their own specialised
+markup language, MathML~\cite{MathML3}. But although MathML is officially part
+of the HTML5 standard~\cite{HTML5}, not all major browsers also implement MathML
+rendering, hence support displaying formulas included in pure MathML on web
+pages is sketchy. Consequently in reality mathematics on the web comes in a
+variety of flavours. One can identify predominant three ways in which
 mathematical content is currently given on the web:
 \begin{enumerate}
 \item Pure MathML markup: this relies on the user viewing the
@@ -176,24 +186,125 @@ formats, which we shall briefly sketch the remainder of this section.
 \subsection{MathML}
 \label{sec:mathml}
 
-\edbf{briefly mention distinction between presentation and content MathML}
+MathML is a specialised markup language that was developed with the expressive
+purpose of representing mathematics. Ordinarily it comes in two flavours:
+presentation MathML and content MathML. The former is a markup language geared
+towards adequately displaying mathematical formulas thus playing a role of web
+documents similar to the one of {\LaTeX} for printed documents.  Contrary,
+content MathML aims to serve also as a meaningful exchange format between
+mathematical software systems by providing markup that allows to express
+semantic meaning of mathematical expressions. As there is still very little
+support for content MathML we concentrate here on presentation MathML only.
+  
+\begin{figure}[t!]
+  \begin{center}
+    \leavevmode
+    \lstxml\small
+\begin{lstlisting}
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mstyle displaystyle="true">
+    <mi>x</mi>
+    <mo>=</mo>
+    <mfrac>
+      <mrow>
+        <mo>&#x2212;</mo>
+        <mi>b</mi>
+        <mo>&#x00B1;</mo>
+        <msqrt>
+          <msup>
+            <mi>b</mi>
+            <mn>2</mn>
+          </msup>
+          <mo>&#x2212;</mo>
+          <mn>4</mn>
+          <mi>a</mi>
+          <mi>c</mi>
+        </msqrt>
+      </mrow>
+      <mrow>
+        <mn>2</mn>
+        <mi>a</mi>
+      </mrow>
+    </mfrac>
+  </mstyle>
+</math>
+\end{lstlisting}
+    \caption{MathML representations of~\ref{eq:quadratic}.}
+    \label{fig:quadratic-mml}
+  \end{center}
+\end{figure}
 
-It provides markup for the most common layout elements encountered in
-mathematics, such as sub- and superscripts, fractions, square roots etc.  In
-addition it provides markup to define mathematics specific styles, spacing, etc.
-as well as specialised attributes such as for fonts, accents, etc.
+Presentation MathML provides markup for the most common layout elements
+encountered in mathematics, such as sub- and superscripts, fractions, square
+roots etc.  In addition it provides markup to define mathematics specific styles
+or spacing, as well as specialised attributes such as for fonts, accents, etc.
+Fig.~\ref{fig:quadratic-mml} presents our example the quadratic
+formula~\ref{eq:quadratic} in MathML markup. Here the tags \texttt{mi},
+\texttt{mn}, and \texttt{mo} markup identifiers, number, and operators,
+respectively, while layout elements fraction, square root and superscript are
+enclosed in the elements \texttt{mfrac}, \texttt{msqrt}, and \texttt{msup}. The
+\texttt{mrow} tag allows the horizontal combination of a string of elements, in
+case they need to be combined to a single node as in the case of the two
+arguments for the fraction tag \texttt{mfrac}.
+
+MathML is part of the specification for the HTML5 standard~\cite{HTML5}, where
+it lives in its own namespace. By extension it is also part of the ePub3
+standard~\cite{epub3} and consequently one can anticipate that future
+implementations of these standards with include native rendering of MathML
+content. However, in the current situation only few browsers and epub readers
+support MathML and rendering is either achieved by specialist browser plugins or
+by third party libraries.
 
 
 \subsection{MathJax Rendering}
 \label{sec:mathjax}
 
-MathJax is a javascript display engine~\cite{mathjax} with the goal to display
-mathematical formulas consistently on all browsers. It can use a number of input
-formats and translates them into simple HTML markup that visually render a maths
-expression in a browser, regardless of whether the browser supports MathML.
-In particular, it can work with MathML markup, {\LaTeX}, and
-AsciiMath~\cite{asciimath}.
+MathJax is a javascript display engine~\cite{MathJax2.2} that consistently
+renders mathematical expressions in all browsers. It handles a number of input
+formats and translates them into simple HTML markup that visually renders a math
+expression in a browser, regardless of whether it supports MathML.  Thus the
+basic goal is to shift control on whether and how formulas are displayed to the
+content author, by allowing them to include javascript in webpages that calls
+MathJax via a content distribution network to enable client side rendering of
+math expressions.
 
+\begin{figure*}[b!]
+  \begin{center}
+    \leavevmode
+    \lstxml\small
+    \lstinputlisting{mathjax.xml}
+    \caption{MathJax representations of~\ref{eq:quadratic} from
+      \protect\url{en.wikipedia.org/wiki/Quadratic_equation}.}
+    \label{fig:quadratic-mj}
+  \end{center}
+\end{figure*}
+
+An authors can then include formulas directly into a webpage either as MathML
+markup or as {\LaTeX} or AsciiMath~\cite{asciimath}. During the rendering
+process MathJax replaces this markup with HTML elements that explicitly specify
+vertical and horizontal spacing, drawing of lines and special elements such as
+radices, and placement of character in webfonts.  This has not only the
+advantage that the generated markup is portable between browsers, but also that
+expressions rendered with MathJax are fully scalable.  But since the rendered
+expressions that MathJax injects into the DOM is primarily aimed at visual
+display, it is a less straigtforward translation of the mathematical expression
+it models.
+
+As an example Fig.~\ref{fig:quadratic-mj} shows part of the MathJax markup for
+equation~\ref{eq:quadratic}. While it is clearly more cluttered than its MathML
+counterpart in Fig.~\ref{fig:quadratic-mml}, there are nevertheless some obvious
+resemblances. The expression effectively consists of two types of \texttt{span}
+elements:
+\begin{inparaenum}[(a)]
+\item Those with a single style attribute that are exclusively display elements.
+\item Those with a additional class attributes and id that generally mirror the
+  composition of the corresponding MathML expression.
+\end{inparaenum}
+As we can observe in our example, the latter type of elements maintains the
+structure of the MathML expression, and this regardless of the original source
+of the formula. Indeed MathJax always maintains an internal MathML
+representation of a mathematical formula, even if translated from {\LaTeX} or
+AsciiMath, a fact that we shall exploit in Sec.~\ref{sec:alternative}.
 
 
 \subsection{Hidden Markup}\label{sec:images}
@@ -210,65 +321,42 @@ in image form is effectively inaccessible, the original source from which a
 formula has been generated is often given in form of alternative text attribute
 of the image tag.  For instance, in the case of Wikipedia, most of the
 mathematics images have alternative text provided in \LaTeX, whereas Mathworld
-contains AsciiMath markup. This form of hidden markup can then be displayed in
-text-only browers or used for copy-and-paste operations,
+contains AsciiMath markup.  The case of our example is given in
+Fig.~\ref{fig:quadratic-img} the quadratic equation is loaded as a PNG images,
+while the hidden markup is given in the original \LaTeX.
 
+This form of hidden markup can then be displayed in
+text-only browers or used for copy-and-paste operations. 
 In ChromeVox we exploit hidden markup as well, to ensure a consistent
 screenreading experience of all mathematical content on the web.  In particular,
 we rely on the MathJax library to translate hidden markup into a MathML
 representation that we can speak instead. We describe in detail the treatment of
 alternative representations in Sec.~\ref{sec:alternative}.
 
+
 \begin{figure*}[t!]
   \begin{center}
-\leavevmode
-
-\lstxml
+    \leavevmode
+    \lstxml\small
 \begin{lstlisting}
-<math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mstyle displaystyle="true">
-    <mi>x</mi>
-    <mo>=</mo>
-    <mfrac>
-      <mrow>
-        <mo>&#x2212;<!-- \u2212 --></mo>
-        <mi>b</mi>
-        <mo>&#x00B1;<!-- ± --></mo>
-        <msqrt>
-          <msup>
-            <mi>b</mi>
-            <mn>2</mn>
-          </msup>
-          <mo>&#x2212;<!-- \u2212 --></mo>
-          <mn>4</mn>
-          <mi>a</mi>
-          <mi>c</mi>
-        </msqrt>
-      </mrow>
-      <mrow>
-        <mn>2</mn>
-        <mi>a</mi>
-      </mrow>
-    </mfrac>
-  </mstyle>
-</math>
-
-<todo> ... Mathjax <todo>
-
-
 <img class="tex" 
       alt="x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}" 
       src="//upload.wikimedia.org/math/3/c/a/3ca857f705daba6b9e6e6d3ccad7990f.png" />
-
 \end{lstlisting}
-\caption{Three representations of the quadratic formula.}
-\label{fig:quadratic}
+\caption{Image markup for~\ref{eq:quadratic} from 
+  \protect\url{en.wikipedia.org/wiki/Quadratic_equation}.}
+\label{fig:quadratic-img}
   \end{center}
 \end{figure*}
+
+\verb+x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}+
 
 \section{ChromeVox}
 \label{sec:chromevox}
 
+
+\subsection{Axes 1: Granularities}
+\label{sec:ax1}
 
 
 \begin{figure}[h!]
@@ -281,6 +369,10 @@ alternative representations in Sec.~\ref{sec:alternative}.
   \end{center}
 \end{figure}
 
+\subsection{Axes 2: Walking}
+\label{sec:ax2}
+
+
 \begin{figure}[h!]
   \begin{center}
     \leavevmode
@@ -291,6 +383,15 @@ alternative representations in Sec.~\ref{sec:alternative}.
   \end{center}
 \end{figure}
 
+\subsection{Axes 3: Speech Translation}
+\label{sec:ax1}
+
+
+
+\subsection{Axes 4: Representation}
+\label{sec:ax1}
+
+
 \begin{figure}[h!]
   \begin{center}
     \leavevmode
@@ -300,16 +401,14 @@ alternative representations in Sec.~\ref{sec:alternative}.
   \end{center}
 \end{figure}
 
-\section{Translating Mathematics}
+\section{Speaking Mathematics}
 \label{sec:translate}
-
-\section{Exploring Mathematics}
-\label{sec:explore}
 
 \section{Alternative Representations}
 \label{sec:alternative}
 
-
+\section{Engaging with Content}
+\label{sec:explore}
 
 
 \section{Conclusions}
