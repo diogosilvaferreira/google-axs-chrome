@@ -3,6 +3,7 @@
 \usepackage{url}
 \usepackage{paralist}
 \usepackage{listings}
+\usepackage{caption}
 
 % \DeclareUnicodeCharacter{B1}{\pm}
 %% LANGUAGE      Markup definitions
@@ -101,7 +102,7 @@ Charles Chen, T.V. Raman, David Tseng\\
   translate formulas given in a variety of formats into uniform
   spoken utterances exploiting ChromeVox's ability to handle
   alternative representations of DOM elements. This also allows
-  us to customise aural rendering of mathematics both by using
+  us to customize aural rendering of mathematics both by using
   semantically enriched representations and employing flexible
   and adaptable speech rules. To further aid understanding of the
   math we exploit ChromeVox's idea of letting users engage with
@@ -114,18 +115,18 @@ Charles Chen, T.V. Raman, David Tseng\\
 
 % \terms{}
 
-\keywords{scree reader, mathematics, ChromeVox}
+\keywords{screen reader, mathematics, ChromeVox}
 
 \section{Introduction}\label{sec:intro} As we move away from the traditional
 methods of publishing and teaching to the provision of web-based content, more
 and more scientific literature and teaching material in the STEM subjects
 becomes available online. This material can range from traditional articles
 containing mathematical formulas and scientific diagrams to highly interactive
-webpages often exploiting novel media formats such as dynamic diagrams or
+web pages often exploiting novel media formats such as dynamic diagrams or
 simulations. Ensuring full accessibility to this material for users that rely
 primarily on voice output from their computer becomes a challenging
 problem. Already the text to speech translation of fairly conventional
-scientific content like mathematical formulae, which contain rich structure and
+scientific content like mathematical formulas, which contain rich structure and
 for which a well defined markup language exists, is non-trivial.
 
 
@@ -135,11 +136,6 @@ In this paper we report on our effort to integrate the basic support
 for voicing mathematical content on the web into the ChromeVox screen
 reader. 
 
-
-% A major prerequisite for the comprehension of scientific literature is for a
-% reader to be able to engage with the content.
-
-% this is not as straight forward for a 
 
 
 As an example we consider the quadratic formula:
@@ -155,42 +151,42 @@ formats. We shall outline the rule based approach we have pursued and
 how it fits with ChromeVox's philosophy to enable users to explore
 content at different levels of granularity. It has led to an
 implementation of a flexible speech rule engine that allows to
-customise the reading experience along several axes and that also
-provides an API for easy adaptation to specialised content by users
+customize the reading experience along several axes and that also
+provides an API for easy adaptation to specialized content by users
 and web site authors.
 
 \section{Mathematics on the Web}
 \label{sec:math}
 
-Mathematical formulas on webpages can be represented in their own specialised
+Mathematical formulas on web pages can be represented in their own specialized
 markup language, MathML~\cite{MathML3}. But although MathML is officially part
 of the HTML5 standard~\cite{HTML5}, not all major browsers also implement MathML
 rendering, hence support displaying formulas included in pure MathML on web
 pages is sketchy. Consequently in reality mathematics on the web comes in a
-variety of flavours. One can identify predominant three ways in which
+variety of flavors. One can identify predominant three ways in which
 mathematical content is currently given on the web:
 \begin{enumerate}
 \item Pure MathML markup: this relies on the user viewing the
   page with a browser that renders MathML.
-\item Rendered with MathJax: the webpage author ensures that mathematical
+\item Rendered with MathJax: the web page author ensures that mathematical
   content is rendered client-side independent of the user's browser by including
   the third party MathJax library in the page. Formulas can be given in several
   different markup languages.  and relying on the third party that renders
   mathematical content client side.
 \item Pre-rendered images: Content is ensured to display correctly, by including
-  images of formulas in the webpage. The original markup from which the content
+  images of formulas in the web page. The original markup from which the content
   was originally rendered is often given in an attribute of the image tag.
 \end{enumerate}
 
 In order to enable access to the majority of mathematics that can be found on
-the web today, one hasd to provide text-to-speech support for all of the above
+the web today, one has to provide text-to-speech support for all of the above
 formats, which we shall briefly sketch the remainder of this section.
 
 \subsection{MathML}
 \label{sec:mathml}
 
-MathML is a specialised markup language that was developed with the expressive
-purpose of representing mathematics. Ordinarily it comes in two flavours:
+MathML is a specialized markup language that was developed with the expressive
+purpose of representing mathematics. Ordinarily it comes in two flavors:
 presentation MathML and content MathML. The former is a markup language geared
 towards adequately displaying mathematical formulas thus playing a role of web
 documents similar to the one of {\LaTeX} for printed documents.  Contrary,
@@ -251,7 +247,7 @@ case they need to be combined to a single node as in the case of the two
 arguments for the fraction tag \texttt{mfrac}.
 
 MathML is part of the specification for the HTML5 standard~\cite{HTML5}, where
-it lives in its own namespace. By extension it is also part of the ePub3
+it lives in its own name space. By extension it is also part of the ePub3
 standard~\cite{epub3} and consequently one can anticipate that future
 implementations of these standards with include native rendering of MathML
 content. However, in the current situation only few browsers and epub readers
@@ -262,35 +258,47 @@ by third party libraries.
 \subsection{MathJax Rendering}
 \label{sec:mathjax}
 
-MathJax is a javascript display engine~\cite{MathJax2.2} that consistently
+MathJax is a JavaScript display engine~\cite{MathJax2.2} that consistently
 renders mathematical expressions in all browsers. It handles a number of input
 formats and translates them into simple HTML markup that visually renders a math
 expression in a browser, regardless of whether it supports MathML.  Thus the
 basic goal is to shift control on whether and how formulas are displayed to the
-content author, by allowing them to include javascript in webpages that calls
+content author, by allowing them to include JavaScript in web pages that calls
 MathJax via a content distribution network to enable client side rendering of
 math expressions.
 
-\begin{figure*}[b!]
+\begin{figure*}[t!]
+%\begin{minipage}[t!]{\textwidth}
   \begin{center}
     \leavevmode
     \lstxml\small
     \lstinputlisting{mathjax.xml}
+%    \captionof{figure}{MathJax representations of~\ref{eq:quadratic} from
     \caption{MathJax representations of~\ref{eq:quadratic} from
       \protect\url{en.wikipedia.org/wiki/Quadratic_equation}.}
     \label{fig:quadratic-mj}
+    \leavevmode
+    \lstxml\small
+\begin{lstlisting}
+<img class="tex" 
+      alt="x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}" 
+      src="//upload.wikimedia.org/math/3/c/a/3ca857f705daba6b9e6e6d3ccad7990f.png" />
+\end{lstlisting}
+\caption{Image markup for~\ref{eq:quadratic} from 
+  \protect\url{en.wikipedia.org/wiki/Quadratic_equation}.}
+\label{fig:quadratic-img}
   \end{center}
 \end{figure*}
 
-An authors can then include formulas directly into a webpage either as MathML
+An authors can then include formulas directly into a web page either as MathML
 markup or as {\LaTeX} or AsciiMath~\cite{asciimath}. During the rendering
 process MathJax replaces this markup with HTML elements that explicitly specify
 vertical and horizontal spacing, drawing of lines and special elements such as
-radices, and placement of character in webfonts.  This has not only the
+radices, and placement of character in web fonts.  This has not only the
 advantage that the generated markup is portable between browsers, but also that
 expressions rendered with MathJax are fully scalable.  But since the rendered
 expressions that MathJax injects into the DOM is primarily aimed at visual
-display, it is a less straigtforward translation of the mathematical expression
+display, it is a less straightforward translation of the mathematical expression
 it models.
 
 As an example Fig.~\ref{fig:quadratic-mj} shows part of the MathJax markup for
@@ -314,7 +322,7 @@ AsciiMath, a fact that we shall exploit in Sec.~\ref{sec:alternative}.
 
 Traditionally mathematical formulas would be embedded into web content using
 images generated from documents that were previously generated with systems
-specialising on rendering mathematics, for example, {\LaTeX}. And despite the
+specializing on rendering mathematics, for example, {\LaTeX}. And despite the
 obvious drawbacks of having content in images, such as lack of scalability, this
 method is still an option that is chosen by many major web sites containing
 mathematical content (e.g., Wikipedia~\cite{wikipedia},
@@ -326,43 +334,67 @@ of the image tag.  For instance, in the case of Wikipedia, most of the
 mathematics images have alternative text provided in \LaTeX, whereas Mathworld
 contains AsciiMath markup.  The case of our example is given in
 Fig.~\ref{fig:quadratic-img} the quadratic equation is loaded as a PNG images,
-while the hidden markup is given in the original \LaTeX.
+while the hidden markup is given in the original \LaTeX
+\verb+x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}+
+
+
 
 This form of hidden markup can then be displayed in
-text-only browers or used for copy-and-paste operations. 
+text-only browsers or used for copy-and-paste operations. 
 In ChromeVox we exploit hidden markup as well, to ensure a consistent
-screenreading experience of all mathematical content on the web.  In particular,
+screen reading experience of all mathematical content on the web.  In particular,
 we rely on the MathJax library to translate hidden markup into a MathML
 representation that we can speak instead. We describe in detail the treatment of
 alternative representations in Sec.~\ref{sec:alternative}.
 
 
-\begin{figure*}[t!]
-  \begin{center}
-    \leavevmode
-    \lstxml\small
-\begin{lstlisting}
-<img class="tex" 
-      alt="x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}" 
-      src="//upload.wikimedia.org/math/3/c/a/3ca857f705daba6b9e6e6d3ccad7990f.png" />
-\end{lstlisting}
-\caption{Image markup for~\ref{eq:quadratic} from 
-  \protect\url{en.wikipedia.org/wiki/Quadratic_equation}.}
-\label{fig:quadratic-img}
-  \end{center}
-\end{figure*}
 
-\verb+x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}+
 
 \section{ChromeVox}
 \label{sec:chromevox}
 
+ChromeVox is a screenreader that has been built with the aim to make rich web
+applications accessible to visually impaired users. ChromeVox runs inside the
+Chrome browser where it can be installed as an extension and it is the default
+screenreader for Chrome OS. Therefore, it uses exclusively the HTML document
+object model (DOM) to communicate with web applications without the need to user
+an accessibility API provided by the underlying operating system.
 
-\subsection{Axes 1: Granularities}
+With the advancements of the web programming model and in particular the ease
+with which complex interaction layers can be build using HTML, CSS and
+JavaScript web pages do no longer just contain but resemble fully fledged
+applications more akin to traditional desktop programs. As a consequence
+traditional linear navigation is no longer sufficient to allow users to explore
+and comprehend web content in a reasonable way.
+
+ChromeVox aims to support effective navigation of complex web content by giving
+the user the means to engage with content on multiple layers. This is
+implemented via an architecture that makes it possible to customize the screen
+readers behavior along four axes which allows to adapt the screenreader
+flexibly to specialized content. In detail ChromeVox can be parameterized by 
+\begin{enumerate}[(1)]
+\item segmenting the DOM into different \emph{granularities},
+\item enabling different ways of interactively \emph{walking content},
+\item customizing content description by parameterizing a \emph{speech output},
+\item enabling efficient navigation by allowing the use of \emph{alternative
+    representations} for DOM elements.
+\end{enumerate}
+In the remainder of this section we will explain these four axes in more detail.
+
+
+\subsection{Axis 1: Granularities}
 \label{sec:ax1}
 
+Granularities are the primary means to allow a user to engage with content at
+their choice of detail. The main purpose of a granularity is to segment the DOM
+into units between which the user can navigate interactively.
 
-\begin{figure}[h!]
+In practice, a granularity defines what is regarded as a leaf node in the
+DOM. Fig.~\ref{fig:granularity} schematically depicts the idea of different
+granularities. The content of the leaf node is then the smallest chunk that is
+translated into an utterance and sent to the TTS.
+
+\begin{figure}[ht!]
   \begin{center}
     \leavevmode
     \includegraphics[width=.4\columnwidth]{images/granularity1}
@@ -372,11 +404,36 @@ alternative representations in Sec.~\ref{sec:alternative}.
   \end{center}
 \end{figure}
 
-\subsection{Axes 2: Walking}
+Granularities can, but do not have to be hierarchically structured. For example,
+in text natural granularities are line, word or character. On the other
+hand in more specialized content like a table one could distinguish
+granularities like row, column, or cell, where the latter again can be
+segmented by normal text granularities.  Defining a granularities is therefore
+not necessarily a simple task in particular due to often heavily nesting of
+layout elements in rich web applications.\ednote{Does that make sense?}
+
+
+\subsection{Axis 2: Walking Content}
 \label{sec:ax2}
 
+Interactive navigation of content is accomplished by walkers.  They provide a
+means to move between the different leaf nodes defined by a particular
+granularity. They also offer the flexibility to break up the linear order of
+navigating content as well as ignore certain leafs nodes. Fig.~\ref{fig:walkers} gives
+an idea of different walkers operating on the same level of granularity.
 
-\begin{figure}[h!]
+The flexibility of the walkers is particular important to allow for a good user
+experience on complex web content, where the ideal reading order is not
+reflected by the order of the elements in the DOM. An example is the
+\url{google.com} search page, which can contain in addition to the normal search
+results additional information in the form of a knowledge card on the right or
+timely information on the top (e.g., sports results). However, in the DOM the
+knowledge card is given after all the search results, thus conventional linear
+navigation would force the user to navigate through the entire list of search
+results first before discovering the knowledge card.\ednote{Is that a good
+  example?}
+
+\begin{figure}[ht!]
   \begin{center}
     \leavevmode
     \includegraphics[width=.4\columnwidth]{images/walker1}
@@ -386,32 +443,162 @@ alternative representations in Sec.~\ref{sec:alternative}.
   \end{center}
 \end{figure}
 
-\subsection{Axes 3: Speech Translation}
-\label{sec:ax1}
+In practice walkers and granularities are exposed to the user in meaningful
+combinations only. Walkers usually group related granularities, whenever
+possible in a hierarchical nature.  A user can not only switch explicitly
+between levels of granularity but interactively walk at one level of
+granularity, while if necessary exploring the currently active leaf node at the
+next lower level of granularity.
+
+For example, in default text walking mode granularities include line, word and
+character. The user can either switch between these granularities, or while
+walking the text linearly, for instance, in line granularity --- usually with up
+and down cursor keys\footnote{These keys depend on the particular choice of
+  keymap and possible user customization.}  --- explore the content of the line
+that currently being read word for word using the left and right cursor keys.
+
+Immediate keyboard shortcuts can be given to particular combinations of walker
+and granularity. A particular example is the exploration of hyperlinks in a
+document to which ChromeVox dedicates two keys explicitly for walking links
+only, while ignoring all interspersed text.
+
+\subsection{Axis 3: Speech Output}
+\label{sec:ax3}
+
+The third axis along which ChromeVox is customizable is how speech output is
+generated. While the way regular text is read is determined by the TTS engine
+employed and thus can not be influenced by ChromeVox directly, when conveying
+additional information on content as well as while reading specialized content
+flexibility on how elements are spoken or announced is important.
+
+For example, ChromeVox can provide the user with context information on
+particular elements, such as announcing the type of headers, whether a hyperlink
+is contained etc., by announcing the element explicitly or playing
+earcons. Simple adaptations of this behavior allows for changes
+\begin{inparaenum}[(a)]
+\item to the level of verbosity,
+\item if and how punctuation is being read,
+\item to switch earcons on or off.
+\end{inparaenum}
+
+More complex structures can benefit from even more sophisticated customization.
+For instance, when traversing tables ChromeVox can give the user information on
+the current position in the table, for example, by announcing explicitly row and
+column number or the cell type. Similarly, when speaking mathematics can become
+necessary to alter the pronunciation of elements or entire formulas according to
+mathematical subject area or user preference.
+
+For this purpose ChromeVox has a dedicated speech rule engine that allows to
+specify speech rules for particular DOM element. If a walker traverses a DOM
+element for which a speech rule exists, it is used to generate speech
+output. This can be a recursive process in the sense the execution of one speech
+rule might trigger further speech rules that apply to its sub-elements.
+Customization is realized by defining different rules for elements and
+parameterizing the engine swapping entire rule sets thus changing the generated
+speech output.
+
+As ChromeVox's speech rule engine has been designed originally in the context of
+our work on making mathematics accessible we shall present more details on its
+operation in Sec.~\ref{sec:translate}. However, it has now been integrated as a
+general component in the screen reader and can be employed to customize reading
+of any element in the DOM.
+
+\subsection{Axis 4: Alternative Representations}
+\label{sec:ax4}
 
 
+The final axis of customization is ChromeVox's ability to swap entire elements
+in the DOM for alternative representations. However, as we do not want to alter
+the actual DOM, we achieve this by internally mapping particular leaf node to
+dedicated representations. This idea is schematically depicted in
+Fig.~\ref{fig:alt}.
 
-\subsection{Axes 4: Representation}
-\label{sec:ax1}
-
-
-\begin{figure}[h!]
+\begin{figure}[ht!]
   \begin{center}
     \leavevmode
     \includegraphics[width=.5\columnwidth]{images/substructure1}
-    \caption{Schematic depiction of alternative represenatations.}
-    \label{fig:walkers}
+    \caption{Schematic depiction of alternative representations.}
+    \label{fig:alt}
   \end{center}
 \end{figure}
+
+The use of alternative representations can be particularly useful when the
+original DOM element is not suitable for speech generation or when a more
+dedicated data structure can give lead to a better understanding of the content
+for the user. In fact, this ability plays a crucial role in the accessibility of
+mathematical content and we describe it in more detail in Sec.~\ref{sec:alternative}.
 
 \section{Speaking Mathematics}
 \label{sec:translate}
 
-\section{Alternative Representations}
+\begin{description}
+\item[Continuously] 
+\item[In interactive granularities] 
+\end{description}
+
+Embedded in regular text maths expressions are treated as leaf nodes, that is
+
+\section{Rerepresenting Maths Content}
 \label{sec:alternative}
+
+
 
 \section{Engaging with Content}
 \label{sec:explore}
+
+We consider the example 
+
+\begin{equation}
+x_1^2+x_2 = y\label{eq:simple}
+\end{equation}
+
+Tree exploration:
+
+\tabcolsep1pt
+\noindent\begin{tabular}{clclcl}
+& $\framebox{$x_1^2+x_2 = y$}$ & $\longleftrightarrow$ 
+$\framebox{$x_1^2$}+x_2 = y$ & $\longleftrightarrow$ 
+$\framebox{x}_1^2+x_2 = y$ \\ 
+$\longleftrightarrow$  & 
+$x_{\framebox{$1$}}^2+x_2 = y$ & $\longleftrightarrow$ 
+$x_1^{\framebox{$2$}}+x_2 = y$ & $\longleftrightarrow$ 
+$x_1^2\framebox{$+$}x_2 = y$\\
+$\longleftrightarrow$  & 
+$x_1^2+\framebox{$x_2$} = y$ & $\longleftrightarrow$ 
+$x_1^2+\framebox{$x$}_2 = y$ & $\longleftrightarrow$ 
+$x_1^2+x_{\framebox{$2$}} = y$ \\
+$\longleftrightarrow$  & 
+$x_1^2+x_2\framebox{$=$}  y$ & $\longleftrightarrow$ 
+$x_1^2+x_2 = \framebox{$y$}$ 
+\end{tabular}
+
+Level exploration:
+
+\tabcolsep2pt
+\noindent\begin{tabular}{lclcl}
+Level 0 & & Level 1 & & Level 2\\
+$\framebox{$x_1^2+x_2 = y$}$ 
+& $\longleftrightarrow$ &
+$\framebox{$x_1^2$}+x_2 = y$ 
+& $\longleftrightarrow$ &
+$\framebox{$x$}_1^2+x_2 = y$ \\
+& & & & $x_{\framebox{$1$}}^2+x_2 = y$ \\
+& & & & $x_1^{\framebox{$2$}}+x_2 = y$ \\
+& & $x_1^2\framebox{$+$}x_2 = y$  \\
+& & $x_1^2+\framebox{$x_2$} = y$  
+& $\longleftrightarrow$ &
+$x_1^2+\framebox{$x$}_2 = y$\\
+& & & & $x_1^2+x_{\framebox{$2$}} = y$\\
+& & $x_1^2+x_2\framebox{$=$}  y$\\
+& & $x_1^2+x_2 = \framebox{$y$}$\\
+\end{tabular}
+
+
+
+
+
+
+
 
 
 \section{Conclusions}
