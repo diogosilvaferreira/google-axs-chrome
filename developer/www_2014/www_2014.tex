@@ -331,7 +331,7 @@ performance, independent of third party libraries.  While the mathematics given
 in image form is effectively inaccessible, the original source from which a
 formula has been generated is often given in form of alternative text attribute
 of the image tag.  For instance, in the case of Wikipedia, most of the
-mathematics images have alternative text provided in \LaTeX, whereas Mathworld
+mathematics images have alternative text provided in \LaTeX, whereas MathWorld
 contains AsciiMath markup.  The case of our example is given in
 Fig.~\ref{fig:quadratic-img} the quadratic equation is loaded as a PNG images,
 while the hidden markup is given in the original \LaTeX
@@ -498,10 +498,14 @@ parameterizing the engine swapping entire rule sets thus changing the generated
 speech output.
 
 As ChromeVox's speech rule engine has been designed originally in the context of
-our work on making mathematics accessible we shall present more details on its
-operation in Sec.~\ref{sec:translate}. However, it has now been integrated as a
-general component in the screen reader and can be employed to customize reading
-of any element in the DOM.
+our work on making mathematics accessible and we shall present more details on
+its operation and rule systems in Sec.~\ref{sec:translate}. However, the speech
+rule engine has now been integrated as a general component into the screen
+reader and can be employed to customize reading of any element in the DOM. In
+fact, it is implemented in a general enough way that it allows to define and
+recursively execute speech rules for any XML object, a fact that we can put to
+use when working with alternative representations of DOM objects.
+
 
 \subsection{Axis 4: Alternative Representations}
 \label{sec:ax4}
@@ -522,26 +526,60 @@ Fig.~\ref{fig:alt}.
   \end{center}
 \end{figure}
 
-The use of alternative representations can be particularly useful when the
+We effectively allow any data structure as a valid alternative representation as
+long as it is serializable into an XML representation. This allows us to define
+bespoke speech rules for a the resulting XML object and compile appropriate
+speech output using the speech rule engine. Depending on the nature of the DOM
+element to be replaced alternative representations are either precomputed at
+load time of a webpage or generated on the fly when the particular DOM object is
+visited.
+
+Employing alternative representations can be particularly beneficial when the
 original DOM element is not suitable for speech generation or when a more
 dedicated data structure can give lead to a better understanding of the content
-for the user. In fact, this ability plays a crucial role in the accessibility of
-mathematical content and we describe it in more detail in Sec.~\ref{sec:alternative}.
+for the user. Its use can either be triggered automatically, or explicitly by a
+user command. In fact, this ability plays a crucial role in the accessibility of
+mathematical content and we describe it in more detail in
+Sec.~\ref{sec:alternative}.
+
 
 \section{Speaking Mathematics}
 \label{sec:translate}
 
+\subsection{Translation via Speech Rule Engine}
+
+\subsection{Embedding into Text Reading}
 \begin{description}
 \item[Continuously] 
 \item[In interactive granularities] 
 \end{description}
 
+\begin{itemize}
+\item Different type of rules
+\item Recursive dispatch (pseudo code)
+\item 
+\end{itemize}
 Embedded in regular text maths expressions are treated as leaf nodes, that is
 
 \section{Rerepresenting Maths Content}
 \label{sec:alternative}
 
+\subsection{Replacing Images}
+\label{sec:images}
 
+\begin{itemize}
+\item explain the mathjax bridge
+\item This one works automatically
+\end{itemize}
+
+\subsection{Semantic Representations}
+\label{sec:semantic}
+
+\begin{itemize}
+\item More sophisticated representation
+\item Internal representation.
+\item Has to be triggered explicitly by the user
+\end{itemize}
 
 \section{Engaging with Content}
 \label{sec:explore}
@@ -571,6 +609,28 @@ $\longleftrightarrow$  &
 $x_1^2+x_2\framebox{$=$}  y$ & $\longleftrightarrow$ 
 $x_1^2+x_2 = \framebox{$y$}$ 
 \end{tabular}
+
+\begin{center}
+  \leavevmode
+  \lstxml\small
+\begin{lstlisting}
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <msubsup>
+      <mi>x</mi>
+      <mn>1</mn>
+      <mn>2</mn>
+    </msubsup>
+    <mo>+</mo>
+    <msub>
+      <mi>x</mi>
+      <mn>2</mn>
+    </msub>
+    <mo>=</mo>
+    <mi>y</mi>
+</mrow>
+\end{lstlisting}
+\end{center}
 
 Level exploration:
 
