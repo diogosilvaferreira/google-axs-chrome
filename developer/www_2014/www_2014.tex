@@ -404,13 +404,14 @@ translated into an utterance and sent to the TTS.
   \end{center}
 \end{figure}
 
-Granularities can, but do not have to be hierarchically structured. For example,
-in text natural granularities are line, word or character. On the other
+While granularities are generally structured from coarse grained to more fine
+grained, this does not imply that they have to be strictly hierarchical. For
+example, in text natural granularities are line, word or character. On the other
 hand in more specialized content like a table one could distinguish
-granularities like row, column, or cell, where the latter again can be
-segmented by normal text granularities.  Defining a granularities is therefore
-not necessarily a simple task in particular due to often heavily nesting of
-layout elements in rich web applications.\ednote{Does that make sense?}
+granularities like row, column, or cell, where the latter again can be segmented
+by normal text granularities.  Defining granularities is therefore not
+necessarily a simple task in particular due to often heavily nesting of layout
+elements in rich web applications.\ednote{Does that make sense?}
 
 
 \subsection{Axis 2: Walking Content}
@@ -581,34 +582,42 @@ Embedded in regular text maths expressions are treated as leaf nodes, that is
 \item Has to be triggered explicitly by the user
 \end{itemize}
 
-\section{Engaging with Content}
+\section{Engaging with Formulas}
 \label{sec:explore}
+
+Mathematical formulas are generally of a complex nature, in fact, already a
+small number of symbols can make for a complex utterance.  Consequently, just
+listening to an expression once is generally not enough for a user to fully take
+in its meaning.  Therefore for mathematical formulas it is particularly
+important for users to be able to engage with the interactively by offering
+means of traversing sub-expressions.  ChromeVox offers the facilities with its
+concepts of granularity and walkers. However, as opposed to many other form of
+content, such as regular text, mathematical formulas can be nested arbitrarily
+deep, meaning that an expression can have sub-expressions of the same or higher
+complexity. Consequently, the standard approach of having a standard set of
+roughly ordered granularities that enable a user to descend into an expression
+can not work for mathematical formulas. Instead we need specialist walkers and a
+concept of nested granularity to allow for meaningful exploration. Therefore,
+we have experimented with two different approaches walking MathML expressions:
+\begin{inparaenum}[(1)]
+\item one that follows closely the tree structure of a MathML expression and
+\item another that uses a granularity of sub-expressions at a given level and
+  allows to dive into those ad infinitum.
+\end{inparaenum}
+We now render these notion more precisely.
+
+Let $T=(V,E)$ be a rooted tree with root $r\in V$ in the usual graph theoretic
+sense (i.e., a directed acyclic graph, with all edges directed away from the
+root and all child nodes having only one parent).  
+where 
+
+Depth-first order traversal of the tree
 
 We consider the example 
 
 \begin{equation}
 x_1^2+x_2 = y\label{eq:simple}
 \end{equation}
-
-Tree exploration:
-
-\tabcolsep1pt
-\noindent\begin{tabular}{clclcl}
-& $\framebox{$x_1^2+x_2 = y$}$ & $\longleftrightarrow$ 
-$\framebox{$x_1^2$}+x_2 = y$ & $\longleftrightarrow$ 
-$\framebox{x}_1^2+x_2 = y$ \\ 
-$\longleftrightarrow$  & 
-$x_{\framebox{$1$}}^2+x_2 = y$ & $\longleftrightarrow$ 
-$x_1^{\framebox{$2$}}+x_2 = y$ & $\longleftrightarrow$ 
-$x_1^2\framebox{$+$}x_2 = y$\\
-$\longleftrightarrow$  & 
-$x_1^2+\framebox{$x_2$} = y$ & $\longleftrightarrow$ 
-$x_1^2+\framebox{$x$}_2 = y$ & $\longleftrightarrow$ 
-$x_1^2+x_{\framebox{$2$}} = y$ \\
-$\longleftrightarrow$  & 
-$x_1^2+x_2\framebox{$=$}  y$ & $\longleftrightarrow$ 
-$x_1^2+x_2 = \framebox{$y$}$ 
-\end{tabular}
 
 \begin{center}
   \leavevmode
@@ -631,6 +640,26 @@ $x_1^2+x_2 = \framebox{$y$}$
 </mrow>
 \end{lstlisting}
 \end{center}
+
+Tree exploration:
+
+\tabcolsep1pt
+\noindent\begin{tabular}{clclcl}
+& $\framebox{$x_1^2+x_2 = y$}$ & $\longleftrightarrow$ 
+$\framebox{$x_1^2$}+x_2 = y$ & $\longleftrightarrow$ 
+$\framebox{x}_1^2+x_2 = y$ \\ 
+$\longleftrightarrow$  & 
+$x_{\framebox{$1$}}^2+x_2 = y$ & $\longleftrightarrow$ 
+$x_1^{\framebox{$2$}}+x_2 = y$ & $\longleftrightarrow$ 
+$x_1^2\framebox{$+$}x_2 = y$\\
+$\longleftrightarrow$  & 
+$x_1^2+\framebox{$x_2$} = y$ & $\longleftrightarrow$ 
+$x_1^2+\framebox{$x$}_2 = y$ & $\longleftrightarrow$ 
+$x_1^2+x_{\framebox{$2$}} = y$ \\
+$\longleftrightarrow$  & 
+$x_1^2+x_2\framebox{$=$}  y$ & $\longleftrightarrow$ 
+$x_1^2+x_2 = \framebox{$y$}$ 
+\end{tabular}
 
 Level exploration:
 
