@@ -1,9 +1,12 @@
-\documentclass{sig-alternate}
+%\documentclass{sig-alternate}
+\documentclass{acm_proc_article-sp}
 \usepackage{graphicx}
 \usepackage{url}
 \usepackage{paralist}
 \usepackage{listings}
 \usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{trees}
 
 % \DeclareUnicodeCharacter{B1}{\pm}
 %% LANGUAGE      Markup definitions
@@ -154,6 +157,7 @@ implementation of a flexible speech rule engine that allows to
 customize the reading experience along several axes and that also
 provides an API for easy adaptation to specialized content by users
 and web site authors.
+\newpage
 
 \section{Mathematics on the Web}
 \label{sec:math}
@@ -338,7 +342,6 @@ while the hidden markup is given in the original \LaTeX
 \verb+x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}+
 
 
-
 This form of hidden markup can then be displayed in
 text-only browsers or used for copy-and-paste operations. 
 In ChromeVox we exploit hidden markup as well, to ensure a consistent
@@ -454,9 +457,9 @@ next lower level of granularity.
 For example, in default text walking mode granularities include line, word and
 character. The user can either switch between these granularities, or while
 walking the text linearly, for instance, in line granularity --- usually with up
-and down cursor keys\footnote{These keys depend on the particular choice of
+and down arrow keys\footnote{These keys depend on the particular choice of
   keymap and possible user customization.}  --- explore the content of the line
-that currently being read word for word using the left and right cursor keys.
+that currently being read word for word using the left and right arrow keys.
 
 Immediate keyboard shortcuts can be given to particular combinations of walker
 and granularity. A particular example is the exploration of hyperlinks in a
@@ -547,13 +550,13 @@ Sec.~\ref{sec:alternative}.
 \section{Speaking Mathematics}
 \label{sec:translate}
 
-\subsection{Translation via Speech Rule Engine}
-
 \subsection{Embedding into Text Reading}
 \begin{description}
 \item[Continuously] 
 \item[In interactive granularities] 
 \end{description}
+
+\subsection{Translation via Speech Rule Engine}
 
 \begin{itemize}
 \item Different type of rules
@@ -562,16 +565,88 @@ Sec.~\ref{sec:alternative}.
 \end{itemize}
 Embedded in regular text maths expressions are treated as leaf nodes, that is
 
+
+\subsection{A Simple Rule Set}
+
+We have implemented a basic rule sets both for the MathML as well as for 
+expressions. Their idea is to serve as default rules, in absence of rules more
+specialised with respect to mathematical domains or reading styles.
+
+
+
 \section{Rerepresenting Maths Content}
 \label{sec:alternative}
+
+ChromeVox's ability to allow for alternative representations as discussed in
+Sec.~\ref{sec:ax4} is crucial for both enlarging the amount mathematical content
+available and the user experience when voicing that content. In fact, we have
+developed initially in the context of math accessibility.  We employ the
+mechanism in two ways:
+\begin{enumerate}
+\item As much of mathematics on the web is still only available as
+  pre-rendered images as described in Sec.~\ref{sec:images}, we exploit any
+  alternative markup we can find to internally replace the image representation
+  thus making the expression accessible.
+\item Since the direct translation of MathML expressions leads to speech output
+  that is rather verbose and often differs quite significantly how a human
+  reader would speak a formula, we have developed a more semantic interpretation
+  of expressions that can be used as alternative structures.
+\end{enumerate}
 
 \subsection{Replacing Images}
 \label{sec:images}
 
-\begin{itemize}
-\item explain the mathjax bridge
-\item This one works automatically
-\end{itemize}
+One major advancement for the accessibility of mathematics on the web is to make
+hidden markup available to a screen reader, as much of the formulas on some of
+the major sites providing mathematical content is still given in image format.
+In ChromeVox we achieve this by explicitly for images of a particular classes.
+For example, in Wikipedia \texttt{img} tags with the \texttt{class} attribute
+\emph{tex} indicate that there is a math expression given as an image rendered
+from a {\LaTeX} source that is given as string in the \texttt{alt} attribute.
+Similarly, in MathWorld a number of different \texttt{class} attributes in
+\texttt{img} tags indicate that there is AsciiMath in the \texttt{alt} attribute
+that can be exploited.
+
+Unfortunately, using markup like {\LaTeX} or AsciiMath directly in ChromeVox is
+not easily feasible as ChromeVox is built to use the HTML DOM to generate speech
+output. Moreover, adding another two of markup languages, would not only at
+least triple the number of rules necessary for their speech translation thus
+increasing maintenance effort, but would also make it very difficult to achieve
+consistency between aural rendering of same formula given in different markup
+languages.
+
+We have therefore decided to translate all hidden markup into MathML allowing us
+to utilise all the facilities we have built for it already. In order not to
+duplicate efforts by writing our own translation engine as well as to ensure
+further consistency between translated hidden markup and the same markup
+rendered visually with MathJax, we are using MathJax for the translation of
+hidden markup by employing it effectively as a web service.
+
+Technically this is realised by implementing a bridge to MathJax from within the
+content of the webpage. We inject a MathJax configuration script into the
+webpage's content to allow ChromeVox to call MathJax remotely. For each of the
+math images we have identified we send the hidden markup (i.e., either {\LaTeX}
+or AsciiMath) to MathJax to obtain a corresponding MathML representation. The
+MathML is computed upon loading of a webpage and stored to be available as soon
+as the screen reader encounters an image with a math formula. If stored MathML
+markup exists, it is automatically retrieved and send to the speech rule engine
+to generate the audio description. Note that this will not change the actual
+image node in the DOM.
+
+For example, when loading the Wikipedia page on the quadratic formula, ChromeVox
+will detect the markup given in Fig.~\ref{fig:quadratic-img}, find the hidden
+{\LaTeX} markup and send it to MathJax for translation, resulting in the MathML
+expression given in Fig.~\ref{fig:quadratic-mml}. The latter is then actually
+passed to the speech rule engine whenever the screenreader encounters the
+original \texttt{img} node.
+
+In addition to translating the MathML markup for the entire expression,
+ChromeVox also enables the interactive exploration of the expression as
+described in Sec.~\ref{sec:explore}, as if the node were an element of the
+DOM. The only difference is that the visual indicator that highlights
+subexpression, when they are traversed, can not do the same as only the image is
+contained in the webpage.  \ednote{Maybe mention visual indicator earlier.}
+
 
 \subsection{Semantic Representations}
 \label{sec:semantic}
@@ -584,6 +659,37 @@ Embedded in regular text maths expressions are treated as leaf nodes, that is
 
 \section{Engaging with Formulas}
 \label{sec:explore}
+
+\begin{figure*}[t!]
+  \centering
+  \tabcolsep1pt{\footnotesize
+    \noindent\begin{tabular}{clclclclclcl}
+      & $\framebox{$x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}$}$  & $\longleftrightarrow$ 
+      & $\framebox{$x$}=\frac{-b \pm \sqrt {b^2-4ac}}{2a}$  & $\longleftrightarrow$ 
+      & $x\framebox{$=$}\frac{-b \pm \sqrt {b^2-4ac}}{2a}$  & $\longleftrightarrow$ 
+      & $x=\framebox{$\frac{-b \pm \sqrt {b^2-4ac}}{2a}$}$  & $\longleftrightarrow$ 
+      & $x=\frac{\framebox{$-b \pm \sqrt {b^2-4ac}$}}{2a}$\\
+      $\longleftrightarrow$ 
+      & $x=\frac{\framebox{$-$}b \pm \sqrt {b^2-4ac}}{2a}$  & $\longleftrightarrow$ 
+      & $x=\frac{-\framebox{$b$} \pm \sqrt {b^2-4ac}}{2a}$  & $\longleftrightarrow$ 
+      & $x=\frac{-b\framebox{$\pm$} \sqrt {b^2-4ac}}{2a}$  & $\longleftrightarrow$ 
+      & $x=\frac{-b\pm\framebox{$\sqrt {b^2-4ac}$}}{2a}$  & $\longleftrightarrow$ 
+      & $x=\frac{-b\pm\sqrt {\framebox{$b^2$}-4ac}}{2a}$\\
+      $\longleftrightarrow$ 
+      & $x=\frac{-b\pm\sqrt {\framebox{$b$}^2-4ac}}{2a}$  & $\longleftrightarrow$ 
+      & $x=\frac{-b\pm\sqrt {b^{\framebox{$2$}}-4ac}}{2a}$  & $\longleftrightarrow$ 
+      & $x=\frac{-b\pm\sqrt {b^2\framebox{$-$}4ac}}{2a}$  & $\longleftrightarrow$ 
+      & $x=\frac{-b\pm\sqrt {b^2-\framebox{$4$}ac}}{2a}$  & $\longleftrightarrow$ 
+      & $x=\frac{-b\pm\sqrt {b^2-4\framebox{$a$}c}}{2a}$\\
+      $\longleftrightarrow$ 
+      & $x=\frac{-b\pm\sqrt {b^2-4a\framebox{$c$}}}{2a}$  & $\longleftrightarrow$ 
+      & $x=\frac{-b\pm\sqrt {b^2-4ac}}{\framebox{$2$}a}$  & $\longleftrightarrow$ 
+      & $x=\frac{-b\pm\sqrt {b^2-4ac}}{2\framebox{$a$}}$
+    \end{tabular}}
+  \caption{Tree exploration of the quadratic formula.}
+\label{fig:tree-exploration}
+\end{figure*}
+
 
 Mathematical formulas are generally of a complex nature, in fact, already a
 small number of symbols can make for a complex utterance.  Consequently, just
@@ -599,95 +705,148 @@ roughly ordered granularities that enable a user to descend into an expression
 can not work for mathematical formulas. Instead we need specialist walkers and a
 concept of nested granularity to allow for meaningful exploration. Therefore,
 we have experimented with two different approaches walking MathML expressions:
-\begin{inparaenum}[(1)]
-\item one that follows closely the tree structure of a MathML expression and
-\item another that uses a granularity of sub-expressions at a given level and
-  allows to dive into those ad infinitum.
-\end{inparaenum}
-We now render these notion more precisely.
+\begin{enumerate}[(1)]
+\item \emph{Tree exploration} that follows closely the tree structure of a MathML expression.
+\item \emph{Level based exploration} that defines a granularity of
+  sub-expressions and allows to dive into each of these separately.
+\end{enumerate}
+We now render those notions more precisely.
 
 Let $T=(V,E)$ be a rooted tree with root $r\in V$ in the usual graph theoretic
 sense (i.e., a directed acyclic graph, with all edges directed away from the
-root and all child nodes having only one parent).  
-where 
+root and all child nodes having only one parent). 
 
-Depth-first order traversal of the tree
+Let $V=\{v_0=r,\ldots,v_n\}$ given in a preordering. We then define a
+granularity $G=\{t_0,\ldots, t_n\}$, where $t_i$ is a sub-tree of $T$ with root
+$v_i$, $i=0,\ldots,n$. Note that $t_0=T$. We then define \emph{tree exploration}
+on $T$ as linearly walking on the elements of $G$, that is, walking forward
+corresponds to shifting from $t_i$ to $t_{i+1}$, $i=0,\ldots,n-1$ and likewise
+walking backwards to moving from $t_i$ to $t_{i-1}$, $i=1,\ldots, n$.
 
-We consider the example 
+This effectively means that the granularity consists of every sub-tree of the
+expression or in other words tree exploration corresponds to depth first
+traversal of the sub-trees in $T$. Since we are exploring trees that are
+elements of the DOM, the order of the vertices is naturally given by the
+ordering of the nodes in the DOM.
 
-\begin{equation}
-x_1^2+x_2 = y\label{eq:simple}
-\end{equation}
 
-\begin{center}
-  \leavevmode
-  \lstxml\small
-\begin{lstlisting}
-<math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mrow>
-    <msubsup>
-      <mi>x</mi>
-      <mn>1</mn>
-      <mn>2</mn>
-    </msubsup>
-    <mo>+</mo>
-    <msub>
-      <mi>x</mi>
-      <mn>2</mn>
-    </msub>
-    <mo>=</mo>
-    <mi>y</mi>
-</mrow>
-\end{lstlisting}
-\end{center}
-
-Tree exploration:
-
-\tabcolsep1pt
-\noindent\begin{tabular}{clclcl}
-& $\framebox{$x_1^2+x_2 = y$}$ & $\longleftrightarrow$ 
-$\framebox{$x_1^2$}+x_2 = y$ & $\longleftrightarrow$ 
-$\framebox{x}_1^2+x_2 = y$ \\ 
-$\longleftrightarrow$  & 
-$x_{\framebox{$1$}}^2+x_2 = y$ & $\longleftrightarrow$ 
-$x_1^{\framebox{$2$}}+x_2 = y$ & $\longleftrightarrow$ 
-$x_1^2\framebox{$+$}x_2 = y$\\
-$\longleftrightarrow$  & 
-$x_1^2+\framebox{$x_2$} = y$ & $\longleftrightarrow$ 
-$x_1^2+\framebox{$x$}_2 = y$ & $\longleftrightarrow$ 
-$x_1^2+x_{\framebox{$2$}} = y$ \\
-$\longleftrightarrow$  & 
-$x_1^2+x_2\framebox{$=$}  y$ & $\longleftrightarrow$ 
-$x_1^2+x_2 = \framebox{$y$}$ 
+\begin{figure*}[ht!]
+  \centering
+\tabcolsep2pt\small
+\noindent\begin{tabular}{lclclclcll}
+  \multicolumn{1}{c}{Level 0} &  & \multicolumn{1}{c}{Level 1} & & 
+  \multicolumn{1}{c}{Level 2} & & \multicolumn{1}{c}{Level 3} & & 
+  \multicolumn{1}{c}{Level 4}\\
+$\framebox{$x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}$}$  & $\longleftrightarrow$ 
+& $\framebox{$x$}=\frac{-b \pm \sqrt {b^2-4ac}}{2a}$  &  \\
+& & $x\framebox{$=$}\frac{-b \pm \sqrt {b^2-4ac}}{2a}$  &  \\
+& & $x=\framebox{$\frac{-b \pm \sqrt {b^2-4ac}}{2a}$}$  & $\longleftrightarrow$ 
+& $x=\frac{\framebox{$-b \pm \sqrt {b^2-4ac}$}}{2a}$  & $\longleftrightarrow$ 
+& $x=\frac{\framebox{$-$}b \pm \sqrt {b^2-4ac}}{2a}$  \\
+& & & & & & $x=\frac{-\framebox{$b$} \pm \sqrt {b^2-4ac}}{2a}$ \\
+& & & & & & $x=\frac{-b\framebox{$\pm$} \sqrt {b^2-4ac}}{2a}$ \\
+& & & & & & $x=\frac{-b\pm\framebox{$\sqrt {b^2-4ac}$} }{2a}$ & $\longleftrightarrow$ 
+& $x=\frac{-b\pm\sqrt {\framebox{$b^2$}-4ac} }{2a}$ & $\longleftrightarrow\cdots$\\
+& & & & & & & & $x=\frac{-b\pm\sqrt {b^2\framebox{$-$}4ac} }{2a}$\\[.2cm]\cline{7-7}
+& & & & $x=\frac{-b \pm \sqrt {b^2-4ac}}{\framebox{$2a$}}$  & $\longleftrightarrow$ 
+& $x=\frac{-b \pm \sqrt {b^2-4ac}}{\framebox{$2$}a}$ & & \multicolumn{1}{c}{\vdots}\\
+& & & & & & $x=\frac{-b \pm \sqrt {b^2-4ac}}{2\framebox{$a$}}$ 
 \end{tabular}
+  \caption{Level exploration of the quadratic formula.}
+\label{fig:level-exploration}
+\end{figure*}
 
-Level exploration:
+If we consider again our example of the quadratic formula, then the MathML tree
+has the following form, where the topmost \texttt{math} tag is the root:
 
-\tabcolsep2pt
-\noindent\begin{tabular}{lclcl}
-Level 0 & & Level 1 & & Level 2\\
-$\framebox{$x_1^2+x_2 = y$}$ 
-& $\longleftrightarrow$ &
-$\framebox{$x_1^2$}+x_2 = y$ 
-& $\longleftrightarrow$ &
-$\framebox{$x$}_1^2+x_2 = y$ \\
-& & & & $x_{\framebox{$1$}}^2+x_2 = y$ \\
-& & & & $x_1^{\framebox{$2$}}+x_2 = y$ \\
-& & $x_1^2\framebox{$+$}x_2 = y$  \\
-& & $x_1^2+\framebox{$x_2$} = y$  
-& $\longleftrightarrow$ &
-$x_1^2+\framebox{$x$}_2 = y$\\
-& & & & $x_1^2+x_{\framebox{$2$}} = y$\\
-& & $x_1^2+x_2\framebox{$=$}  y$\\
-& & $x_1^2+x_2 = \framebox{$y$}$\\
-\end{tabular}
+\begin{tikzpicture}[scale=.68, transform shape]
+\node[draw] {math}
+  %%[edge from parent fork down]
+  [grow via three points={one child at (0,-1.25) and two children at (-1.3,-1.3) and (1.3,-1.3)}, edge from parent fork down]
+    child {node[draw]{\begin{minipage}{3ex}\begin{center}mi\\\textcolor{black}{x}\end{center}\end{minipage}}}
+    child {node[draw]{\begin{minipage}{3ex}\begin{center}mo\\\textcolor{black}{=}\end{center}\end{minipage}}}
+    child {node[draw] {mfrac}[grow via three points={one child at (0,-1.5) and two children at (-1.5,-1.5) and (5.5,-1.5)}, edge from parent fork down]
+      child {node[draw] {mrow}[grow via three points={one child at (0,-1.5) and two children at (-1,-1.5) and (1,-1.5)}, edge from parent fork down]
+        child {node[draw]{\begin{minipage}{3ex}\begin{center}mo\\\textcolor{black}{-}\end{center}\end{minipage}}}
+        child {node[draw]{\begin{minipage}{3ex}\begin{center}mi\\\textcolor{black}{b}\end{center}\end{minipage}}}
+        child {node[draw]{\begin{minipage}{3ex}\begin{center}mo\\\textcolor{black}{$\pm$}\end{center}\end{minipage}}}
+        child {node[draw] {msqrt}[grow via three points={one child at (0,-1.5) and two children at (-1,-1.5) and (1,-1.5)}, edge from parent fork down]
+          child {node[draw] {msup}[grow via three points={one child at (0,-1.5) and two children at (-1,-1.5) and (1,-1.5)}, edge from parent fork down]
+            child {node[draw]{\begin{minipage}{3ex}\begin{center}mi\\\textcolor{black}{b}\end{center}\end{minipage}}}
+            child {node[draw]{\begin{minipage}{3ex}\begin{center}mn\\\textcolor{black}{2}\end{center}\end{minipage}}}
+          }
+          child {node[draw]{\begin{minipage}{3ex}\begin{center}mo\\\textcolor{black}{-}\end{center}\end{minipage}}}
+          child {node[draw]{\begin{minipage}{3ex}\begin{center}mn\\\textcolor{black}{4}\end{center}\end{minipage}}}
+          child {node[draw]{\begin{minipage}{3ex}\begin{center}mi\\\textcolor{black}{a}\end{center}\end{minipage}}}
+          child {node[draw]{\begin{minipage}{3ex}\begin{center}mi\\\textcolor{black}{c}\end{center}\end{minipage}}}
+        }
+      }
+      child {node[draw] {mrow}[grow via three points={one child at (0,-1.5) and two children at (-1,-1.5) and (.5,-1.5)}, edge from parent fork down]
+        child {node[draw]{\begin{minipage}{3ex}\begin{center}mn\\\textcolor{black}{2}\end{center}\end{minipage}}}
+        child {node[draw]{\begin{minipage}{3ex}\begin{center}mi\\\textcolor{black}{a}\end{center}\end{minipage}}}
+      }
+    }
+    ;
+\end{tikzpicture}
 
+The single steps of the tree exploration of the above tree are given in
+Fig.~\ref{fig:tree-exploration}.  The framed subexpressions correspond to the
+sub-formulas that are being spoken in each step.  Notice that tree exploration
+allows us to walk continuously walk from the root of the tree the rightmost leaf
+node, without the need to explicitly change granularity.
 
+Experimenting with tree exploration showed, that while it gave a pretty good
+idea of the overall layout of a formula, it was not well suited to convey the
+internal sub-structuring of many expressions. Consequently, we designed a second
+exploration method that aims to offer tighter control on the exploration of
+subexpressions.
 
+As for tree exploration we let $V=\{v_0=r,\ldots,v_n\}$ be given in a
+preordering and the set of subtrees in $T$ as $S=\{t_0,\ldots, t_n\}$ equivalent
+to the $G$ in the previous definition. In addition, we define usual \emph{depth
+  of a node} in $V$, that is, $v_i$ is at depth $d$ if the path from $v_0$ to
+$v_i$ has $d$ edges. We now recursively define the granularities by level:
+\begin{enumerate}[(i)]
+\item Let $G_0=\{t_0\}$ be the granularity at level $0$.
+\item Let $t\in G_\ell$. We define the granularity at level $\ell + 1$ as
+  \arraycolsep1pt
+  \begin{eqnarray*}
+    G^t_{\ell+1} = \{s\in G & | & s \mbox{ is subtree of } t\mbox{ and }\\ 
+    & & \mbox{root of } s \mbox{ is at depth } \ell+1\}.
+  \end{eqnarray*}
+\end{enumerate}
+Observe that this definition means that granularities are defined relative to
+sub-expressions, that is, the granularity $G^t_{\ell+1}$ are only the proper
+subtrees of the level $\ell$ node. Consequently, there exists a level $\ell+1$
+granularity for every vertex at depth $\ell$ that is not a leaf
+node. Furthermore, when walking a $\ell+1$ level granularity, we can not leave
+the common expression defined by the common parent node.
 
+The level exploration for our example formula~(\ref{eq:quadratic}) is partially
+displayed in~\ref{fig:level-exploration}, where framed subexpressions correspond
+again to the sub-formulas that are being spoken. Columns correspond to the
+different levels of granularities and arrows between levels indicate which that
+the framed subexpression can be explored at the next lower level. Exploration of
+expressions at the same granularity corresponds to moving up and down in a
+column. However, observe that the horizontal bar in level $3$ indicates the
+boundary between two level $2$ granularities, where the entries above the bar
+belong to $G^{-b\pm\sqrt{b^2-4ac}}_2$ and ones below to $G^{2a}_2$. Hence one
+can not move from the enumerator to the denominator and if we wanted to explore
+the subexpressions in the denominator (i.e., $2$ and $a$), we have to first move
+back up to the second level, move to the expression $2a$ and can then explore
+the next lower level.
 
-
-
+In practice, level exploration fits naturally into ChromeVox's paradigm of
+engaging with content at different levels of granularities. As with regular text
+content the user can explore an expression in two ways. They can move between
+expressions at one level with up and down arrow keys, while exploring the
+currently active sub-expression at the next lower level with the left and right
+arrow keys. Furthermore, the usual key combinations to change granularities
+allow the user to move up and down the different levels. These are announced
+explicitly to give the reader a feel for the depth of an expression.  When a
+user tries to go beyond the boundaries of an expression during exploration an
+earcon is played. Similarly the earcon announces when the user tries to descend
+further beyond the lowest level of a subexpression.
 
 
 \section{Conclusions}
