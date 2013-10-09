@@ -124,7 +124,7 @@ Charles Chen, T.V. Raman, David Tseng\\
 \section{Introduction}\label{sec:intro} 
 Ensuring accessibility to scientific material has always been a challenging task
 and can be considered a major obstacle for full inclusiveness in education in
-the STEM subject, in particular in late secondary and tertiary stage. As
+the STEM subject, in particular at the late secondary and tertiary stage. As
 teaching moves more and more towards the provision of online courses, we are
 faced with rapidly changing content employing media ranging from traditional
 articles containing mathematical formulas and scientific diagrams to highly
@@ -138,11 +138,13 @@ for expensive, specialist software.
 In this paper we concentrate on making mathematics accessible for visually
 impaired learners in the general screen reader
 ChromeVox~\cite{google:chromevox-tutorial}. Mathematics has always been a
-challenging problem as expressions can be arbitrarily complex in the sense that
+challenging problem as formulas can be arbitrarily complex in the sense that
 there is no limit to how deep sub-expressions are nested or how many layers of
-parenthesis are used. Moreover, a large number of unusual symbols are used that
-can have different meaning in different mathematical areas. An expression like
-the following taken from~\cite{knuthart} {\small
+parenthesis are used. Moreover, a large number of unusual symbols can occur that
+moreover might have different meaning in different mathematical areas. An
+expression like the following taken from~\cite{knuthart}
+
+{\small
 \begin{equation*}
 D^n_xw = \sum_{0\le j\le n} \sum_{\underbrace{{\scriptstyle
         k_1+k_2+\cdots+k_n=j \atop {\scriptstyle
@@ -157,33 +159,34 @@ D^n_xw = \sum_{0\le j\le n} \sum_{\underbrace{{\scriptstyle
 
 \noindent can already be difficult to parse for an expert human reader with
 perfect eyesight. But conveying all nuances of the notation in speech
-automatically is considerably more difficult. And already well known examples
-like the quadratic formula can pose be non-trivial to translate to speech.
+automatically is considerably more difficult. Even well known examples
+like the quadratic formula can be non-trivial to translate into speech.
 \begin{equation}
   \label{eq:quadratic}
   x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}
 \end{equation}
 Consequently, up to now efforts to make math accessible have been restricted to
 specialist
-systems~\cite{raman1994aster,soiffer2005mathplayer,chen2006clc,yamaguchi2008new}
-which either are not web-ready solutions or offer limited customizability that
-has to be done by users rather than by the providers of the web
-content. Moreover, the main challenge, how to enable a user to engage with
-mathematical content that goes beyond the speech translation of entire
-expressions has never been fully addressed.
+systems~\cite{raman1994aster,soiffer2005mathplayer,chen2006clc,yamaguchi2008new},
+which either are not web-ready solutions or offer limited customizability, which
+has to be done by users rather than by the providers of web content. Moreover,
+the main challenge, how to enable a user to engage with mathematical content
+that goes beyond the speech translation of entire expressions has never been
+fully addressed.
 
 One of the main contributions of our approach is to offer users a way to explore
-interactively mathematical expressions (Sec.~\ref{sec:explore}) on the web
-accessible, where it is given in a variety of ways and formats
-(Sec.~\ref{sec:math}). We do this by exploiting and extending some of
-ChromeVox's unique features (detailed in Sec.~\ref{sec:chromevox}) that allow
-users to engage with rich web applications. It has led to an implementation of a
-flexible speech rule engine that enables us to customize the reading experience
-along several axes and that also provides an API for easy adaptation to
-specialized content by users and web site authors (Sec.~\ref{sec:translate}).
-It also makes it possible employ a more effective representation in lieu of a
-web element which we shall exploit for semantically more correct interpretation
-of formulas (Sec.~\ref{sec:alternative}).
+interactively mathematical expressions (Sec.~\ref{sec:explore}) on the web that
+can be given in a variety of ways and formats (Sec.~\ref{sec:math}). We do this
+by exploiting and extending some of ChromeVox's unique features (introduced in
+Sec.~\ref{sec:chromevox}) that allow users to engage with rich web
+applications. In particular, we have implemented a flexible speech rule engine
+that enables us to customize the reading experience along several axes and that
+also provides an API for easy adaptation to specialized content by users and web
+content authors alike (Sec.~\ref{sec:translate}).  The engine also makes it
+possible to employ more effective representations in lieu of a web element,
+which we shall exploit by introducing a new semantic representation that permits
+interpretations of math formulas that more closely resembles that of a human
+reader (Sec.~\ref{sec:alternative}).
 
 
 \section{Mathematics on the Web}
@@ -601,7 +604,7 @@ appropriately.
   text, most of which have to be translated by the screen reader into a
   meaningful expression before sending it to the TTS.
 \item Punctuation is often crucial for the understanding of a formula. Thus
-  symbols like periods, commata, and parentheses either have to be pronounced
+  symbols like periods, commas, and parentheses either have to be pronounced
   explicitly or modeled by appropriate pausing. 
 \item Even white space that would normally be ignored can have meaning in a
   formula (e.g., elided operation symbols, function applications) and might need
