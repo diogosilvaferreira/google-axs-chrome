@@ -192,29 +192,29 @@ reader (Sec.~\ref{sec:alternative}).
 \section{Mathematics on the Web}
 \label{sec:math}
 
-Mathematical formulas on web pages can be represented in their own specialized
+Mathematical formulas on the web can be represented in their own specialized
 markup language, MathML~\cite{MathML3}. But although MathML is officially part
 of the HTML5 standard~\cite{HTML5}, not all major browsers also implement MathML
-rendering, hence support displaying formulas included in pure MathML on web
-pages is sketchy. Consequently in reality mathematics on the web comes in a
-variety of flavors. One can identify predominant three ways in which
-mathematical content is currently given on the web:
+rendering, hence support for displaying formulas included in pure MathML on web
+pages is sketchy. Consequently today mathematics on the web comes in three
+predominant flavors:
 \begin{enumerate}
-\item Pure MathML markup: this relies on the user viewing the
-  page with a browser that renders MathML.
-\item Rendered with MathJax: the web page author ensures that mathematical
-  content is rendered client-side independent of the user's browser by including
-  the third party MathJax library in the page. Formulas can be given in several
-  different markup languages.  and relying on the third party that renders
-  mathematical content client side.
-\item Pre-rendered images: Content is ensured to display correctly, by including
-  images of formulas in the web page. The original markup from which the content
-  was originally rendered is often given in an attribute of the image tag.
+\item \textbf{Pure MathML markup:} This relies on the user viewing the page with
+  a MathML capable browser.
+\item \textbf{Rendered with MathJax:} The web page author ensures that
+  mathematical content is rendered independent of the browsers it is viewed in
+  by including the third party MathJax library~\cite{MathJax2.2} in the
+  page. Formulas can be given in several different markup languages and MathJax
+  renders them client-side.
+\item \textbf{Pre-rendered images:} Content is ensured to display correctly, by
+  including images of formulas in the web page. The markup from which the
+  content was originally rendered is often given in an attribute of the image
+  tag.
 \end{enumerate}
 
 In order to enable access to the majority of mathematics that can be found on
 the web today, one has to provide text-to-speech support for all of the above
-formats, which we shall briefly sketch the remainder of this section.
+formats, which we shall briefly sketch in the remainder of this section.
 
 \subsection{MathML}
 \label{sec:mathml}
@@ -222,12 +222,12 @@ formats, which we shall briefly sketch the remainder of this section.
 MathML is a specialized markup language that was developed with the expressive
 purpose of representing mathematics. Ordinarily it comes in two flavors:
 presentation MathML and content MathML. The former is a markup language geared
-towards adequately displaying mathematical formulas thus playing a role of web
-documents similar to the one of {\LaTeX} for printed documents.  Contrary,
-content MathML aims to serve also as a meaningful exchange format between
-mathematical software systems by providing markup that allows to express
-semantic meaning of mathematical expressions. As there is still very little
-support for content MathML we concentrate here on presentation MathML only.
+towards adequately displaying mathematical formulas thus playing a role for web
+documents similar to the one of {\LaTeX}~\cite{lamport1986latex} for printed
+documents.  Contrary, content MathML aims to serve also as a meaningful exchange
+format between mathematical software systems by providing markup that allows to
+express semantic meaning of mathematical expressions. As there is very little
+support for content MathML we concentrate on presentation MathML only.
   
 \begin{figure}[t!]
   \begin{center}
@@ -262,7 +262,7 @@ support for content MathML we concentrate here on presentation MathML only.
   </mstyle>
 </math>
 \end{lstlisting}
-    \caption{MathML representations of~\ref{eq:quadratic}.}
+    \caption{MathML representations of~(\ref{eq:quadratic}).}
     \label{fig:quadratic-mml}
   \end{center}
 \end{figure}
@@ -270,9 +270,9 @@ support for content MathML we concentrate here on presentation MathML only.
 Presentation MathML provides markup for the most common layout elements
 encountered in mathematics, such as sub- and superscripts, fractions, square
 roots etc.  In addition it provides markup to define mathematics specific styles
-or spacing, as well as specialized attributes such as for fonts, accents, etc.
+or spacing, as well as specialized attributes such as fonts, accents, etc.
 Fig.~\ref{fig:quadratic-mml} presents our example the quadratic
-formula~\ref{eq:quadratic} in MathML markup. Here the tags \texttt{mi},
+formula~(\ref{eq:quadratic}) in MathML markup. Here the tags \texttt{mi},
 \texttt{mn}, and \texttt{mo} markup identifiers, number, and operators,
 respectively, while layout elements fraction, square root and superscript are
 enclosed in the elements \texttt{mfrac}, \texttt{msqrt}, and \texttt{msup}. The
@@ -283,10 +283,10 @@ arguments for the fraction tag \texttt{mfrac}.
 MathML is part of the specification for the HTML5 standard~\cite{HTML5}, where
 it lives in its own name space. By extension it is also part of the ePub3
 standard~\cite{epub3} and consequently one can anticipate that future
-implementations of these standards with include native rendering of MathML
-content. However, in the current situation only few browsers and ePub readers
-support MathML and rendering is either achieved by specialist browser plugins or
-by third party libraries.
+implementations of these standards will include native rendering of
+MathML. However, currently only few browsers and ePub readers support MathML and
+rendering is either achieved by specialist browser plugins or by third party
+libraries.
 
 
 \subsection{MathJax Rendering}
@@ -297,7 +297,7 @@ renders mathematical expressions in all browsers. It handles a number of input
 formats and translates them into simple HTML markup that visually renders a math
 expression in a browser, regardless of whether it supports MathML.  Thus the
 basic goal is to shift control on whether and how formulas are displayed to the
-content author, by allowing them to include JavaScript in web pages that calls
+content author, by allowing them to include JavaScript in web pages that call
 MathJax via a content distribution network to enable client side rendering of
 math expressions.
 
@@ -307,8 +307,8 @@ math expressions.
     \leavevmode
     \lstxml\small
     \lstinputlisting{mathjax.xml}
-%    \captionof{figure}{MathJax representations of~\ref{eq:quadratic} from
-    \caption{MathJax representations of~\ref{eq:quadratic} from
+%    \captionof{figure}{MathJax representations of~(\ref{eq:quadratic}) from
+    \caption{MathJax representations of~(\ref{eq:quadratic}) from
       \protect\url{en.wikipedia.org/wiki/Quadratic_equation}.}
     \label{fig:quadratic-mj}
     \leavevmode
@@ -318,34 +318,33 @@ math expressions.
       alt="x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}" 
       src="//upload.wikimedia.org/math/3/c/a/3ca857f705daba6b9e6e6d3ccad7990f.png" />
 \end{lstlisting}
-\caption{Image markup for~\ref{eq:quadratic} from 
+\caption{Image markup for~(\ref{eq:quadratic}) from 
   \protect\url{en.wikipedia.org/wiki/Quadratic_equation}.}
 \label{fig:quadratic-img}
   \end{center}
 \end{figure*}
 
-An authors can then include formulas directly into a web page either as MathML
-markup or as {\LaTeX} or AsciiMath~\cite{asciimath}. During the rendering
-process MathJax replaces this markup with HTML elements that explicitly specify
-vertical and horizontal spacing, drawing of lines and special elements such as
-radices, and placement of character in web fonts.  This has not only the
-advantage that the generated markup is portable between browsers, but also that
-expressions rendered with MathJax are fully scalable.  But since the rendered
-expressions that MathJax injects into the DOM is primarily aimed at visual
-display, it is a less straightforward translation of the mathematical expression
-it models.
+An author can include formulas directly into a web page either as MathML markup
+or as {\LaTeX} or AsciiMath~\cite{asciimath}. During the rendering process
+MathJax replaces this markup with HTML elements that explicitly specify vertical
+and horizontal spacing, drawing of lines and special elements such as radices,
+and placement of character in web fonts.  This has not only the advantage that
+the generated markup is portable between browsers, but also that expressions
+rendered with MathJax are fully scalable.  But since the object MathJax injects
+into the DOM is primarily aimed at visual display, it is a less straightforward
+translation of the mathematical expression it models.
 
 As an example Fig.~\ref{fig:quadratic-mj} shows part of the MathJax markup for
-equation~\ref{eq:quadratic}. While it is clearly more cluttered than its MathML
+equation~(\ref{eq:quadratic}). While it is clearly more cluttered than its MathML
 counterpart in Fig.~\ref{fig:quadratic-mml}, there are nevertheless some obvious
 resemblances. The expression effectively consists of two types of \texttt{span}
 elements:
 \begin{inparaenum}[(a)]
 \item Those with a single style attribute that are exclusively display elements.
-\item Those with a additional class attributes and id that generally mirror the
+\item Those with additional attributes class and id, which generally mirror the
   composition of the corresponding MathML expression.
 \end{inparaenum}
-As we can observe in our example, the latter type of elements maintains the
+As we can observe in our example, the latter type of elements maintain the
 structure of the MathML expression, and this regardless of the original source
 of the formula. Indeed MathJax always maintains an internal MathML
 representation of a mathematical formula, even if translated from {\LaTeX} or
@@ -355,7 +354,7 @@ AsciiMath, a fact that we shall exploit in Sec.~\ref{sec:alternative}.
 \subsection{Hidden Markup}\label{sec:images}
 
 Traditionally mathematical formulas would be embedded into web content using
-images generated from documents that were previously generated with systems
+images generated from documents that were previously processed with systems
 specializing on rendering mathematics, for example, {\LaTeX}. And despite the
 obvious drawbacks of having content in images, such as lack of scalability, this
 method is still an option that is chosen by many major web sites containing
@@ -363,22 +362,22 @@ mathematical content (e.g., Wikipedia~\cite{wikipedia},
 MathWorld~\cite{mathworld}), to provide content consistently at reliable
 performance, independent of third party libraries.  While the mathematics given
 in image form is effectively inaccessible, the original source from which a
-formula has been generated is often given in form of alternative text attribute
+formula has been generated is often given in form of an alternative text attribute
 of the image tag.  For instance, in the case of Wikipedia, most of the
 mathematics images have alternative text provided in {\LaTeX}, whereas MathWorld
 contains AsciiMath markup.  The case of our example is given in
 Fig.~\ref{fig:quadratic-img} the quadratic equation is loaded as a PNG images,
-while the hidden markup is given in the original {\LaTeX}
-\verb+x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}+
+while the hidden markup is given in the original {\LaTeX} as
+\verb+x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}+.
 
 
-This form of hidden markup can then be displayed in
-text-only browsers or used for copy-and-paste operations. 
-In ChromeVox we exploit hidden markup as well, to ensure a consistent
-screen reading experience of all mathematical content on the web.  In particular,
-we rely on the MathJax library to translate hidden markup into a MathML
-representation that we can speak instead. We describe in detail the treatment of
-alternative representations in Sec.~\ref{sec:alternative}.
+This form of hidden markup can then be displayed in text-only browsers or used
+for copy-and-paste operations.  In ChromeVox we exploit hidden markup as well,
+to ensure a consistent screen reading experience of all mathematical content on
+the web.  In particular, we rely on the MathJax library to translate hidden
+markup into a MathML representation that we can speak instead of the image. We
+describe in detail ChromeVox's treatment of alternative representations in
+Sec.~\ref{sec:alternative}.
 
 
 
@@ -386,25 +385,25 @@ alternative representations in Sec.~\ref{sec:alternative}.
 \section{ChromeVox}
 \label{sec:chromevox}
 
-ChromeVox is a screen reader that has been built with the aim to make rich web
-applications accessible to visually impaired users. ChromeVox runs inside the
-Chrome browser where it can be installed as an extension and it is the default
-screen reader for Chrome OS. Therefore, it uses exclusively the HTML document
-object model (DOM) to communicate with web applications without the need to user
-an accessibility API provided by the underlying operating system.
+ChromeVox~\cite{google:chromevox-tutorial} is a screen reader that has been
+built with the aim of making rich web applications accessible to visually impaired
+users. ChromeVox runs inside the Chrome browser where it can be installed as an
+extension and it is the default screen reader for Chrome OS. Therefore, it uses
+exclusively the HTML document object model (DOM) to communicate with web
+applications without the need to use an accessibility API provided by the
+underlying operating system.
 
 With the advancements of the web programming model and in particular the ease
 with which complex interaction layers can be build using HTML, CSS and
-JavaScript web pages do no longer just contain but resemble fully fledged
-applications more akin to traditional desktop programs. As a consequence
-traditional linear navigation is no longer sufficient to allow users to explore
-and comprehend web content in a reasonable way.
-
-ChromeVox aims to support effective navigation of complex web content by giving
-the user the means to engage with content on multiple layers. This is
-implemented via an architecture that makes it possible to customize the screen
-readers behavior along four axes which allows to adapt the screen reader
-flexibly to specialized content. In detail ChromeVox can be parameterized by 
+JavaScript, web pages do no longer just contain pure documents but resemble
+fully fledged applications more akin to traditional desktop programs. As a
+consequence traditional linear navigation is no longer sufficient to allow users
+to explore and comprehend web content in a reasonable way.  ChromeVox aims to
+support effective navigation of complex web content by giving the user the means
+to engage with it on multiple layers. This is implemented via an architecture
+that makes it possible to customize the screen readers behavior along four axes
+which allows flexible adaptation to specialized content. In detail ChromeVox can
+be parameterized by
 \begin{enumerate}[(1)]
 \item segmenting the DOM into different \emph{granularities},
 \item enabling different ways of interactively \emph{walking content},
@@ -424,7 +423,7 @@ into units between which the user can navigate interactively.
 
 In practice, a granularity defines what is regarded as a leaf node in the
 DOM. Fig.~\ref{fig:granularity} schematically depicts the idea of different
-granularities. The content of the leaf node is then the smallest chunk that is
+granularities. The content of the leaf node is the smallest chunk that is
 translated into an utterance and sent to the TTS.
 
 \begin{figure*}[t!]
@@ -463,8 +462,7 @@ hand in more specialized content like a table one could distinguish
 granularities like row, column, or cell, where the latter again can be segmented
 by normal text granularities.  Defining granularities is therefore not
 necessarily a simple task in particular due to often heavily nesting of layout
-elements in rich web applications.\ednote{Does that make sense?}
-
+elements in rich web applications.
 
 \subsection{Axis 2: Walking Content}
 \label{sec:ax2}
@@ -483,8 +481,7 @@ results additional information in the form of a knowledge card on the right or
 timely information on the top (e.g., sports results). However, in the DOM the
 knowledge card is given after all the search results, thus conventional linear
 navigation would force the user to navigate through the entire list of search
-results first before discovering the knowledge card.\ednote{Is that a good
-  example?}
+results first before discovering the knowledge card.
 
 In practice walkers and granularities are exposed to the user in meaningful
 combinations only. Walkers usually group related granularities, whenever
@@ -498,7 +495,7 @@ character. The user can either switch between these granularities, or while
 walking the text linearly, for instance, in line granularity --- usually with up
 and down arrow keys\footnote{These keys depend on the particular choice of
   keymap and possible user customization.}  --- explore the content of the line
-that currently being read word for word using the left and right arrow keys.
+that currently is being read, word for word using the left and right arrow keys.
 
 Immediate keyboard shortcuts can be given to particular combinations of walker
 and granularity. A particular example is the exploration of hyperlinks in a
@@ -520,22 +517,22 @@ is contained etc., by announcing the element explicitly or playing
 earcons. Simple adaptations of this behavior allows for changes
 \begin{inparaenum}[(a)]
 \item to the level of verbosity,
-\item if and how punctuation is being read,
+\item if and how punctuation is being read, and
 \item to switch earcons on or off.
 \end{inparaenum}
 
 More complex structures can benefit from even more sophisticated customization.
 For instance, when traversing tables ChromeVox can give the user information on
 the current position in the table, for example, by announcing explicitly row and
-column number or the cell type. Similarly, when speaking mathematics can become
+column number or the cell type. Similarly, when speaking mathematics it can become
 necessary to alter the pronunciation of elements or entire formulas according to
 mathematical subject area or user preference.
 
 For this purpose ChromeVox has a dedicated speech rule engine that allows to
-specify speech rules for particular DOM element. If a walker traverses a DOM
+specify speech rules for particular DOM elements. When a walker traverses a DOM
 element for which a speech rule exists, it is used to generate speech
-output. This can be a recursive process in the sense the execution of one speech
-rule might trigger further speech rules that apply to its sub-elements.
+output. This can be a recursive process in the sense that the execution of one
+speech rule might trigger further speech rules that apply to its sub-elements.
 Customization is realized by defining different rules for elements and
 parameterizing the engine swapping entire rule sets thus changing the generated
 speech output.
@@ -556,7 +553,7 @@ use when working with alternative representations of DOM objects.
 
 The final axis of customization is ChromeVox's ability to swap entire elements
 in the DOM for alternative representations. However, as we do not want to alter
-the actual DOM, we achieve this by internally mapping particular leaf node to
+the actual DOM, we achieve this by internally mapping particular leaf nodes to
 dedicated representations. This idea is schematically depicted in
 Fig.~\ref{fig:alt}.
 
@@ -571,7 +568,7 @@ Fig.~\ref{fig:alt}.
 
 We effectively allow any data structure as a valid alternative representation as
 long as it is serializable into an XML representation. This allows us to define
-bespoke speech rules for a the resulting XML object and compile appropriate
+bespoke speech rules for the resulting XML object and compile appropriate
 speech output using the speech rule engine. Depending on the nature of the DOM
 element to be replaced alternative representations are either pre-computed at
 load time of a webpage or generated on the fly when the particular DOM object is
@@ -579,7 +576,7 @@ visited.
 
 Employing alternative representations can be particularly beneficial when the
 original DOM element is not suitable for speech generation or when a more
-dedicated data structure can give lead to a better understanding of the content
+dedicated data structure can lead to a better understanding of the content
 for the user. Its use can either be triggered automatically, or explicitly by a
 user command. In fact, this ability plays a crucial role in the accessibility of
 mathematical content and we describe it in more detail in
@@ -1337,7 +1334,6 @@ impaired learners in engaging with mathematical content online.
 
 
 % \bibliographystyle{plain} \bibliography{www_2014}
-
 \begin{thebibliography}{10}
 
 \bibitem{HTML5}
@@ -1391,6 +1387,11 @@ D.~E Knuth.
 \newblock {\em The Art of Computer Programming, Vol 1: Fundamental
   Algorithms}.
 \newblock Addison-Wesley, 1997.
+
+\bibitem{lamport1986latex}
+L.~Lamport.
+\newblock {\LaTeX}: A Document Preparation System.
+\newblock 1986.
 
 \bibitem{raman1994aster}
 TV~Raman.
