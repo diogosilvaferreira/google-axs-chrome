@@ -112,7 +112,7 @@ cvox.SemanticUtil.tagName = function(node) {
  */
 cvox.SemanticUtil.IGNORETAGS = [
   'MERROR', 'MPHANTOM', 'MSPACE', 'MACTION', 'MALIGNGROUP', 'MALIGNMARK',
-  'MACTION'
+  'MACTION', 'ANNOTATION', 'ANNOTATION-XML'
 ];
 
 
@@ -121,7 +121,9 @@ cvox.SemanticUtil.IGNORETAGS = [
  * @type {Array.<string>}
  * @const
  */
-cvox.SemanticUtil.EMPTYTAGS = ['MATH', 'MROW', 'MPADDED', 'MSTYLE'];
+cvox.SemanticUtil.EMPTYTAGS = [
+  'MATH', 'MROW', 'MPADDED', 'MSTYLE', 'SEMANTICS'
+];
 
 
 /**
