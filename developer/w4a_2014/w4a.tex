@@ -1,6 +1,6 @@
 \documentclass{sig-alternate}
-%\documentclass{acm_proc_article-sp}
 \usepackage[pdftex]{accsupp}
+%\usepackage[tagged]{accessibility}
 \usepackage{graphicx}
 \usepackage{url}
 \usepackage{paralist}
@@ -9,18 +9,17 @@
 \usepackage{ntabbing}
 \usepackage{tikz}
 \usetikzlibrary{trees}
-\usepackage{hyperref}
+%\usepackage{hyperxmp}
+\usepackage[pdfpagelabels,bookmarks]{hyperref}
+\hypersetup{pageanchor=false}
 
-% \DeclareUnicodeCharacter{B1}{\pm}
-%% LANGUAGE      Markup definitions
 \def\lstxml{
   \lstset{language=XML,
     keywordstyle=\ttfamily,
-    identifierstyle=\ttfamily\bfseries, 
-    % commentstyle=\color{Brown},
+    identifierstyle=\ttfamily,
     stringstyle=\ttfamily,
     showstringspaces=false,
-    columns=[l]flexible, %% , basewidth={0.5em,0.4em}
+    columns=[l]flexible,
     escapeinside={(@*}{*@)},
     morekeywords={encoding,
       mrow,math,mfrac,mi,msqrt,mo,mn,span,nobr,img}
@@ -31,10 +30,9 @@
   \lstset{language=Java,
     keywordstyle=\ttfamily,
     identifierstyle=\ttfamily\bfseries, 
-    % commentstyle=\color{Brown},
     stringstyle=\ttfamily,
     showstringspaces=false,
-    columns=[l]flexible, %% , basewidth={0.5em,0.4em}
+    columns=[l]flexible, 
     morekeywords={cvox,Api,Math,defineRule}
   }
 }
@@ -44,10 +42,9 @@
     texcsstyle=*\bfseries,
     keywordstyle=\ttfamily,
     identifierstyle=\ttfamily\bfseries, 
-    % commentstyle=\color{Brown},
     stringstyle=\ttfamily,
     showstringspaces=false,
-    columns=[l]flexible, %% , basewidth={0.5em,0.4em}
+    columns=[l]flexible,
     moretexcs=intertext,
     morekeywords={sum,Sigma}
   }
@@ -59,30 +56,22 @@
 \newcommand\edbf[1]{\typeout{There is still an editor's note!!!}%
   \textbf{EDNOTE: #1}}
 
+\conferenceinfo{W4A}{2014 --- Technical, April 7-9, 2014, Seoul, Korea.\\
+Co-Located with the 23nd International World Wide Web Conference.}
+\CopyrightYear{2014}
+\crdata{978-1-4503-2651-3}
 
 \begin{document}
-\title{Accessibility to Scientific Material:\\ The Case of Speaking Math}
-\numberofauthors{2} %  in this sample file, there are a *total*
+\title{Towards Making Mathematics a First Class Citizen in General Screen Readers}
+\numberofauthors{2}
 
 \author{
-% You can go ahead and credit any number of authors here,
-% e.g. one 'row of three' or two rows (consisting of one row of three
-% and a second row of one, two or three).
-%
-% The command \alignauthor (no curly braces needed) should
-% precede each author name, affiliation/snail-mail address and
-% e-mail address. Additionally, tag each line of
-% affiliation/address with \affaddr, and tag the
-% e-mail address with \email.
-%
-% 1st. author
   \alignauthor Volker Sorge\titlenote{This work was done while the author spent a
     sabbatical at Google,
     Inc., Mountain View, CA, USA.}\\
   \affaddr{School of Computer Science}\\
   \affaddr{The University of Birmingham, UK}\\
   \email{V.Sorge@cs.bham.ac.uk}
-% 2nd. author
 \alignauthor
 Charles Chen, T.V. Raman, David Tseng\\
        \affaddr{Google, Inc.}\\
@@ -92,71 +81,66 @@ Charles Chen, T.V. Raman, David Tseng\\
 
 
 \maketitle 
-\begin{abstract} 
-  As the traditional methods of publishing and teaching in the
-  STEM subjects are being progressively replaced by the provision
-  of web-based content, ensuring full accessibility to this
-  material for visually impaired users is of paramount importance
-  for inclusive education. The text to speech translation of
-  content for which well defined markup languages exists such as
-  mathematics is a non-trivial problem. In this paper we present
-  our efforts of making the speech translation of mathematical
-  formulas a first class citizen in a general screen reader. We
-  describe the ChromeVox screen reader and demonstrate how its
-  features enable us to provide text to speech translation for
-  web-based mathematical content. These features allow us to
-  translate formulas given in a variety of formats into uniform
-  spoken utterances exploiting ChromeVox's ability to handle
-  alternative representations of DOM elements. This also allows
-  us to customize aural rendering of mathematics both by using
-  semantically enriched representations and employing flexible
-  and adaptable speech rules. To further aid understanding of the
-  math we exploit ChromeVox's idea of letting users engage with
-  content on different levels of granularity to enable
-  interactive exploration of complex mathematical formulas.
+\begin{abstract}
+  The text to speech translation of mathematical expressions has always been a
+  challenging problem, which has not diminished by more and more content moving
+  to the web. In this paper we present our efforts of making the speech
+  translation of mathematical formulas a first class citizen in ChromeVox, a
+  general screen reader for the Chrome browser. We exploit ChromeVox's ability
+  to handle alternative representations of DOM elements for translation of
+  mathematical content given in a variety of web formats into uniform
+  utterances. We present a format of flexible and adaptable speech rules that
+  support the customization of aural rendering of mathematics and introduce a
+  specially semantically enriched representation of expressions that allows for
+  a more natural reading experience. To further aid understanding of the math we
+  exploit ChromeVox's idea of letting users engage with content on different
+  levels of granularity to enable interactive exploration of complex
+  mathematical formulas.
 \end{abstract}
 \category{H.5.2}{User Interfaces}{Voice I/O}
-%A category including the fourth, optional field follows...
 \category{H.5.4}{Hypertext}{Navigation, User Issues}
 
-% \terms{}
-
-\keywords{screen reader, mathematics, ChromeVox}
+\keywords{Screen reader, Mathematics, ChromeVox}
 
 \section{Introduction}\label{sec:intro} 
-Ensuring accessibility to scientific material has always been a challenging task
-and can be considered a major obstacle for full inclusiveness in education in
-the STEM subject, in particular at the late secondary and tertiary stage. As
-teaching moves more and more towards the provision of online courses, we are
-faced with rapidly changing content employing media ranging from traditional
-articles containing mathematical formulas and scientific diagrams to highly
-interactive web pages often exploiting novel media formats such as dynamic
-diagrams or simulations, which makes traditional methods of making content
-accessible all but obsolete. To avoid the risk that modern technology might
-create an even higher obstacle for inclusive education it is of utmost
-importance to ensure accessibility of scientific web content without the need
-for expensive, specialist software.
+$\!$Ensuring accessibility to scientific material has always been a challenging
+task and can be considered a major obstacle for full inclusiveness in education
+in the fields of science, technology, engineering and mathematics (the
+traditional STEM subjects), in particular at the late secondary and tertiary
+stage. As teaching moves more and more towards the provision of online courses,
+we are faced with rapidly changing content employing media ranging from
+traditional articles containing mathematical formulas and scientific diagrams to
+highly interactive web pages often exploiting novel media formats such as
+dynamic diagrams or simulations, which makes traditional methods of making
+content accessible all but obsolete. To avoid the risk that modern technology
+might create an even higher obstacle for inclusive education, it is important to
+ensure accessibility of scientific web content without the need for expensive,
+specialist software.
 
 In this paper we concentrate on making mathematics accessible for visually
 impaired learners in the general screen reader
 ChromeVox~\cite{google:chromevox-tutorial}. Mathematics has always been a
 challenging problem as formulas can be arbitrarily complex in the sense that
-there is no limit to how deep sub-expressions are nested or how many layers of
-parenthesis are used. Moreover, a large number of unusual symbols can occur that
-moreover might have different meaning in different mathematical areas. An
-expression like the following taken from~\cite{knuthart}
+there is no limit on the nesting depth of sub-expressions or on how many layers
+of parenthesis are used. Moreover, a large number of unusual symbols can occur
+that might have different meaning in different mathematical areas. An expression
+as this one from~\cite{knuthart}
 
-\BeginAccSupp{method=plain,Alt={Faa di Bruno's formula. An identity that
+\BeginAccSupp{method=plain,Alt={Faa di Bruno's formula. This is an identity that
     generalises the chain rule from calculus to higher order derivatives.  The
     right hand side is a nested double sum with multi-indices over a large
-    fraction with complex nary multiplicative and factorial expressions.  In
+    fraction with complex n-ary multiplicative and factorial expressions.  In
     addition over and underbraces are added for explanation of the single
-    component.  }} {\small
+    component.}}
+ {\small
 \begin{equation*}
-D^n_xw = \sum_{0\le j\le n} \sum_{\underbrace{{\scriptstyle
-        k_1+k_2+\cdots+k_n=j \atop {\scriptstyle
-          k_1+2k_2+\cdots+nk_n=n \atop {\scriptstyle
-            k_1,k_2,\ldots,k_n\ge0 }}}}_{\mbox{lower constraint
+D^n_xw = \sum_{0\le j\le n} \sum_{\underbrace{
+    \substack{\scriptstyle
+      k_1+k_2+\cdots+k_n=j \\
+      \scriptstyle
+      k_1+2k_2+\cdots+nk_n=n \\
+      \scriptstyle
+      k_1,k_2,\ldots,k_n\ge0 }}_{\mbox{lower constraint
         1}}} D^j_u w
   \frac{\overbrace{n!  {(D^1_x u)}^{k_1} \cdots
       {(D^n_x u)}^{k_n}} ^{\mbox{ numerator 1}}}
@@ -177,28 +161,36 @@ like the quadratic formula can be non-trivial to translate into speech.
   x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}
 \end{equation}
 \EndAccSupp{}
-Consequently, up to now efforts to make math accessible have been restricted to
-specialist
+Consequently, the work on mathematical screen reading has explored adaptive
+techniques to customize output with respect to mathematical domains and personal
+preferences~\cite{raman1994aster,DBLP:conf/hci/DoushP09}, the use of prosody and
+pausing to convey meaning \cite{raman1994aster,Bates:2010:SMU:1880751.1880821}
+as well as to enable better understanding via multi-modal presentation of
+equations~\cite{conf/icchp/GillanBKP04}.  But generally these efforts have been
+restricted to specialist
 systems~\cite{raman1994aster,soiffer2005mathplayer,chen2006clc,yamaguchi2008new},
-which either are not web-ready solutions or offer limited customizability, which
-has to be done by users rather than by the providers of web content. Moreover,
-the main challenge, how to enable a user to engage with mathematical content
-that goes beyond the speech translation of entire expressions has never been
-fully addressed.
+which either are not web-ready solutions or are restricted to single markup
+formats and offer limited customizability, which has to be done by users rather
+than by the providers of web content.
 
-One of the main contributions of our approach is to offer users a way to explore
-interactively mathematical expressions (Sec.~\ref{sec:explore}) on the web that
-can be given in a variety of ways and formats (Sec.~\ref{sec:math}). We do this
-by exploiting and extending some of ChromeVox's unique features (introduced in
-Sec.~\ref{sec:chromevox}) that allow users to engage with rich web
-applications. In particular, we have implemented a flexible speech rule engine
-that enables us to customize the reading experience along several axes and that
-also provides an API for easy adaptation to specialized content by users and web
-content authors alike (Sec.~\ref{sec:translate}).  The engine also makes it
-possible to employ more effective representations in lieu of a web element,
-which we shall exploit by introducing a new semantic representation that permits
-interpretations of math formulas that more closely resembles that of a human
-reader (Sec.~\ref{sec:alternative}).
+The main contribution of our work is to embed many of these techniques into a
+general,  open source screen-reader, that enables math
+accessibility over a wide range of platforms in a widely used web browser. We
+introduce the ChromeVox screen reader in Sec.~\ref{sec:chromevox}. Moreover, our
+approach can deal uniformly with math on the web in a variety of formats ---
+presented in Sec.~\ref{sec:math} --- and in particular make math accessible even
+when given as images with annotations, only. We furthermore, not only enable
+users to customize the reading experience, but provide an API that allows
+authors of web content to embed specialist reading rules, thus allowing the very
+people who know best how the content they publish should be spoken, to make
+adjustments to visiting screen reader clients.  This is achieved by a flexible
+speech rule engine that makes it possible to customize the reading experience
+along several axes (Sec.~\ref{sec:translate}). It also offers users a way to
+explore interactively mathematical expressions (Sec.~\ref{sec:explore}) as well
+as the possibility to employ more effective representations in lieu of a web
+element. We exploit the latter by introducing a new semantic representation in
+Sec.~\ref{sec:alternative} that leads to more natural pronunciation of math
+formulas.
 
 
 \section{Mathematics on the Web}
@@ -214,7 +206,7 @@ predominant flavors:
 \item \textbf{Pure MathML markup:} This relies on the user viewing the page with
   a MathML capable browser.
 \item \textbf{Rendered with MathJax:} The web page author ensures that
-  mathematical content is rendered independent of the browsers it is viewed in
+  mathematical content is rendered independent of the browsers it is viewed in,
   by including the third party MathJax library~\cite{MathJax2.2} in the
   page. Formulas can be given in several different markup languages and MathJax
   renders them client-side.
@@ -231,17 +223,17 @@ formats, which we shall briefly sketch in the remainder of this section.
 \subsection{MathML}
 \label{sec:mathml}
 
-MathML is a specialized markup language that was developed with the expressive
+MathML is a specialized markup language that was developed with the express
 purpose of representing mathematics. Ordinarily it comes in two flavors:
 presentation MathML and content MathML. The former is a markup language geared
 towards adequately displaying mathematical formulas thus playing a role for web
 documents similar to the one of {\LaTeX}~\cite{lamport1986latex} for printed
 documents.  Contrary, content MathML aims to serve also as a meaningful exchange
 format between mathematical software systems by providing markup that allows to
-express semantic meaning of mathematical expressions. As there is very little
+include semantic meaning of mathematical expressions. As there is very little
 support for content MathML we concentrate on presentation MathML only.
   
-\BeginAccSupp{method=plain,Alt={The MathML representation of the quadratic
+\BeginAccSupp{method=plain,Alt={The MathML epresentation of the quadratic
     formula.}}
 \begin{figure}[t!]
   \begin{center}
@@ -276,7 +268,7 @@ support for content MathML we concentrate on presentation MathML only.
   </mstyle>
 </math>
 \end{lstlisting}
-    \caption{MathML representations of the quadratic formula~(\ref{eq:quadratic}).}
+    \caption{MathML for the quadratic formula~(\ref{eq:quadratic}).}
     \label{fig:quadratic-mml}
   \end{center}
 \end{figure}
@@ -286,7 +278,7 @@ Presentation MathML provides markup for the most common layout elements
 encountered in mathematics, such as sub- and superscripts, fractions, square
 roots etc.  In addition it provides markup to define mathematics specific styles
 or spacing, as well as specialized attributes such as fonts, accents, etc.
-Fig.~\ref{fig:quadratic-mml} presents our example the quadratic
+Fig.~\ref{fig:quadratic-mml} presents our example of the quadratic
 formula~(\ref{eq:quadratic}) in MathML markup. Here the tags \texttt{mi},
 \texttt{mn}, and \texttt{mo} markup identifiers, number, and operators,
 respectively, while layout elements fraction, square root and superscript are
@@ -299,8 +291,8 @@ MathML is part of the specification for the HTML5 standard~\cite{HTML5}, where
 it lives in its own name space. By extension it is also part of the ePub3
 standard~\cite{epub3} and consequently one can anticipate that future
 implementations of these standards will include native rendering of
-MathML. However, currently only few browsers and ePub readers support MathML and
-rendering is either achieved by specialist browser plugins or by third party
+MathML. However, currently only a few browsers and ePub readers support MathML
+and rendering is either achieved by specialist browser plugins or by third party
 libraries.
 
 
@@ -389,11 +381,10 @@ while the hidden markup is given in the original {\LaTeX} as
 This form of hidden markup can then be displayed in text-only browsers or used
 for copy-and-paste operations.  In ChromeVox we exploit hidden markup as well,
 to ensure a consistent screen reading experience of all mathematical content on
-the web.  In particular, we rely on the MathJax library to translate hidden
-markup into a MathML representation that we can speak instead of the image. We
+the web.  In particular, instead of the image, we rely on the MathJax library to
+translate hidden markup into a MathML representation that we can speak. We
 describe in detail ChromeVox's treatment of alternative representations in
 Sec.~\ref{sec:alternative}.
-
 
 
 
@@ -409,20 +400,20 @@ object model (DOM) to communicate with web applications without the need to use
 an accessibility API provided by the underlying operating system.
 
 With the advancements of the web programming model and in particular the ease
-with which complex interaction layers can be build using HTML, CSS and
+with which complex interaction layers can be built using HTML, CSS and
 JavaScript, web pages do no longer just contain pure documents but resemble
 fully fledged applications more akin to traditional desktop programs. As a
 consequence traditional linear navigation is no longer sufficient to allow users
 to explore and comprehend web content in a reasonable way.  ChromeVox aims to
 support effective navigation of complex web content by giving the user the means
 to engage with it on multiple layers. This is implemented via an architecture
-that makes it possible to customize the screen readers behavior along four axes
+that makes it possible to customize the screen readers behavior along four axes,
 which allows flexible adaptation to specialized content. In detail ChromeVox can
 be parameterized by
 \begin{enumerate}[(1)]
 \item segmenting the DOM into different \emph{granularities},
 \item enabling different ways of interactively \emph{walking content},
-\item customizing content description by parameterizing \emph{speech output},
+\item customizing content description by varied \emph{speech output},
 \item enabling efficient navigation by allowing the use of \emph{alternative
     representations} for DOM elements.
 \end{enumerate}
@@ -434,61 +425,59 @@ In the remainder of this section we will explain these four axes in more detail.
 
 Granularities are the primary means to allow a user to engage with content at
 their choice of detail. The main purpose of a granularity is to segment the DOM
-into units between which the user can navigate interactively.
+into units between which the user can navigate interactively.  In practice, a
+granularity defines what is regarded as a leaf node in the DOM. The content of
+the leaf node is the smallest chunk that is translated into an utterance and
+sent to the TTS.
 
-In practice, a granularity defines what is regarded as a leaf node in the
-DOM. Fig.~\ref{fig:granularity} schematically depicts the idea of different
-granularities. The content of the leaf node is the smallest chunk that is
-translated into an utterance and sent to the TTS.
-
-\begin{figure*}[t!]
-  \begin{minipage}{.33\linewidth}
-    \begin{center}
-      \leavevmode
-      \BeginAccSupp{method=plain,Alt={One large triangle containing four smaller
-          blue triangles}}
-      \includegraphics[width=2cm]{images/granularity1}
-      \EndAccSupp{}
-      \qquad
-      \BeginAccSupp{method=plain,Alt={One large triangle containing five smaller
-          red triangles, where three overlap the previously blue triangles.}}
-      \includegraphics[width=2cm]{images/granularity2}
-      \EndAccSupp{}
-      \caption{Varying granularities.}
-      \label{fig:granularity}
-    \end{center}
-  \end{minipage}
-  \begin{minipage}{.33\linewidth}
-  \begin{center}
-    \leavevmode
-    \BeginAccSupp{method=plain,Alt={One large triangle containing five smaller
-        blue triangles with arrows between triangles from left to right.}}
-    \includegraphics[width=2cm]{images/walker1}
-    \EndAccSupp{}
-    \qquad
-    \BeginAccSupp{method=plain,Alt={One large triangle containing the same
-        smaller triangles triangles as before, where one is no longer blue and
-        arrows go between the other four in a different order.}}
-    \includegraphics[width=2cm]{images/walker2}
-    \EndAccSupp{}
-    \caption{Different walkers.}
-    \label{fig:walkers}
-  \end{center}
-\end{minipage}
-  \begin{minipage}{.33\linewidth}
-\begin{center}
-    \leavevmode
-    \BeginAccSupp{method=plain,Alt={One large triangle containing a smaller blue
-        triangle. There are additional smaller triangles in different colours
-        behind the large triangle and dashed arrows between them and the blue
-        triangle, symbolising that they can be exchanged.}}
-    \includegraphics[width=2.5cm]{images/substructure1}
-    \EndAccSupp{}
-    \caption{Alternative representations.}
-    \label{fig:alt}
-  \end{center}
-\end{minipage}
-\end{figure*}
+% \begin{figure*}[t!]
+%   \begin{minipage}{.33\linewidth}
+%     \begin{center}
+%       \leavevmode
+%       \BeginAccSupp{method=plain,Alt={One large triangle containing four smaller
+%           blue triangles}}
+%       \includegraphics[width=2cm]{images/granularity1}
+%       \EndAccSupp{}
+%       \qquad
+%       \BeginAccSupp{method=plain,Alt={One large triangle containing five smaller
+%           red triangles, where three overlap the previously blue triangles.}}
+%       \includegraphics[width=2cm]{images/granularity2}
+%       \EndAccSupp{}
+%       \caption{Varying granularities.}
+%       \label{fig:granularity}
+%     \end{center}
+%   \end{minipage}
+%   \begin{minipage}{.33\linewidth}
+%   \begin{center}
+%     \leavevmode
+%     \BeginAccSupp{method=plain,Alt={One large triangle containing five smaller
+%         blue triangles with arrows between triangles from left to right.}}
+%     \includegraphics[width=2cm]{images/walker1}
+%     \EndAccSupp{}
+%     \qquad
+%     \BeginAccSupp{method=plain,Alt={One large triangle containing the same
+%         smaller triangles triangles as before, where one is no longer blue and
+%         arrows go between the other four in a different order.}}
+%     \includegraphics[width=2cm]{images/walker2}
+%     \EndAccSupp{}
+%     \caption{Different walkers.}
+%     \label{fig:walkers}
+%   \end{center}
+% \end{minipage}
+%   \begin{minipage}{.33\linewidth}
+% \begin{center}
+%     \leavevmode
+%     \BeginAccSupp{method=plain,Alt={One large triangle containing a smaller blue
+%         triangle. There are additional smaller triangles in different colours
+%         behind the large triangle and dashed arrows between them and the blue
+%         triangle, symbolising that they can be exchanged.}}
+%     \includegraphics[width=2.5cm]{images/substructure1}
+%     \EndAccSupp{}
+%     \caption{Alternative representations.}
+%     \label{fig:alt}
+%   \end{center}
+% \end{minipage}
+% \end{figure*}
 
 While granularities are generally structured from coarse grained to more fine
 grained, this does not imply that they have to be strictly hierarchical. For
@@ -505,8 +494,7 @@ elements in rich web applications.
 Interactive navigation of content is accomplished by walkers.  They provide a
 means to move between the different leaf nodes defined by a particular
 granularity. They also offer the flexibility to break up the linear order of
-navigating content as well as ignore certain leafs nodes. Fig.~\ref{fig:walkers} gives
-an idea of different walkers operating on the same level of granularity.
+navigating content as well as ignore certain leafs nodes.
 
 The flexibility of the walkers is particular important to allow for a good user
 experience on complex web content, where the ideal reading order is not
@@ -543,7 +531,7 @@ only, while ignoring all interspersed text.
 The third axis along which ChromeVox is customizable is how speech output is
 generated. While the way regular text is read is determined by the TTS engine
 employed and thus can not be influenced by ChromeVox directly, when conveying
-additional information on content as well as while reading specialized content
+additional information on content as well as while reading specialized content,
 flexibility on how elements are spoken or announced is important.
 
 For example, ChromeVox can provide the user with context information on
@@ -569,11 +557,11 @@ element for which a speech rule exists, it is used to generate speech
 output. This can be a recursive process in the sense that the execution of one
 speech rule might trigger further speech rules that apply to its sub-elements.
 Customization is realized by defining different rules for elements and
-parameterizing the engine swapping entire rule sets thus changing the generated
+parameterizing the engine, swapping entire rule sets thus changing the generated
 speech output.
 
 As ChromeVox's speech rule engine has been designed originally in the context of
-our work on mathematics and we shall present more details on
+our work on mathematics, we shall present more details on
 its operation and rule systems in Sec.~\ref{sec:translate}. However, the speech
 rule engine has now been integrated as a general component into the screen
 reader and can be employed to customize reading of any element in the DOM. In
@@ -589,25 +577,13 @@ use when working with alternative representations of DOM objects.
 The final axis of customization is ChromeVox's ability to swap entire elements
 in the DOM for alternative representations. However, as we do not want to alter
 the actual DOM, we achieve this by internally mapping particular leaf nodes to
-dedicated representations. This idea is schematically depicted in
-Fig.~\ref{fig:alt}.
-
-% \begin{figure}[ht!]
-%   \begin{center}
-%     \leavevmode
-%     \includegraphics[width=.4\columnwidth]{images/substructure1}
-%     \caption{Schematic depiction of alternative representations.}
-%     \label{fig:alt}
-%   \end{center}
-% \end{figure}
-
-We effectively allow any data structure as a valid alternative representation as
-long as it is serializable into an XML representation. This allows us to define
-bespoke speech rules for the resulting XML object and compile appropriate
-speech output using the speech rule engine. Depending on the nature of the DOM
-element to be replaced alternative representations are either pre-computed at
-load time of a webpage or generated on the fly when the particular DOM object is
-visited.
+dedicated representations.  We effectively allow any data structure as a valid
+alternative representation as long as it is serializable into an XML
+representation. This allows us to define bespoke speech rules for the resulting
+XML object and to compile appropriate speech output using the speech rule
+engine. Depending on the nature of the DOM element to be replaced alternative
+representations are either pre-computed at the load time of a webpage or
+generated on the fly when the particular DOM object is visited.
 
 Employing alternative representations can be particularly beneficial when the
 original DOM element is not suitable for speech generation or when a more
@@ -622,14 +598,14 @@ Sec.~\ref{sec:alternative}.
 \label{sec:translate}
 
 The speech translation of mathematics poses some unique difficulties which makes
-it a more challenging task for a screen reader than the aural
-rendering of text. When for regular text it is generally enough to identify what
-needs to be spoken possibly together with the language it is in, and let a TTS
-engines take care of deciding how the text is voiced by adding appropriate
-prosody etc., for mathematical expressions much of the heavy lifting has to be
-done by the screen reader by translating formulas into an utterance the ensures
-the TTS, which is normally geared towards speaking continuous text, voices them
-appropriately for the following reasons:
+it a more challenging task for a screen reader than the aural rendering of
+text. For regular text it is generally enough to identify what needs to be
+spoken, possibly together with the language it is in, and let a TTS engine take
+care of deciding how the text is voiced by adding appropriate prosody etc. For
+mathematical expressions, however, much of the heavy lifting has to be done by
+the screen reader by translating formulas into an utterance that ensures the
+TTS, which is normally geared towards speaking continuous text, voices them
+appropriately. This is due to the following reasons:
 
 \begin{itemize}\itemsep-1pt
 \item Mathematical notation uses a much wider spectrum of symbols than ordinary
@@ -639,7 +615,7 @@ appropriately for the following reasons:
   symbols like periods, commas, and parentheses either have to be pronounced
   explicitly or modeled by appropriate pausing. 
 \item Even white space that would normally be ignored can have meaning in a
-  formula (e.g., elided operation symbols, function applications) and needs
+  formula (e.g., elided operation symbols, function applications) and has
   to be pronounced.
 \item Formulas often exhibit a two dimensional layout that has to be conveyed to
   a reader, either by changes in intonation or by making explicit announcements.
@@ -695,11 +671,11 @@ consists itself of three parts:
 \item[Type] specifies how the component is treated by the speech rule engine. We
   distinguish four types of components:
   \begin{description}\itemsep-1.5pt
-  \item[Node (denoted \texttt{n})] A single node that is recursively given to
+  \item[Node (denoted \textmd{\texttt{n}})] A single node that is recursively given to
     the rule engine.
-  \item[Multi (\texttt{m})] A list of nodes is passed to the engine.
-  \item[Text (\texttt{t})] Content that is given directly to the TTS.
-  \item[Personality (\texttt{p})] Customizes the behavior of the TTS.
+  \item[Multi (\textmd{\texttt{m}})] A list of nodes is passed to the engine.
+  \item[Text (\textmd{\texttt{t}})] Content that is given directly to the TTS.
+  \item[Personality (\textmd{\texttt{p}})] Customizes the behavior of the TTS.
   \end{description}
 \item[Content] is, depending on the type of the component, either an Xpath
   expression returning a node or a list of nodes, for types \texttt{n} and
@@ -709,7 +685,7 @@ consists itself of three parts:
   of the component or the TTS behavior.
 \end{description}
 
-As examples of a simple rule consider the following the rule for an \texttt{mi}
+As examples of a simple rule consider the following rule for an \texttt{mi}
 element: \ttrule{self::mathml:mi}{[t] text()} Here the condition simply states
 that the node itself has to have the tag \texttt{mi}. As MathML has its own name
 space in HTML, we have to include it as prefix in the Xpath expression. The
@@ -729,7 +705,7 @@ speech rules ${\cR}={\{R_1,\ldots,R_n\}}$ and applied to a DOM node $\cN$.
   let applicable rules $\assign{S}{\emptyset}$\label{}\\
   for each $R\in \cR$\label{}\\
   \> assume $R$ is of the form $\srule{\slist{c_0;\ldots;c_n}}{A}$\label{}\\
-  \> if $c_0(N) = N$ and $c_i(N) = \mathbf{true}, i=1,\ldots,n$\label{}\\
+  \> if $c_0(\cN) = \cN$ and $c_i(\cN) = \mathbf{true}, i=1,\ldots,n$\label{}\\
   \>\> $\assign{S}{S\cup\{R\}}$\label{}\\
   if $S=\emptyset$\label{}\\
   \> speak text content of $\cN$\label{line:default}\\
@@ -748,30 +724,30 @@ speech rules ${\cR}={\{R_1,\ldots,R_n\}}$ and applied to a DOM node $\cN$.
 \end{ntabbing}
 \vspace{-.5cm}\hrule\vspace{.2cm} 
 
-Note, that in line~\ref{line:heuristic} we have not fully specified how a rule $R$ is
-picked from the set of all applicable rules. Here we can apply a heuristic on
-rule preference, which currently defaults to the most constraint rule in the
-set.
+Note, that in line~\ref{line:heuristic} we have not fully specified how a rule
+$R$ is picked from the set of all applicable rules. Here we can apply a
+heuristic on rule preference, which currently defaults to the rule with the most
+preconditions in the set.
 
 Note also, that we can not guarantee termination of our procedure, as our rules
 allow for arbitrary Xpath expressions, which can move along all axes in the DOM,
 hence we could easily construct a set of cyclic rules. On the other hand we can
-have incomplete rule sets as in case no further rule is applicable,
+have incomplete rule sets, as in case no further rule is applicable,
 line~\ref{line:default} specifies that the text content of the current node is
 spoken, which is computable for any node in the DOM. Indeed this is a potential
-way to deal with text nodes. However, we can also deal text content explicitly
-which we indeed do for the majority of Unicode characters.  The following is a
-rule dealing with the plus minus symbol in the quadratic formula:
+way to deal with text nodes. However, we can also deal with text content
+explicitly which we indeed do for the majority of Unicode characters.  The
+following is a rule dealing with the plus minus symbol in the quadratic formula:
 \ttrule{self::text(); ./text()=\&\#x00B1}{[t] "plus minus"} The rule has two
 conditions: The first returns the node if it is a text node, while the second
-tests for the Unicode character. If the rule is applicable its sole action as
-per line~\ref{line:case-t} of our procedure is to speak the content
-``plus minus''.
+tests for the Unicode character. If the rule is applicable, its sole action as
+per line~\ref{line:case-t} of our procedure is to speak the content ``plus
+minus''.
 
 To illustrate the other cases we first consider the following rule that is
-applicable if we have a \texttt{msup} node whose second child, i.e., the superscript is
-equal to $2$: \tttrule{self::mathml:msup; ./*[2][text()=2]}{[n] ./*[1]; [t]
-  "square"} The rule's action specifies first that first the content of the
+applicable if we have a \texttt{msup} node whose second child, i.e., the
+superscript is equal to $2$: \tttrule{self::mathml:msup; ./*[2][text()=2]}{[n]
+  ./*[1]; [t] "square"} The rule's action specifies that first the content of the
 first child node is spoken by applying the engine's procedure recursively
 (line~\ref{line:case-n}), followed by speaking the string ``square''.  We can
 observe that the rule is indeed applicable to the \texttt{msup} node in
@@ -793,22 +769,22 @@ For the remaining cases  consider the square root rule:
 For simplicity we have not given any details how annotations are executed.
 Moreover, we have also omitted the details that additional annotations might
 need to be executed in the case of type $n$, $m$, and $t$. We rather explain
-this at the hand of a concrete example. Consider the following speech rule for
-\texttt{mfenced} elements:
+this by way of example. Consider the following speech rule for \texttt{mfenced}
+elements:
 
-\noindent\texttt{self::mathml:mfenced;}\\
-\hspace*{.5cm}\texttt{string-length(string(@separators))=1} $\longrightarrow$ \\
-\hspace*{\fill}\texttt{[t] @open; [m] ./* (separator:@separators);}\\
-\hspace*{\fill}\texttt{[t] @close} 
+\noindent\texttt{self::mathml:mfenced;\\
+string-length(string(@separators))=1 ${\rightarrow}$
+[t] @open;\\
+\hspace*{\fill}[m] ./* (separator:@separators); [t] @close}
 
-\noindent The rule is applicable to
-any \texttt{mfenced} node that has \texttt{separators} attribute that contains exactly one
-character. Its action has the notable features that
+\noindent The rule is applicable to any \texttt{mfenced} node that has a
+\texttt{separators} attribute that contains exactly one character. Its action
+has the notable features that
 \begin{inparaenum}[(a)]
 \item the first and last utterance are constructed by Xpath expressions
   accessing the node's attributes \texttt{open} and \texttt{close},
   respectively. And
-\item that the multi component has a separator annotation, which specifies that a
+\item that the multi component has a separator annotation, which specifies a
   string that is spoken between every element in the list of child nodes. In our
   case this is the content of the \texttt{separators} attribute again retrieved with an
   Xpath expression.
@@ -844,17 +820,20 @@ the next section.
 \subsection{Conveying Meaning by Intonation}
 
 As mathematical expressions can be arbitrarily complex and deeply nested
-conveying their extend and two dimensional layout in speech is very challenging.
+conveying their extent and two dimensional layout in speech is very challenging.
 A traditional approach to explain two dimensional structures as well as nesting
 depth is to insert additional vocabulary that gives the relative position of
-expressions, which can make spoken expressions very cumbersome and long.
+expressions. This can make spoken expressions very cumbersome and long.
 Another approach, originally presented in~\cite{raman1994aster}, is to take
 advantage of the precision a TTS engine offers to control exactly variations in
-intonation, which goes beyond what a human could do.
+intonation, which goes beyond what a human could do.  While some of our rules
+have been inspired by Aster~\cite{raman1994aster}, there are significant
+differences due to markup format and restrictions of modern TTS voices.
+
 
 In ChromeVox we allow for both models. The former is easy to achieve by adding
 appropriate vocabulary to the rules. The latter can be done by specifying
-intonation changes as annotations of our speech rule actions. An intonation
+changes in intonation as annotations of our speech rule actions. An intonation
 change given in an action of type $t$ or $p$ will only affect a single
 utterance, while for types $n$ and $m$ the changes are applied recursively,
 and multiple recursive changes to a particular intonation parameter are summed
@@ -879,25 +858,25 @@ Spatial layout is conveyed by raising the pitch when moving up and lowering it
 when moving down. These are the effects on some simple, yet challenging
 expressions taken from~\cite{knuthart}.
 \tabcolsep1pt
-\begin{tabular}{lp{.7\textwidth}}
-  $x+y^2\over k+1$ &
+\begin{tabular}{lp{.38\textwidth}}
+  $\frac{x+y^2}{k+1}$ &
   $\framebox{\text{x plus y square}}_{.3}$ 
   $\framebox{\text{over}}_{0}$ 
   $\framebox{\text{k plus one}}_{-.3}$
   \\
-  ${x+y^2\over k}+1$ &
+  $\frac{x+y^2}{k}+1$ &
   $\framebox{\text{x plus y square}}_{.3}$
   $\framebox{\text{over}}_{0}$
   $\framebox{\text{k}}_{-.3}$
   $\framebox{\text{plus one}}_{0}$
   \\
-  $x+{y^2\over k+1}$ &
+  $x+\frac{y^2}{k+1}$ &
   $\framebox{\text{x plus}}_{0}$
   $\framebox{\text{y square}}_{.3}$
   $\framebox{\text{over}}_{0}$
   $\framebox{\text{k plus one}}_{-.3}$
   \\
-  $x+{y^2\over k}+1$ &
+  $x+\frac{y^2}{k}+1$ &
   $\framebox{\text{x plus}}_{0}$
   $\framebox{\text{y square}}_{.3}$
   $\framebox{\text{over}}_{0}$
@@ -906,16 +885,19 @@ expressions taken from~\cite{knuthart}.
   \\
 % $x+y^{2\over k+1}$ & x plus y square over k plus one\\
 \end{tabular}
-Working in addition with rate and pauses, e.g., before and after a fraction, in
-the rules can make for a concise but nevertheless ambiguity free reading
-experience.
+
+\noindent Working in addition with rate and pauses, e.g., before and after a
+fraction, in the rules can make for a concise but nevertheless ambiguity free
+reading experience.
+
+
 
 % \[ {x^2}^y = x^{2y}\]
 
 %\enlargethispage{.2cm}
 \subsection{Customizing Rule Sets}
 
-Since mathematical symbols and expressions can have quite different meaning in
+Since mathematical symbols and expressions can have different meaning in
 different mathematical subject areas despite being represented similarly, it is
 important to allow for customization of rule sets. Rules in ChromeVox can be
 defined with respect to a mathematical domain (e.g., algebra, geometry,
@@ -929,7 +911,7 @@ used in case no more specialized rules are available for a mathematical domain
 or reading style.  Customization can be done either by the content provider or
 by the user. For the former case ChromeVox offers an API that allows a web site
 author to include specialist reading rules that can be picked up by ChromeVox
-when a user is visiting the page.
+when a user is visiting the page (see~\cite{Sorge13} for details).
 
 Suppose we want to read the following logical inference rule double negation
 correctly, that is given in MathML on the right:
@@ -950,7 +932,7 @@ correctly, that is given in MathML on the right:
 \end{minipage}
 We can add the following rule for the logic domain:
 \tttrule{self::mathml::mfrac}{[n] ./*[2]; [t] "follows from"; [n] ./*[1]} 
-\noindent Thus when the logic domain is selected the above expression would be
+\noindent Thus when the logic domain is selected, the above expression would be
 pronounced ``Not not phi follows from phi'' instead of as a fraction as by
 default.
 
@@ -968,7 +950,6 @@ ChromeVox playing an earcon and, if in verbose mode, also announcing
 the text but also to the possibility that they can further engage with the
 expression by exploring it interactively.
 
-\enlargethispage{.5cm}
 \section{Engaging with Formulas}
 \label{sec:explore}
 
@@ -1007,16 +988,16 @@ Mathematical formulas are generally of a complex nature, in fact, already a
 small number of symbols can make for a complex utterance.  Consequently, just
 listening to an expression once is generally not enough for a user to fully take
 in its meaning.  Therefore for mathematical formulas it is particularly
-important to be able to engage with them interactively by offering means of
+important to be able to engage with them interactively by offering a means of
 traversing sub-expressions.  ChromeVox offers these facilities with its concepts
 of granularities and walkers. However, as opposed to many other form of content,
-such as regular text, mathematical formulas can be nested arbitrarily deep,
-meaning that an expression can have sub-expressions of the same or higher
-complexity. Consequently, the standard approach of having a standard set of
-roughly ordered granularities that enable a user to descend into an expression
-can not work for mathematical formulas. Instead we need specialist walkers and a
-concept of nested granularity to allow for meaningful exploration. Therefore, we
-have experimented with two different approaches walking MathML expressions:
+such as regular text, mathematical formulas can be nested arbitrarily deep with
+no limit on complexity. Consequently, the standard approach of having a standard
+set of roughly ordered granularities that enable a user to descend into an
+expression can not work for mathematical formulas. Instead we need specialist
+walkers and a concept of nested granularity to allow for meaningful
+exploration. Therefore, we have experimented with two different approaches
+walking MathML expressions:
 \begin{enumerate}[(1)]
 \item \emph{Tree exploration} follows closely the tree structure of a MathML expression.
 \item \emph{Level based exploration} defines a granularity of
@@ -1057,7 +1038,7 @@ $\framebox{$x=\frac{-b \pm \sqrt {b^2-4ac}}{2a}$}$  & $\longleftrightarrow$
 & & & & & & $x=\frac{-\framebox{$b$} \pm \sqrt {b^2-4ac}}{2a}$ \\
 & & & & & & $x=\frac{-b\framebox{$\pm$} \sqrt {b^2-4ac}}{2a}$ \\
 & & & & & & $x=\frac{-b\pm\framebox{$\sqrt {b^2-4ac}$} }{2a}$ & $\longleftrightarrow$ 
-& $x=\frac{-b\pm\sqrt {\framebox{$b^2$}-4ac} }{2a}$ & $\longleftrightarrow\cdots$\\
+& $x=\frac{-b\pm\sqrt {\framebox{$b^2$}-4ac} }{2a}$ & $\longleftrightarrow$\\
 & & & & & & & & $x=\frac{-b\pm\sqrt {b^2\framebox{$-$}4ac} }{2a}$\\[.2cm]\cline{7-7}
 & & & & $x=\frac{-b \pm \sqrt {b^2-4ac}}{\framebox{$2a$}}$  & $\longleftrightarrow$ 
 & $x=\frac{-b \pm \sqrt {b^2-4ac}}{\framebox{$2$}a}$ & & \multicolumn{1}{c}{\vdots}\\
@@ -1073,31 +1054,34 @@ has the following form, where the topmost \texttt{math} tag is the root:
 \BeginAccSupp{method=plain,Alt={A tree containing the MathML representation of
     the quadratic formula. The nodes are tags, and the leaves are tags with
     mathematical symbols.}}
-\begin{tikzpicture}[scale=.68, transform shape]
+\begin{tikzpicture}[scale=.68, transform shape,
+  level 1/.style={sibling distance=4cm,level distance=.8cm},
+  level 4/.style={sibling distance=4cm,level distance=1.2cm}
+]
 \node[draw] {math}
   %%[edge from parent fork down]
-  [grow via three points={one child at (0,-1.25) and two children at (-1.3,-1.3) and (1.3,-1.3)}, edge from parent fork down]
-    child {node[draw]{\begin{minipage}{3ex}\begin{center}mi\\\textcolor{black}{x}\end{center}\end{minipage}}}
-    child {node[draw]{\begin{minipage}{3ex}\begin{center}mo\\\textcolor{black}{=}\end{center}\end{minipage}}}
-    child {node[draw] {mfrac}[grow via three points={one child at (0,-1.5) and two children at (-1.5,-1.5) and (5.5,-1.5)}, edge from parent fork down]
-      child {node[draw] {mrow}[grow via three points={one child at (0,-1.5) and two children at (-1,-1.5) and (1,-1.5)}, edge from parent fork down]
-        child {node[draw]{\begin{minipage}{3ex}\begin{center}mo\\\textcolor{black}{-}\end{center}\end{minipage}}}
-        child {node[draw]{\begin{minipage}{3ex}\begin{center}mi\\\textcolor{black}{b}\end{center}\end{minipage}}}
-        child {node[draw]{\begin{minipage}{3ex}\begin{center}mo\\\textcolor{black}{$\pm$}\end{center}\end{minipage}}}
-        child {node[draw] {msqrt}[grow via three points={one child at (0,-1.5) and two children at (-1,-1.5) and (1,-1.5)}, edge from parent fork down]
-          child {node[draw] {msup}[grow via three points={one child at (0,-1.5) and two children at (-1,-1.5) and (1,-1.5)}, edge from parent fork down]
-            child {node[draw]{\begin{minipage}{3ex}\begin{center}mi\\\textcolor{black}{b}\end{center}\end{minipage}}}
-            child {node[draw]{\begin{minipage}{3ex}\begin{center}mn\\\textcolor{black}{2}\end{center}\end{minipage}}}
+  [grow via three points={one child at (0,-1.25) and two children at (-1.3,-1.1) and (1.3,-1.1)}, edge from parent fork down]
+    child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mi\\\textcolor{black}{x}\end{center}\end{minipage}}}
+    child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mo\\\textcolor{black}{=}\end{center}\end{minipage}}}
+    child {node[draw] {mfrac}[grow via three points={one child at (0,-1.5) and two children at (-1.5,-1) and (5.5,-1)}, edge from parent fork down]
+      child {node[draw] {mrow}[grow via three points={one child at (0,-1.5) and two children at (-1,-1.35) and (1,-1.35)}, edge from parent fork down]
+        child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mo\\\textcolor{black}{-}\end{center}\end{minipage}}}
+        child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mi\\\textcolor{black}{b}\end{center}\end{minipage}}}
+        child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mo\\\textcolor{black}{$\pm$}\end{center}\end{minipage}}}
+        child {node[draw] {msqrt}[grow via three points={one child at (0,-1.5) and two children at (-1,-1.45) and (1,-1.45)}, edge from parent fork down]
+          child {node[draw] {msup}[grow via three points={one child at (0,-1.5) and two children at (-1,-1.45) and (1,-1.45)}, edge from parent fork down]
+            child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mi\\\textcolor{black}{b}\end{center}\end{minipage}}}
+            child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mn\\\textcolor{black}{2}\end{center}\end{minipage}}}
           }
-          child {node[draw]{\begin{minipage}{3ex}\begin{center}mo\\\textcolor{black}{-}\end{center}\end{minipage}}}
-          child {node[draw]{\begin{minipage}{3ex}\begin{center}mn\\\textcolor{black}{4}\end{center}\end{minipage}}}
-          child {node[draw]{\begin{minipage}{3ex}\begin{center}mi\\\textcolor{black}{a}\end{center}\end{minipage}}}
-          child {node[draw]{\begin{minipage}{3ex}\begin{center}mi\\\textcolor{black}{c}\end{center}\end{minipage}}}
+          child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mo\\\textcolor{black}{-}\end{center}\end{minipage}}}
+          child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mn\\\textcolor{black}{4}\end{center}\end{minipage}}}
+          child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mi\\\textcolor{black}{a}\end{center}\end{minipage}}}
+          child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mi\\\textcolor{black}{c}\end{center}\end{minipage}}}
         }
       }
-      child {node[draw] {mrow}[grow via three points={one child at (0,-1.5) and two children at (-1,-1.5) and (.5,-1.5)}, edge from parent fork down]
-        child {node[draw]{\begin{minipage}{3ex}\begin{center}mn\\\textcolor{black}{2}\end{center}\end{minipage}}}
-        child {node[draw]{\begin{minipage}{3ex}\begin{center}mi\\\textcolor{black}{a}\end{center}\end{minipage}}}
+      child {node[draw] {mrow}[grow via three points={one child at (0,-1.5) and two children at (-1,-1) and (.5,-1)}, edge from parent fork down]
+        child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mn\\\textcolor{black}{2}\end{center}\end{minipage}}}
+        child {node[draw]{\begin{minipage}{3.25ex}\begin{center}mi\\\textcolor{black}{a}\end{center}\end{minipage}}}
       }
     }
     ;
@@ -1106,9 +1090,10 @@ has the following form, where the topmost \texttt{math} tag is the root:
 
 The single steps of the tree exploration of the above tree are given in
 Fig.~\ref{fig:tree-exploration}.  The framed sub-expressions correspond to the
-sub-formulas that are being spoken in each step.  Notice that tree exploration
-allows us to walk continuously from the root of the tree to the rightmost leaf
-node, without the need to explicitly change granularity.
+sub-formulas that are being spoken in each step. That means in particular for
+non-leaf nodes the entire sub-tree is aurally rendered. Notice that tree
+exploration allows us to walk continuously from the root of the tree to the
+rightmost leaf node, without the need to explicitly change granularity.
 
 This method as well as the overall approach at speaking mathematics was
 evaluated internally by blind and visually impaired colleagues at Google, as
@@ -1139,21 +1124,21 @@ granularity for every vertex at depth $\ell$ that is not a leaf
 node. Furthermore, when walking a $\ell+1$ level granularity, we can not leave
 the common expression defined by the common parent node.
 
-The level exploration for equation~(\ref{eq:quadratic}) is partially
-displayed in~\ref{fig:level-exploration}, where framed sub-expressions correspond
+The level exploration for equation~(\ref{eq:quadratic}) is partially displayed
+in Fig.~\ref{fig:level-exploration}, where framed sub-expressions correspond
 again to the sub-formulas that are spoken. Columns correspond to the different
 levels of granularities and arrows between levels indicate that the framed
 sub-expression can be explored at the next lower level. Exploration of
 expressions at the same granularity corresponds to moving up and down in a
 column. However, observe that the horizontal bar in level $3$ indicates the
 boundary between two level $2$ granularities, where the entries above the bar
-belong to $G^{-b\pm\sqrt{b^2-4ac}}_2$ and the ones below to $G^{2a}_2$. Hence one
-can not move from the enumerator to the denominator and if we wanted to explore
-the sub-expressions in the denominator (i.e., $2$ and $a$), we have to first move
-back up to the second level, move to the expression $2a$ and can then explore
-the next lower level.
+belong to $G^{-b\pm\sqrt{b^2-4ac}}_2$ and the ones below to $G^{2a}_2$. Hence
+one can not move from the enumerator to the denominator and if we wanted to
+explore the sub-expressions in the denominator (i.e., $2$ and $a$), we have to
+first move back up to the second level, move to the expression $2a$ and can then
+explore the next lower level.
 
-Level exploration fits naturally into ChromeVox's paradigm of engaging with
+Level exploration fits naturally into ChromeVox's para\-digm of engaging with
 content at different levels of granularities. As with regular text content the
 user can explore an expression in two ways. They can move between expressions at
 one level with up and down arrow keys, while exploring the currently active
@@ -1181,7 +1166,7 @@ expressions and that are presented in the following section.
 \label{sec:alternative}
 
 ChromeVox's ability to allow for alternative representations as discussed in
-Sec.~\ref{sec:ax4} is crucial for both enlarging the amount mathematical content
+Sec.~\ref{sec:ax4} is crucial for both enlarging the amount of mathematical content
 available and the user experience when voicing that content. In fact, we have
 developed the mechanism initially in the context of math accessibility for two
 purposes:
@@ -1236,11 +1221,11 @@ the web page. We inject a MathJax configuration script into the web page's
 content to allow ChromeVox to call MathJax remotely. For each of the math images
 we have identified we send the hidden markup (i.e., either {\LaTeX} or
 AsciiMath) to MathJax to obtain a corresponding MathML representation. The
-MathML is computed upon loading of a web page and stored to be available as soon
-as the screen reader encounters an image with a math formula. If stored MathML
-markup exists, it is automatically retrieved and send to the speech rule engine
-to generate the audio description. Note that this will not change the actual
-image node in the DOM.
+MathML representation is computed upon loading of a web page and stored to be
+available as soon as the screen reader encounters an image with a math
+formula. If stored MathML markup exists, it is automatically retrieved and sent
+to the speech rule engine to generate the audio description. Note that this will
+not change the actual image node in the DOM.
 
 For example, when loading the Wikipedia page on the quadratic formula, ChromeVox
 will detect the markup given in Fig.~\ref{fig:quadratic-img}, find the hidden
@@ -1260,12 +1245,12 @@ contained in the web page.
 \subsection{Semantic Representations}
 \label{sec:semantic}
 
-So far we have exclusively worked with MathML (or MathJax) representation of
-expressions to generate speech output. But although a tree representation,
-presentation MathML is optimized towards the visual rendering rather than
-correct mathematical interpretation.  Consequently, the speech output is very
-verbose, in that every single symbol in an expression is pronounced, while still
-quite removed from what a human would say. If math is read by a human
+So far we have worked with presentation MathML (or MathJax)
+representation of expressions to generate speech output. But although they are
+tree representations, they are optimized towards the visual rendering rather
+than correct mathematical interpretation.  Consequently, the speech output is
+very verbose, in that every single symbol in an expression is pronounced, while
+still quite removed from what a human would say. If math is read by a human
 expert they instantly interpret symbols and expressions in context of the
 overall formula and adjust their speech accordingly by, for example, omitting
 certain punctuation while selecting to pronounce other, elided notation.
@@ -1276,10 +1261,16 @@ equality sign and put $g$ in context. Given a flat MathML structure this is
 effectively not possible, or at least not without writing very elaborate, but
 potentially fragile, speech rules.
 
+
 We have decided to forgo this and rather exploit the possibility of using
 alternative representations and to rewrite math expressions into a dedicated
-semantic representation.  The idea is to interpret MathML in a semantic that
-is modeled at K-12 and undergraduate mathematics.
+semantic representation. While there exist approaches on rewriting presentation
+into content MathML (\cite{snuggletex}) they are often of limited scope or
+restricted to the semantic interpretetation of a particular system.  And while
+content MathML is suitable for conveying semantics between systems, it does not
+easily lend itself to a human oriented style. Therefore we interpret MathML into a
+bespoke semantic representation that is modeled on K-12 and undergraduate
+mathematics.
 
 In detail the procedure follows a heuristic approach that aims to represent a
 formula in a semantic tree structure that is more akin to a term tree. The
@@ -1295,20 +1286,22 @@ relations and defining operator precedence orders as well as determining
 properly delimited structures. As an example of this heuristic we observe how the quadratic
 formula is rewritten to its semantic interpretation below:
 
-\begin{tikzpicture}[scale=.68, transform shape]
+\begin{tikzpicture}[scale=.68, transform shape,    
+  level 1/.style={sibling distance=4cm,level distance=.8cm}
+  ]
   \node[draw] {=}
-  [grow via three points={one child at (0,-1.25) and two children at (-2.3,-1.3) and (2.3,-1.3)}, edge from parent fork down]
+  [grow via three points={one child at (0,-1.25) and two children at (-2.3,-1) and (2.3,-1)}, edge from parent fork down]
   child {node[draw] {x}}  
-  child {node[draw] {/}[grow via three points={one child at (0,-1.3) and two children at (-1.3,-1.3) and (5.5,-1.3)}, edge from parent fork down]
-    child {node[draw] {$\pm$}[grow via three points={one child at (0,-1.3) and two children at (-1,-1.3) and (3,-1.3)}, edge from parent fork down]
-      child {node[draw] {-}[grow via three points={one child at (0,-1) and two children at (-1,-1.3) and (1,-1.3)}, edge from parent fork down]
+  child {node[draw] {/}[grow via three points={one child at (0,-1.3) and two children at (-1.3,-1) and (5.5,-1)}, edge from parent fork down]
+    child {node[draw] {$\pm$}[grow via three points={one child at (0,-1.3) and two children at (-1,-1) and (3,-1)}, edge from parent fork down]
+      child {node[draw] {-}[grow via three points={one child at (0,-1) and two children at (-1,-1) and (1,-1)}, edge from parent fork down]
         child {node[draw]{b}}}
-      child {node[draw] {sqrt}[grow via three points={one child at (0,-1) and two children at (-1,-1.3) and (1,-1.3)}, edge from parent fork down]
-        child {node[draw] {-}[grow via three points={one child at (0,-1) and two children at (-2,-1.3) and (2,-1.3)}, edge from parent fork down]
-          child {node[draw] {$\,\widehat{}\,$}[grow via three points={one child at (0,-1.3) and two children at (-1,-1.3) and (1,-1.3)}, edge from parent fork down]
+      child {node[draw] {sqrt}[grow via three points={one child at (0,-1) and two children at (-1,-1) and (1,-1)}, edge from parent fork down]
+        child {node[draw] {-}[grow via three points={one child at (0,-1) and two children at (-2,-1) and (2,-1)}, edge from parent fork down]
+          child {node[draw] {$\,\widehat{}\,$}[grow via three points={one child at (0,-1) and two children at (-1,-1) and (1,-1)}, edge from parent fork down]
             child {node[draw]{b}}
             child {node[draw]{2}}}
-          child {node[draw] {$\cdot$}[grow via three points={one child at (0,-1.3) and two children at (-1,-1.3) and (1,-1.3)}, edge from parent fork down]
+          child {node[draw] {$\cdot$}[grow via three points={one child at (0,-1) and two children at (-1,-1) and (1,-1)}, edge from parent fork down]
             child {node[draw]{4}}
             child {node[draw]{a}}
             child {node[draw]{c}}
@@ -1316,7 +1309,7 @@ formula is rewritten to its semantic interpretation below:
   }
   }
   }
-   child {node[draw] {$\cdot$}[grow via three points={one child at (0,-1.3) and two children at (-1,-1.3) and (1,-1.3)}, edge from parent fork down]
+   child {node[draw] {$\cdot$}[grow via three points={one child at (0,-1) and two children at (-1,-1) and (1,-1)}, edge from parent fork down]
      child {node[draw]{2}}
      child {node[draw]{a}}
     }
@@ -1332,11 +1325,10 @@ In addition our procedure contains heuristics to
 \item combine punctuated expressions and determine the meaning of ellipses.
 \end{inparaenum}
 
-
 This tree can be transformed into an XML object and passed to ChromeVox when the
-corresponding node is reached in the DOM. We provide a set of default rules
-especially for the semantic representation, which can make use of the term
-structure of the tree. For example, the character sequence $4ac$ would now be
+corresponding node has been reached in the DOM. We provide a set of default rules
+especially for the semantic representation, which makes use of the tree's term
+structure. For example, the character sequence $4ac$ would be
 pronounced as ``4 times a times c''.
 
 As our semantic procedure is heuristic based it can in the sense of interpreting
@@ -1359,8 +1351,11 @@ Our rule based approach allows us to customize the speech output to semantic
 interpretations as well as to define bespoke rules for different mathematical
 domains both inside the system and via an API directly on a web page.  Important
 future work will be to extend and further hone the current rule set to improve
-the user experience.  But given the open source nature of ChromeVox, we are
-hoping that contributions by the community will be made.
+the user experience. This should be based on more intensive user studies,
+including an evaluation how best pausing and changes in intonation can help
+reduce ambiguity. So far only internal evaluations and user feedback have been
+employed to improve the system. But given the open source nature of ChromeVox,
+we are hoping for more feedback and contributions by the community.
 
 The semantic tree we have newly developed is in a format internal to ChromeVox,
 and further transformations into other semantic markup languages like content
@@ -1370,18 +1365,23 @@ tree already gives us as basis to experiment with other advanced features, such
 as intelligent summarization of large expressions or abstraction over
 sub-expressions. This could also be useful for a more meaningful way of
 announcing the layers of sub-expressions in the level exploration --- which
-currently only gives the level count --- thereby even more support visually
-impaired learners in engaging with mathematical content online.
+currently only gives the level count --- thereby giving even more support to
+visually impaired learners in engaging with mathematical content.
 
 
-% \bibliographystyle{plain} \bibliography{www_2014}
+% \bibliographystyle{plain} \bibliography{w4a}
 \begin{thebibliography}{10}
 
-\bibitem{HTML5}
-R.~Berjon, S.~Faulkner, T.~Leithead, E.~Doyle Navara, E.~O'Connor, S.~Pfeiffer, and I.~Hickson.
-\newblock {H}ypertext {M}arkup {L}anguage (html) v5.0.
-\newblock W3C candidate recommendation, 2013.
-\newblock \url{http://www.w3.org/TR/html5}.
+\bibitem{DBLP:conf/hci/DoushP09}
+I.~Abu Doush and E.~Pontelli.
+\newblock Using rules for guiding presentation and switching between
+  modalities.
+\newblock In {\em HCI (7)}, LNCS 5616. Springer, 2009.
+
+\bibitem{Bates:2010:SMU:1880751.1880821}
+E.~Bates and D.~Fitzpatrick.
+\newblock Spoken mathematics using prosody, earcons and spearcons.
+\newblock In {\em ICCHP'10}. Springer, 2010.
 
 \bibitem{MathML3}
 D.~Carlisle, P.~Ion, and R.~Miner.
@@ -1396,7 +1396,7 @@ D.~Cervone, F.~Wang, and P.~Krautzberger.
 
 \bibitem{chen2006clc}
 C.~Chen.
-\newblock Clc-4-tts and fire vox: enabling the visually impaired to surf the
+\newblock Clc-4-TTS and Fire Vox: enabling the visually impaired to surf the
   internet.
 \newblock {\em Undergraduate Research Journal}, page~32, 2006.
 
@@ -1410,16 +1410,28 @@ J.~Clark, S.~DeRose, et~al.
 \newblock W3C Recommendation,  1999.
 
 \bibitem{epub3}
-G.~Conboy, M.~Garrish, M.~Gylling, W.~McCoy, M.~Makoto, and
-  D.~Weck.
+% G.~Conboy, M.~Garrish, M.~Gylling, W.~McCoy, M.~Makoto, and
+%   D.~Weck.
 \newblock {EPUB 3}.
-\newblock Recommended specificatin. IDPF, 2011.
+\newblock Recommended specification. IDPF, 2011.
 \newblock \url{http://idpf.org/epub/30}.
+
+\bibitem{conf/icchp/GillanBKP04}
+D.~Gillan, P.~Barraza, A.~Karshmer, S.~Pazuchanics.
+\newblock Cognitive analysis of equation reading: Application to the
+  development of the math genie.
+\newblock {\em ICCHP'04}, LNCS 3118. Springer, 2004.
 
 \bibitem{google:chromevox-tutorial}
 {Google} Inc.
 \newblock {\em ChromeVox Tutorial}.
 \newblock \url{http://www.chromevox.com}.
+
+\bibitem{HTML5}
+% R.~Berjon, S.~Faulkner, T.~Leithead, E.~Doyle Navara, E.~O'Connor, S.~Pfeiffer, and I.~Hickson.
+\newblock {H}ypertext {M}arkup {L}anguage (HTML) v5.0.
+\newblock W3C candidate recommendation, 2013.
+\newblock \url{http://www.w3.org/TR/html5}.
 
 \bibitem{asciimath}
 P.~Jipsen.
@@ -1443,15 +1455,25 @@ TV~Raman.
 \newblock Aster: Audio system for technical readings.
 \newblock {\em Infor. Technology and Disabilities}, 1, 1994.
 
+\bibitem{snuggletex}
+School of~Physics and The University of~Edinburgh Astronomy.
+\newblock Snuggletex (1.2.2).
+\newblock \url{http://www2.ph.ed.ac.uk/snuggletex}, 2011.
+
+\bibitem{Sorge13}
+V.~Sorge and D.~Tseng.
+\newblock Spoken mathematics on the web.
+\newblock Google Developers Live
+  \url{https://developers.google.com/live/shows/5881057312243712}, 2013.
+
 \bibitem{soiffer2005mathplayer}
-Neil Soiffer.
+N.~Soiffer.
 \newblock Mathplayer: web-based math accessibility.
-\newblock In {\em Proc. 7th international conference
-  on Computers and accessibility}, pages 204--205. ACM, 2005.
+\newblock In {\em Proc. of Computers and Accessibility}. ACM, 2005.
 
 \bibitem{mathworld}
 E.~W. Weisstein.
-\newblock Mathworld--a wolfram web resource, 2009.
+\newblock Mathworld--a Wolfram web resource, 2009.
 \newblock \url{http://mathworld.wolfram.com/}.
 
 \bibitem{wikipedia}
@@ -1461,8 +1483,7 @@ Wikipedia.
 \bibitem{yamaguchi2008new}
 K.~Yamaguchi, T.~Komada, F.~Kawane, and M.~Suzuki.
 \newblock New features in math accessibility with Infty software.
-\newblock In {\em Computers Helping People with Special Needs}, pages 892--899.
-  Springer, 2008.
+\newblock In {\em ICCHP'08}. Springer, 2008.
 
 \end{thebibliography}
 
