@@ -20,4 +20,4 @@ Also please note that provided extensions are intended to be used on Chrome and 
 
 
 # google-axs-chrome
-Automatically exported from code.google.com/p/google-axs-chrome
+*Automatically exported from code.google.com/p/google-axs-chrome*
