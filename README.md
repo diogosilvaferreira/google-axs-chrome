@@ -18,6 +18,4 @@ Also please note that provided extensions are intended to be used on Chrome and 
 ### Discuss
 [The Axs-Chrome discussion list](http://groups.google.com/group/axs-chrome-discuss?)
 
-
-# google-axs-chrome
-*Automatically exported from code.google.com/p/google-axs-chrome*
+*google-axs-chrome Automatically exported from code.google.com/p/google-axs-chrome*
