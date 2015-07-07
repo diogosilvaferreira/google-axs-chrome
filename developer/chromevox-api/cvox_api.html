@@ -30,7 +30,6 @@
             </li>
             <li>
               <a href="#methods">Methods</a>
-
               <ol>
                 <li><a href="#method-isChromeVoxActive">isChromeVoxActive</a></li>
                 <li><a href="#method-speak">speak</a></li>
@@ -83,7 +82,6 @@
                 <dd>
                   <div>
                     <a name="property-NodeDescription-context" id="property-NodeDescription-context"></a>
-
                     <dl>
                       <dt><span class="variable">context</span> <span class="property">( <span class="typeTemplate">string</span> )</span></dt>
                       <dd>Contextual information that the user should hear first which is
@@ -158,27 +156,18 @@
               </div>
 
               <div>
-                <a name="property-NodeDescription-queueMode" id=
-                "property-NodeDescription-queueMode"></a>
-
+                <a name="property-NodeDescription-queueMode" id="property-NodeDescription-queueMode"></a>
                 <dl>
                   <dt><span class="variable">queueMode</span> <span class="property">(
-                  <span class="optional">optional</span> <span class=
-                  "typeTemplate">number</span> )</span></dt>
-
+                  <span class="optional">optional</span> <span class="typeTemplate">number</span> )</span></dt>
                   <dd>Valid modes are 0 for flush; 1 for queue.</dd>
                 </dl>
               </div>
 
               <div>
-                <a name="property-NodeDescription-properties" id=
-                "property-NodeDescription-properties"></a>
-
+                <a name="property-NodeDescription-properties" id="property-NodeDescription-properties"></a>
                 <dl>
-                  <dt><span class="variable">properties</span> <span class="property">(
-                  <span class="optional">optional</span> <span class=
-                  "typeTemplate">object</span> )</span></dt>
-
+                  <dt><span class="variable">properties</span> <span class="property">(<span class="optional">optional</span> <span class="typeTemplate">object</span> )</span></dt>
                   <dd>Speech properties to use for this utterance.</dd>
                 </dl>
               </div>
@@ -191,53 +180,37 @@
         <h4 id="method-speakNode">speakNode</h4>
 
         <div class="summary lower">
-          <span>cvox.Api.speakNode</span>(<span>Node <span class=
-          "variable">targetNode</span></span>, <span class="optional">number <span class=
-          "variable">queueMode</span></span>, <span class="optional">object <span class=
-          "variable">properties</span></span>)
+          <span>cvox.Api.speakNode</span>(<span>Node <span class="variable">targetNode</span></span>, 
+          <span class="optional">number <span class="variable">queueMode</span></span>, 
+          <span class="optional">object <span class="variable">properties</span></span>)
         </div>
 
         <div class="description">
           <p>Speaks the given node using the specified queueMode and properties.</p>
-
           <h4>Parameters</h4>
-
           <dl>
             <dd>
               <div>
-                <a name="property-NodeDescription-targetNode" id=
-                "property-NodeDescription-targetNode"></a>
-
+                <a name="property-NodeDescription-targetNode" id="property-NodeDescription-targetNode"></a>
                 <dl>
-                  <dt><span class="variable">targetNode</span> <span class="property">(
-                  <span class="typeTemplate">Node</span> )</span></dt>
-
+                  <dt><span class="variable">targetNode</span> <span class="property">(<span class="typeTemplate">Node</span> )</span></dt>
                   <dd>A DOM node to speak</dd>
                 </dl>
               </div>
 
               <div>
-                <a name="property-NodeDescription-queueMode" id=
-                "property-NodeDescription-queueMode"></a>
-
+                <a name="property-NodeDescription-queueMode" id="property-NodeDescription-queueMode"></a>
                 <dl>
-                  <dt><span class="variable">queueMode</span> <span class="property">(
-                  <span class="optional">optional</span> <span class=
+                  <dt><span class="variable">queueMode</span> <span class="property">(<span class="optional">optional</span> <span class=
                   "typeTemplate">number</span> )</span></dt>
-
                   <dd>Valid modes are 0 for flush; 1 for queue.</dd>
                 </dl>
               </div>
 
               <div>
-                <a name="property-NodeDescription-properties" id=
-                "property-NodeDescription-properties"></a>
-
+                <a name="property-NodeDescription-properties" id="property-NodeDescription-properties"></a>
                 <dl>
-                  <dt><span class="variable">properties</span> <span class="property">(
-                  <span class="optional">optional</span> <span class=
-                  "typeTemplate">object</span> )</span></dt>
-
+                  <dt><span class="variable">properties</span> <span class="property">( <span class="optional">optional</span> <span class="typeTemplate">object</span> )</span></dt>
                   <dd>Speech properties to use for this utterance.</dd>
                 </dl>
               </div>
@@ -262,8 +235,7 @@
         <h4 id="method-playEarcon">playEarcon</h4>
 
         <div class="summary lower">
-          <span>cvox.Api.playEarcon</span>(<span>string <span class=
-          "variable">earcon</span></span>)
+          <span>cvox.Api.playEarcon</span>(<span>string <span class="variable">earcon</span></span>)
         </div>
 
         <div class="description">
@@ -274,75 +246,43 @@
           <dl>
             <dd>
               <div>
-                <a name="property-NodeDescription-earcon" id=
-                "property-NodeDescription-earcon"></a>
-
+                <a name="property-NodeDescription-earcon" id="property-NodeDescription-earcon"></a>
                 <dl>
                   <dt><span class="variable">earcon</span> <span class="property">(
                   <span class="typeTemplate">string</span> )</span></dt>
 
                   <dd>
                     An earcon name. Valid names are:
-
                     <ul>
                       <li>ALERT_MODAL</li>
-
                       <li>ALERT_NONMODAL</li>
-
                       <li>BULLET</li>
-
                       <li>BUSY_PROGRESS_LOOP</li>
-
                       <li>BUSY_WORKING_LOOP</li>
-
                       <li>BUTTON</li>
-
                       <li>CHECK_OFF</li>
-
                       <li>CHECK_ON</li>
-
                       <li>COLLAPSED</li>
-
                       <li>EDITABLE_TEXT</li>
-
                       <li>ELLIPSIS</li>
-
                       <li>EXPANDED</li>
-
                       <li>FONT_CHANGE</li>
-
                       <li>INVALID_KEYPRESS</li>
-
                       <li>LINK</li>
-
                       <li>LISTBOX</li>
-
                       <li>LIST_ITEM</li>
-
                       <li>NEW_MAIL</li>
-
                       <li>OBJECT_CLOSE</li>
-
                       <li>OBJECT_DELETE</li>
-
                       <li>OBJECT_DESELECT</li>
-
                       <li>OBJECT_OPEN</li>
-
                       <li>OBJECT_SELECT</li>
-
                       <li>PARAGRAPH_BREAK</li>
-
                       <li>SEARCH_HIT</li>
-
                       <li>SEARCH_MISS</li>
-
                       <li>SECTION</li>
-
                       <li>TASK_SUCCESS</li>
-
                       <li>WRAP</li>
-
                       <li>WRAP_EDGE</li>
                     </ul>
                   </dd>
