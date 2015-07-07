@@ -1,20 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="generator" content=
-  "HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org" />
-  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-  <link href="http://developer.chrome.com/stable/static/css/site.css" rel="stylesheet"
-  type="text/css" />
-  <link href="http://developer.chrome.com/stable/static/css/print.css" rel="stylesheet"
-  type="text/css" media="print" />
-  <link href="http://developer.chrome.com/stable/static/css/prettify.css" rel=
-  "stylesheet" type="text/css" />
-  <link href="http://www.google.com/images/icons/product/chrome-16.png" rel="icon" type=
-  "image/ico" />
-  <link href="http://developer.chrome.com/stable/static/css/api.css" rel="stylesheet"
-  type="text/css" />
-
+  <meta name="generator" content="HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+  <link href="http://developer.chrome.com/stable/static/css/site.css" rel="stylesheet" type="text/css">
+  <link href="http://developer.chrome.com/stable/static/css/print.css" rel="stylesheet" type="text/css" media="print">
+  <link href="http://developer.chrome.com/stable/static/css/prettify.css" rel="stylesheet" type="text/css">
+  <link href="http://www.google.com/images/icons/product/chrome-16.png" rel="icon" type="image/ico">
+  <link href="http://developer.chrome.com/stable/static/css/api.css" rel="stylesheet" type="text/css">
   <title>ChromeVox API</title>
 </head>
 
@@ -28,46 +21,30 @@
       <ol>
         <li>
           <a href="#apiReference">API reference: cvox.Api</a>
-
           <ol>
             <li>
               <a href="#types">Types</a>
-
               <ol>
                 <li><a href="#type-NodeDescription">NodeDescription</a></li>
               </ol>
             </li>
-
             <li>
               <a href="#methods">Methods</a>
 
               <ol>
                 <li><a href="#method-isChromeVoxActive">isChromeVoxActive</a></li>
-
                 <li><a href="#method-speak">speak</a></li>
-
                 <li><a href="#method-speakNode">speakNode</a></li>
-
                 <li><a href="#method-stop">stop</a></li>
-
                 <li><a href="#method-playEarcon">playEarcon</a></li>
-
                 <li><a href="#method-syncToNode">syncToNode</a></li>
-
                 <li><a href="#method-getCurrentNode">getCurrentNode</a></li>
-
                 <li><a href="#method-setSpeechForNode">setSpeechForNode</a></li>
-
                 <li><a href="#method-click">click</a></li>
-
                 <li><a href="#method-getBuild">getBuild</a></li>
-
                 <li><a href="#method-getVersion">getVersion</a></li>
-
                 <li><a href="#method-getCvoxModifierKeys">getCvoxModifierKeys</a></li>
-
                 <li><a href="#method-isKeyShortcut">isKeyShortcut</a></li>
-
                 <li><a href="#method-setKeyEcho">setKeyEcho</a></li>
               </ol>
             </li>
@@ -88,8 +65,7 @@
 
         <div>
           <dl>
-            <dt><span class="type_name">( <span class="typeTemplate">object</span>
-            )</span></dt>
+            <dt><span class="type_name">( <span class="typeTemplate">object</span> )</span></dt>
 
             <dd>Data structure for holding information on how to speak a particular node.
             The string data is separated into context, text, userValue, and annotation to
@@ -106,13 +82,10 @@
               <dl>
                 <dd>
                   <div>
-                    <a name="property-NodeDescription-context" id=
-                    "property-NodeDescription-context"></a>
+                    <a name="property-NodeDescription-context" id="property-NodeDescription-context"></a>
 
                     <dl>
-                      <dt><span class="variable">context</span> <span class="property">(
-                      <span class="typeTemplate">string</span> )</span></dt>
-
+                      <dt><span class="variable">context</span> <span class="property">( <span class="typeTemplate">string</span> )</span></dt>
                       <dd>Contextual information that the user should hear first which is
                       not part of main content itself. For example, the user/date of a
                       given post.</dd>
@@ -120,37 +93,23 @@
                   </div>
 
                   <div>
-                    <a name="property-NodeDescription-text" id=
-                    "property-NodeDescription-text"></a>
-
+                    <a name="property-NodeDescription-text" id="property-NodeDescription-text"></a>
                     <dl>
-                      <dt><span class="variable">text</span> <span class="property">(
-                      <span class="typeTemplate">string</span> )</span></dt>
-
+                      <dt><span class="variable">text</span> <span class="property">( <span class="typeTemplate">string</span> )</span></dt>
                       <dd>The main content of the node.</dd>
                     </dl>
                   </div>
-
                   <div>
-                    <a name="property-NodeDescription-userValue" id=
-                    "property-NodeDescription-userValue"></a>
-
+                    <a name="property-NodeDescription-userValue" id="property-NodeDescription-userValue"></a>
                     <dl>
-                      <dt><span class="variable">userValue</span> <span class=
-                      "property">( <span class="typeTemplate">string</span> )</span></dt>
-
+                      <dt><span class="variable">userValue</span> <span class="property">( <span class="typeTemplate">string</span> )</span></dt>
                       <dd>Anything that the user has entered.</dd>
                     </dl>
                   </div>
-
                   <div>
-                    <a name="property-NodeDescription-annotation" id=
-                    "property-NodeDescription-annotation"></a>
-
+                    <a name="property-NodeDescription-annotation" id="property-NodeDescription-annotation"></a>
                     <dl>
-                      <dt><span class="variable">annotation</span> <span class=
-                      "property">( <span class="typeTemplate">string</span> )</span></dt>
-
+                      <dt><span class="variable">annotation</span> <span class="property">( <span class="typeTemplate">string</span> )</span></dt>
                       <dd>The role and state of the object.</dd>
                     </dl>
                   </div>
@@ -162,7 +121,6 @@
       </div>
 
       <h3 id="methods">Methods</h3>
-
       <div>
         <h4 id="method-isChromeVoxActive">isChromeVoxActive</h4>
 
@@ -171,12 +129,8 @@
         </div>
 
         <div class="description">
-          <p>Returns true if ChromeVox is currently running. If the API is available in
-          the JavaScript namespace but this method returns false, it means that the user
-          has (temporarily) disabled ChromeVox.</p>
-
+          <p>Returns true if ChromeVox is currently running. If the API is available in the JavaScript namespace but this method returns false, it means that the user has (temporarily) disabled ChromeVox.</p>
           <h4>Return value - boolean</h4>
-
           <p>True if ChromeVox is currently active.</p>
         </div>
       </div>
@@ -185,27 +139,20 @@
         <h4 id="method-speak">speak</h4>
 
         <div class="summary lower">
-          <span>cvox.Api.speak</span>(<span>string <span class=
-          "variable">textString</span></span>, <span class="optional">number <span class=
-          "variable">queueMode</span></span>, <span class="optional">object <span class=
-          "variable">properties</span></span>)
+          <span>cvox.Api.speak</span>(<span>string <span class="variable">textString</span></span>, 
+          <span class="optional">number <span class="variable">queueMode</span></span>, 
+          <span class="optional">object <span class="variable">properties</span></span>)
         </div>
 
         <div class="description">
           <p>Speaks the given string using the specified queueMode and properties.</p>
-
           <h4>Parameters</h4>
-
           <dl>
             <dd>
               <div>
-                <a name="property-NodeDescription-textString" id=
-                "property-NodeDescription-textString"></a>
-
+                <a name="property-NodeDescription-textString" id="property-NodeDescription-textString"></a>
                 <dl>
-                  <dt><span class="variable">textString</span> <span class="property">(
-                  <span class="typeTemplate">string</span> )</span></dt>
-
+                  <dt><span class="variable">textString</span> <span class="property">( <span class="typeTemplate">string</span> )</span></dt>
                   <dd>The string of text to be spoken.</dd>
                 </dl>
               </div>
