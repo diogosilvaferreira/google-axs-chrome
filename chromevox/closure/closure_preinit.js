@@ -45,14 +45,14 @@ window.queue_ = [];
 window.CLOSURE_IMPORT_SCRIPT = function(src) {
   // Only run our version of the import script
   // when trying to inject ChromeVox scripts.
-  if (src.indexOf('chrome-extension://') == 0) {
+  if (src.indexOf('chrome-extension://') === 0) {
     if (!goog.inHtmlDocument_() ||
         goog.dependencies_.written[src]) {
       return false;
     }
     goog.dependencies_.written[src] = true;
     function loadNextScript() {
-      if (goog.global.queue_.length == 0)
+      if (goog.global.queue_.length === 0)
         return;
 
       var src = goog.global.queue_[0];
