@@ -879,7 +879,7 @@ goog.isNull = function(val) {
  */
 goog.isDefAndNotNull = function(val) {
   // Note that undefined == null.
-  return val != null;
+  return val !== null;
 };
 
 
@@ -965,7 +965,7 @@ goog.isFunction = function(val) {
  */
 goog.isObject = function(val) {
   var type = typeof val;
-  return type == 'object' && val != null || type == 'function';
+  return type == 'object' && val !== null || type == 'function';
   // return Object(val) === val also works, but is slower, especially if val is
   // not an object.
 };
