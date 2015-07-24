@@ -515,7 +515,7 @@ goog.addSingletonGetter = function(ctor) {
       goog.instantiatedSingletons_[goog.instantiatedSingletons_.length] = ctor;
     }
     return ctor.instance_ = new ctor;
-  };
+  }();
 };
 
 
@@ -1021,7 +1021,7 @@ goog.removeUid = function(obj) {
  * @type {string}
  * @private
  */
-goog.UID_PROPERTY_ = 'closure_uid_' + ((Math.random() * 1e9) >>> 0);
+goog.UID_PROPERTY_ = 'closure_uid_' + ((Math.random() * 1e9) > 0);
 
 
 /**
@@ -1245,7 +1245,7 @@ goog.globalEval = function(script) {
     goog.global.execScript(script, 'JavaScript');
   } else if (goog.global.eval) {
     // Test to see if eval works
-    if (goog.evalWorksForGlobals_ == null) {
+    if (goog.evalWorksForGlobals_ === null) {
       goog.global.eval('var _et_ = 1;');
       if (typeof goog.global['_et_'] != 'undefined') {
         delete goog.global['_et_'];
@@ -1540,7 +1540,7 @@ goog.exportProperty = function(object, publicName, symbol) {
  */
 goog.inherits = function(childCtor, parentCtor) {
   /** @constructor */
-  function tempCtor() {};
+  function tempCtor() {}
   tempCtor.prototype = parentCtor.prototype;
   childCtor.superClass_ = parentCtor.prototype;
   childCtor.prototype = new tempCtor();
