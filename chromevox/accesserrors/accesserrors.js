@@ -153,7 +153,7 @@ function hostNameExceptions(url) {
  * @return {Object} An object describing the error.
  */
 function generateError(dom_object, code, opt_msg, opt_type) {
-  var error_obj = new Object();
+  var error_obj = new Object({});
   error_obj.err_code = code;
   error_obj.url = location.protocol +
                   '//' +
@@ -184,7 +184,7 @@ function generateError(dom_object, code, opt_msg, opt_type) {
  */
 function censorHTML(dom_object) {
 
-  if (dom_object == null || dom_object.tagName == null) {
+  if (dom_object === null || dom_object.tagName === null) {
     return '';
   }
 
@@ -236,9 +236,9 @@ function getReadablePath(obj) {
     return obj.selectorText;
   }
 
-  if (obj == null || obj.tagName == 'HTML') {
+  if (obj === null || obj.tagName === 'HTML') {
     return 'document';
-  } else if (obj.tagName == 'BODY') {
+  } else if (obj.tagName === 'BODY') {
     return 'document.body';
   }
 
