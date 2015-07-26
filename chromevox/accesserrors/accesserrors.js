@@ -277,7 +277,7 @@ function getReadablePath(obj) {
  * @return {string} CSS selector text for the DOM object.
  */
 function getQuerySelectorText(obj) {
-  if (obj == null || obj.tagName == 'HTML') {
+  if (obj === null || obj.tagName === 'HTML') {
     return 'html';
   } else if (obj.tagName == 'BODY') {
     return 'body';
@@ -370,7 +370,7 @@ function getDOMFromPath(rpath) {
  * @return {boolean} If op performed is ever true, then return true. false OW.
  */
 function compareNodes(node1, node2, op) {
-  if (node1 == null || node1.tagName == 'BODY') {
+  if (node1 === null || node1.tagName === 'BODY') {
     return false;
   }
   if (op(node1, node2)) {
@@ -412,7 +412,7 @@ function checkChildrenVisible(dom_object) {
   if (dom_object.hasChildNodes()) {
     var ret = false;
     var i = 0;
-    while (ret == false && i < dom_object.childNodes.length) {
+    while (ret === false && i < dom_object.childNodes.length) {
       if (checkChildrenVisible(dom_object.childNodes[i])) {
         ret = true;
       }
@@ -425,7 +425,7 @@ function checkChildrenVisible(dom_object) {
   var obj_width = rects.right - rects.left;
   var obj_height = rects.top - rects.bottom;
 
-  if (obj_width == 0 || obj_height == 0) {
+  if (obj_width === 0 || obj_height === 0) {
     return false;
   } else {
     return true;
@@ -497,7 +497,7 @@ function isVisible(dom_object) {
 
   // Object is invisible (has an area of 0), return false
   if (!children_visible &&
-      (obj_width == 0 || obj_height == 0)) {
+      (obj_width === 0 || obj_height === 0)) {
     return 'no_area';
   }
 
