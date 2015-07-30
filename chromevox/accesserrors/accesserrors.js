@@ -555,7 +555,7 @@ AccessErrors.prototype.getErrors = function() {
  */
 AccessErrors.prototype.showErrors = function(err_code) {
   for (var i = 0; i < this.errors.length; i++) {
-    if (err_code == null || err_code == this.errors[i].err_code) {
+    if (err_code === null || err_code === this.errors[i].err_code) {
       try {
         var dom_object = document.querySelector(
                            this.errors[i].query_selector_text);
@@ -602,11 +602,11 @@ AccessErrors.prototype.checkImg = function() {
       continue;
     }
 
-    if (img_tags[i].hasAttribute('alt') == false &&
-        img_tags[i].hasAttribute('title') == false &&
-        img_tags[i].hasAttribute('aria-label') == false &&
-        img_tags[i].hasAttribute('aria-labelledby') == false &&
-        img_tags[i].hasAttribute('placeholder') == false) {
+    if (img_tags[i].hasAttribute('alt') === false &&
+        img_tags[i].hasAttribute('title') === false &&
+        img_tags[i].hasAttribute('aria-label') === false &&
+        img_tags[i].hasAttribute('aria-labelledby') === false &&
+        img_tags[i].hasAttribute('placeholder') === false) {
       this.errors.push(generateError(img_tags[i],
                                      'img_label'));
       noerrors = false;
