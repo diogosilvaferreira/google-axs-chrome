@@ -636,7 +636,7 @@ AccessErrors.prototype.checkInput = function() {
           input_tags[i].style.visibility != 'hidden') {
         if (input_tags[i].type.toLowerCase() == 'submit' ||
            input_tags[i].type.toLowerCase() == 'button') {
-          if (input_tags[i].value == null) {
+          if (input_tags[i].value === null) {
             this.errors.push(generateError(input_tags[i],
                                            'button_value'));
             noerrors = false;
@@ -650,7 +650,7 @@ AccessErrors.prototype.checkInput = function() {
                        input_tags[i].getAttribute('aria-labelledby').split(' ');
           }
           for (var k = 0; k < all_labels.length; k++) {
-            if (document.getElementById(all_labels[k]) == null) {
+            if (document.getElementById(all_labels[k]) === null) {
               this.errors.push(generateError(input_tags[i],
                                              'input_label'));
               noerrors = false;
@@ -658,9 +658,9 @@ AccessErrors.prototype.checkInput = function() {
           }
         } else if (document.querySelector(
             'label[for="' + input_tags[i].id + '"]') === null &&
-            input_tags[i].hasAttribute('title') == false &&
-            input_tags[i].hasAttribute('aria-label') == false &&
-            input_tags[i].hasAttribute('placeholder') == false) {
+            input_tags[i].hasAttribute('title') === false &&
+            input_tags[i].hasAttribute('aria-label') === false &&
+            input_tags[i].hasAttribute('placeholder') === false) {
           this.errors.push(generateError(input_tags[i],
                                          'input_label'));
           noerrors = false;
