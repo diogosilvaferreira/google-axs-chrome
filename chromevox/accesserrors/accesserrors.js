@@ -722,7 +722,7 @@ AccessErrors.prototype.checkClickable = function() {
   var event_elements = document.querySelectorAll(events);
 
   // Check elements for explicit onclick handlers that are not buttons or <a>
-  if (event_elements != null) {
+  if (event_elements !== null) {
     for (var i = 0; i < event_elements.length; i++) {
       if (isElementOrAncestorHidden(event_elements[i])) {
         continue;
@@ -739,13 +739,13 @@ AccessErrors.prototype.checkClickable = function() {
   }
   // Check stylesheets to see if there are any cursors upon hovering over
   // an element that suggest click functionalities on non-clickable elements
-  if (document.styleSheets != null) {
+  if (document.styleSheets !== null) {
     for (var i = 0; i < document.styleSheets.length; i++) {
       var styleSheet = document.styleSheets[i];
-      if (styleSheet.cssRules != null)
+      if (styleSheet.cssRules !== null)
       for (var j = 0; j < styleSheet.cssRules.length; j++) {
         var rule = styleSheet.cssRules[j];
-        if (rule.selectorText != undefined &&
+        if (rule.selectorText !== undefined &&
            rule.selectorText.toLowerCase().indexOf(':hover') >= 0 &&
            rule.selectorText.toLowerCase().indexOf('a:hover') < 0 &&
            rule.selectorText.toLowerCase().indexOf('input:hover') < 0 &&
@@ -824,7 +824,7 @@ AccessErrors.prototype.checkVideoText = function() {
     }
 
     // Note: The textContent property may not work on other browsers.
-    if (trim(videos[i].textContent) == '') {
+    if (trim(videos[i].textContent) === '') {
       this.errors.push(generateError(videos[i],
                                      'no_video_text'));
       noerrors = false;
