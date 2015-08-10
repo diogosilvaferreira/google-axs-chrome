@@ -261,7 +261,7 @@ CaretBrowsing.setInitialCursor = function() {
   var elementsLeft = [];
   var result = cvox.TraverseUtil.getNextChar(
       start, end, elementsEntered, elementsLeft, true);
-  if (result == null) {
+  if (result === null) {
     return;
   }
   CaretBrowsing.setAndValidateSelection(start, start);
@@ -431,7 +431,7 @@ CaretBrowsing.getCursorRect = function(cursor) {
  */
 CaretBrowsing.updateCaretOrSelection = function(scrollToSelection) {
   var sel = window.getSelection();
-  if (sel.rangeCount == 0) {
+  if (sel.rangeCount === 0) {
     if (CaretBrowsing.caretElement) {
       CaretBrowsing.isSelectionCollapsed = false;
       CaretBrowsing.caretElement.style.opacity = '0.0';
@@ -1095,13 +1095,13 @@ CaretBrowsing.onKeyDown = function(evt) {
   // the current control. If that fails, return so we don't fail when
   // trying to move the cursor or selection.
   var sel = window.getSelection();
-  if (sel.rangeCount == 0) {
+  if (sel.rangeCount === 0) {
     if (document.activeElement) {
       CaretBrowsing.escapeFromControl(document.activeElement);
       sel = window.getSelection();
     }
 
-    if (sel.rangeCount == 0) {
+    if (sel.rangeCount === 0) {
       return true;
     }
   }
@@ -1127,13 +1127,13 @@ CaretBrowsing.onKeyDown = function(evt) {
       break;
   }
 
-  if (result == false) {
+  if (result === false) {
     evt.preventDefault();
     evt.stopPropagation();
   }
 
   window.setTimeout(function() {
-    CaretBrowsing.updateCaretOrSelection(result == false);
+    CaretBrowsing.updateCaretOrSelection(result === false);
   }, 0);
 
   return result;
@@ -1201,7 +1201,7 @@ CaretBrowsing.updateIsCaretVisible = function() {
  * @param {Object} request The message.
  */
 CaretBrowsing.onExtensionMessage = function(request) {
-  CaretBrowsing.isEnabled = (request['enabled'] == true);
+  CaretBrowsing.isEnabled = (request['enabled'] === true);
   CaretBrowsing.updateIsCaretVisible();
 };
 
