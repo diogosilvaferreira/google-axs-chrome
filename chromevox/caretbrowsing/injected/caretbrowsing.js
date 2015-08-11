@@ -829,7 +829,7 @@ CaretBrowsing.moveDown = function(evt) {
       y = rect.top + window.pageYOffset;
 
       // Return the best match so far if we get half a line past the best.
-      if (bestY != null && y > bestY + bestHeight / 2) {
+      if (bestY !== null && y > bestY + bestHeight / 2) {
         if (CaretBrowsing.setAndValidateSelection(
                 evt.shiftKey ? start : bestPos, bestPos)) {
           break;
@@ -851,7 +851,7 @@ CaretBrowsing.moveDown = function(evt) {
       // next line and better than the previous best match, if any.
       if (y >= endRect.top + endRect.height) {
         var deltaLeft = Math.abs(CaretBrowsing.targetX - rect.left);
-        if ((bestDelta == null || deltaLeft < bestDelta) &&
+        if ((bestDelta === null || deltaLeft < bestDelta) &&
             (leftPos.node != end.node || leftPos.index != end.index)) {
           bestPos = leftPos.clone();
           bestY = y;
@@ -859,7 +859,7 @@ CaretBrowsing.moveDown = function(evt) {
           bestHeight = rect.height;
         }
         var deltaRight = Math.abs(CaretBrowsing.targetX - rect.right);
-        if (bestDelta == null || deltaRight < bestDelta) {
+        if (bestDelta === null || deltaRight < bestDelta) {
           bestPos = rightPos.clone();
           bestY = y;
           bestDelta = deltaRight;
